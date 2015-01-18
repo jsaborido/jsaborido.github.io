@@ -12,12 +12,14 @@
 
    contents/intro
    contents/desplieguesTipo
-   contents/replicaSet
    contents/comandos
    contents/documents
    contents/shell
+   contents/replicaSet
+   contents/sharding
+   contents/ejemplosDesplieguesLocal
+   contents/ejemplosDesplieguesCluster
    contents/pendiente
-
 
 
 Ejemplos encontrados de examenes:

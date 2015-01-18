@@ -15,74 +15,6 @@ Replica Set
 * Los secundarios tienen prioridad, por defecto = 1.
 
 
-
-**Configurando un replica set (añadiendo secundarios)**:
-
-* Se levantan los servidores con el nombre del replica set
-
-  * ``$ mongod ... --replSet set0``. Si se configura desde linea de comandos. "set0" es el nombre del replica set
-  * ``replSet=set0``. Si se configura en fichero de configuración con formato antiguo
-  * ``replication.replSetName: set0``. Si se configura en el fichero de configuración con formato YAML
-
-* Nos conectamos al nodo que será el primario
-
-  * Con ``rs.status()`` podemos comprobar que no está inicializado el replica set
-  * Con ``rs.conf()`` también veremos datos de la configuración del replica set
-
-* Con ``rs.initiate()`` iniciamos el replica set que solo tendrá este nodo actualmente
-  y el shell nos debería cambiar a ``set0:PRIMARY>``.
-
-* Para añadir otros nodos ``rs.add("<hostname>:<port>")``. Ejemplo: ``rs.add("precise32:28002")``.
-
-  * También es posible pasar un documento en vez de un string con la configuración del nodo.
-  * Los secundarios deben ser añadidos desde el primario
-
-
-**Configurando un replica set pasando la configuración de todos los nodos:**
-
-Para ello, en vez de inicializar con una configuración vacía, pasamos al comando "initiate" la configuración::
-
-    config = { "_id": "set0", "members" : [
-        {"_id" : 0, "host" : "localhost:27017" },
-        {"_id" : 1, "host" : "localhost:27018" },
-        {"_id" : 2, "host" : "localhost:27019" } ]
-    }
-    
-    rs.initiate(config)
-
-Valores posibles de configuración: ::
-
-    {
-      _id: <string>,
-      version: <int>,
-      members: [
-        {
-          _id: <int>,
-          host: <string>,
-          arbiterOnly: <boolean>,
-          buildIndexes: <boolean>,
-          hidden: <boolean>,
-          priority: <number>,
-          tags: <document>,
-          slaveDelay: <int>,
-          votes: <number>
-        },
-        ...
-      ],
-      settings: {
-        getLastErrorDefaults : <document>,
-        chainingAllowed : <boolean>,
-        getLastErrorModes : <document>,
-        heartbeatTimeoutSecs: <int>
-      }
-    }
-
-**Reconfigurar un replica set**: ::
-
-    rs.reconfig(<config>)
-
-
-
 **Oplog.rs**
 
 En los nodos del replica set, existirá la colección ``oplog.rs`` dentro de la base de datos ``local``.
@@ -194,4 +126,73 @@ Podemos ver que la única configuración para poder recuperarse automáticamente
 Si usamos 1 y se pierde, perdemos todo.
 
 Si usamos 2, podríamos recuperarnos en el caso de que el datacenter que se pierda sea el que contiene 1 nodo, en otro caso, no.
+
+
+Configuración.
+==========================
+
+**Configurando un replica set añadiendo secundarios**:
+
+* Se levantan los servidores con el nombre del replica set
+
+  * ``$ mongod ... --replSet set0``. Si se configura desde linea de comandos. "set0" es el nombre del replica set
+  * ``replSet=set0``. Si se configura en fichero de configuración con formato antiguo
+  * ``replication.replSetName: set0``. Si se configura en el fichero de configuración con formato YAML
+
+* Nos conectamos al nodo que será el primario
+
+  * Con ``rs.status()`` podemos comprobar que no está inicializado el replica set
+  * Con ``rs.conf()`` también veremos datos de la configuración del replica set
+
+* Con ``rs.initiate()`` iniciamos el replica set que solo tendrá este nodo actualmente
+  y el shell nos debería cambiar a ``set0:PRIMARY>``.
+
+* Para añadir otros nodos ``rs.add("<hostname>:<port>")``. Ejemplo: ``rs.add("precise32:28002")``.
+
+  * También es posible pasar un documento en vez de un string con la configuración del nodo.
+  * Los secundarios deben ser añadidos desde el primario
+
+
+**Configurando un replica set pasando la configuración de todos los nodos:**
+
+Para ello, en vez de inicializar con una configuración vacía, pasamos al comando "initiate" la configuración::
+
+    config = { "_id": "set0", "members" : [
+        {"_id" : 0, "host" : "localhost:27017" },
+        {"_id" : 1, "host" : "localhost:27018" },
+        {"_id" : 2, "host" : "localhost:27019" } ]
+    }
+    
+    rs.initiate(config)
+
+Valores posibles de configuración: ::
+
+    {
+      _id: <string>,
+      version: <int>,
+      members: [
+        {
+          _id: <int>,
+          host: <string>,
+          arbiterOnly: <boolean>,
+          buildIndexes: <boolean>,
+          hidden: <boolean>,
+          priority: <number>,
+          tags: <document>,
+          slaveDelay: <int>,
+          votes: <number>
+        },
+        ...
+      ],
+      settings: {
+        getLastErrorDefaults : <document>,
+        chainingAllowed : <boolean>,
+        getLastErrorModes : <document>,
+        heartbeatTimeoutSecs: <int>
+      }
+    }
+
+**Reconfigurar un replica set**: ::
+
+    rs.reconfig(<config>)
 
