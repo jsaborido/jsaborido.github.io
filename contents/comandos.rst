@@ -71,7 +71,7 @@ use some combination of server options: ::
 
 Activated by default on x86_64 machines. Directory ``journal``.
 
-*Nota: Todos los servidores comparten el mismo journal.*
+.. note:: Todos los servidores comparten el mismo journal.
 
 
 

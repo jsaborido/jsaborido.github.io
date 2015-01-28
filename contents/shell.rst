@@ -31,6 +31,9 @@ You can also query objects by BSON type. Here’s how to find all stories where 
     use digg
     db.stories.find( { "href" : { "$type" : 2 } } ) ;
 
+Cargar desde un fichero: ::
+
+    load("testIndex.js")
 
 
 Inserts
@@ -50,24 +53,19 @@ Queries
 
 **Operators**:
 
-* $gt
-* $gte
-* $lt
-* $lte
+* $gt / $gte / $lt / $lte
 * $ne
-* $in
-* $nin
+* $in / $nin. puede ser usado tanto con números, como cualquier tipo de dato (strings, ...)
 * $mod
 * $regex/$options,
 * $all
-* $size
-* $exists
-* $type
+* $size. Consulta si el array es del tamaño que pasemos
+* $exists. Comprueba si existe un campo
+* $type. Comprueba si un campo es de un tipo concreto, hay que usar el número del tipo (BSON).
 * $not
-* $or
-* $nor
+* $or / $nor
 * $elemMatch,
-* $where (try not to use $where !) **Full collection scan**
+* $where (try not to use $where !) **Full collection scan**. En breve quedará obsoleto y siempre tendrá valores javascript (aunque estemos desarrollando en otro lenguage)
 
 
 
@@ -110,14 +108,21 @@ To query MongoDB is to instantiate a cursor. You can also get more control using
 
 With ``sort()``, ``skip()``, and ``limit()`` you can control the results of the cursor
 
+.. note:: el cursor tiene un tiempo de vida que suelen ser unos 10 minutos.
+
 
 Updates
 ============
 
-**Be careful!!**: Without ``$set`` operator, full document is replaced ::
+.. DANGER::
 
-    db.stuff.update( { "_id" : 123 } , { "hello" : "world" } ) ; // Replace full document
-    db.stuff.update( { "_id" : 123 } , { "$set" : { "hello" : "world" } } ) ; // Updates hello attribute
+    Without ``$set`` operator, full document is replaced
+
+    .. parsed-literal::
+
+        db.stuff.update( { "_id" : 123 } , { "hello" : "world" } ) ; // Replace full document
+        db.stuff.update( { "_id" : 123 } ,
+                { **"$set"** : { "hello" : "world" } } ) ; // Updates hello attribute
 
 **Operators**
 

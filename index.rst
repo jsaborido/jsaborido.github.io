@@ -17,12 +17,16 @@
    contents/shell
    contents/replicaSet
    contents/sharding
+   contents/backups
+   contents/security
+   contents/monitor
+   contents/optimizing
+   contents/developmentIntro
+   contents/driver
+   contents/disenho
+   contents/aggregationFramework
+   contents/certificacion
+   contents/recursos
+   contents/ejercicios
    contents/ejemplosDesplieguesLocal
    contents/ejemplosDesplieguesCluster
-   contents/pendiente
-
-
-Ejemplos encontrados de examenes:
-
-* http://blog.cloudthat.in/sample-questions-for-mongodb-certified-dba-c100dba-exam/
-* http://blog.cloudthat.in/sample-questions-for-mongodb-certified-dba-c100dba-exam-part-ii/

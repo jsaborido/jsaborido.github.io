@@ -24,7 +24,7 @@ Replica Set
 * Escrituras solo en primario
 * Se pueden hacer lecturas conectándose a un secundario
 
- .. image:: /images/replica-set-read-write-operations-primary.png
+.. image:: /images/replica-set-read-write-operations-primary.png
 
 
 Sharded cluster

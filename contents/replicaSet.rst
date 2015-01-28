@@ -196,3 +196,29 @@ Valores posibles de configuración: ::
 
     rs.reconfig(<config>)
 
+
+Configuración rápida.
+==========================
+
+Existe una forma de crear un replica set de forma rápida para pruebas y desarrollo, para ello necesitamos el directorio ``/data/db`` ::
+
+  # mkdir -p /data/db
+  # chown -R student:student /data
+  $ mongo --nodb
+  > var rsTest = new ReplSetTest({name: "replicaTest", nodes: 3})
+  > rsTest.startSet() && rsTest.initiate()
+
+.. note:: Una vez salgamos de la consola el réplica set se finaliza
+
+Conectarse desde consola: ::
+
+  $ mongo --nodb
+  > conn = new Mongo("localhost:31000") // Conectamos al primario
+  > db = conn.getDB("test")
+  // Para conectarse al secundario
+  replicaTest:PRIMARY> conn = new Mongo("localhost:31001")
+  replicaTest:PRIMARY> db = conn.getDB("test")
+
+  // Volvemos al primario para insertar datos
+  > replicaTest:PRIMARY> use test // Esta puede no ser necesaria
+

@@ -1,5 +1,5 @@
 ==================================================
-Ejemplos de despliegues en la misma máquina
+Anexo. Ejemplos de despliegues en la misma máquina
 ==================================================
 
 Ejemplos con máquinas vagrant. Usan el directorio ``/home/vagrant/mongodata`` para almacenar los ficheros de datos.
@@ -21,7 +21,8 @@ Standalone
 
     mkdir -p /home/vagrant/mongodata/standalone/db
 
-    mongod --dbpath=/home/vagrant/mongodata/standalone/db --journal --fork --logpath=/home/vagrant/mongodata/standalone/db.log --logappend
+    mongod --dbpath=/home/vagrant/mongodata/standalone/db --journal \
+        --fork --logpath=/home/vagrant/mongodata/standalone/db.log --logappend
 
     mongo
 
@@ -33,9 +34,15 @@ Replica Set
 
     mkdir -p /home/vagrant/mongodata/replicaSet/{node1,node2,node3}/db
 
-    mongod --dbpath=/home/vagrant/mongodata/replicaSet/node1/db --journal --fork --logpath=/home/vagrant/mongodata/replicaSet/node1/db.log --logappend --replSet set0 --port 28001
-    mongod --dbpath=/home/vagrant/mongodata/replicaSet/node2/db --journal --fork --logpath=/home/vagrant/mongodata/replicaSet/node2/db.log --logappend --replSet set0 --port 28002
-    mongod --dbpath=/home/vagrant/mongodata/replicaSet/node3/db --journal --fork --logpath=/home/vagrant/mongodata/replicaSet/node3/db.log --logappend --replSet set0 --port 28003
+    mongod --dbpath=/home/vagrant/mongodata/replicaSet/node1/db --journal \
+        --fork --logpath=/home/vagrant/mongodata/replicaSet/node1/db.log \
+        --logappend --replSet set0 --port 28001
+    mongod --dbpath=/home/vagrant/mongodata/replicaSet/node2/db --journal \
+        --fork --logpath=/home/vagrant/mongodata/replicaSet/node2/db.log \
+        --logappend --replSet set0 --port 28002
+    mongod --dbpath=/home/vagrant/mongodata/replicaSet/node3/db --journal \
+        --fork --logpath=/home/vagrant/mongodata/replicaSet/node3/db.log \
+        --logappend --replSet set0 --port 28003
 
     mongo --port 28001
 
@@ -57,19 +64,39 @@ Shard
     mkdir -p /home/vagrant/mongodata/shard/rs{1,2}/node{1,2,3}/db
     mkdir -p /home/vagrant/mongodata/shard/config_server_{1,2,3}
 
-    mongod --dbpath=/home/vagrant/mongodata/shard/rs1/node1/db --journal --fork --logpath=/home/vagrant/mongodata/shard/rs1/node1/db.log --logappend --replSet set1 --port 28001 --shardsvr
-    mongod --dbpath=/home/vagrant/mongodata/shard/rs1/node2/db --journal --fork --logpath=/home/vagrant/mongodata/shard/rs1/node2/db.log --logappend --replSet set1 --port 28002 --shardsvr
-    mongod --dbpath=/home/vagrant/mongodata/shard/rs1/node3/db --journal --fork --logpath=/home/vagrant/mongodata/shard/rs1/node3/db.log --logappend --replSet set1 --port 28003 --shardsvr
+    mongod --dbpath=/home/vagrant/mongodata/shard/rs1/node1/db --journal \
+        --fork --logpath=/home/vagrant/mongodata/shard/rs1/node1/db.log \
+        --logappend --replSet set1 --port 28001 --shardsvr
+    mongod --dbpath=/home/vagrant/mongodata/shard/rs1/node2/db --journal \
+        --fork --logpath=/home/vagrant/mongodata/shard/rs1/node2/db.log \
+        --logappend --replSet set1 --port 28002 --shardsvr
+    mongod --dbpath=/home/vagrant/mongodata/shard/rs1/node3/db --journal \
+        --fork --logpath=/home/vagrant/mongodata/shard/rs1/node3/db.log \
+        --logappend --replSet set1 --port 28003 --shardsvr
 
-    mongod --dbpath=/home/vagrant/mongodata/shard/rs2/node1/db --journal --fork --logpath=/home/vagrant/mongodata/shard/rs2/node1/db.log --logappend --replSet set2 --port 28011 --shardsvr
-    mongod --dbpath=/home/vagrant/mongodata/shard/rs2/node2/db --journal --fork --logpath=/home/vagrant/mongodata/shard/rs2/node2/db.log --logappend --replSet set2 --port 28012 --shardsvr
-    mongod --dbpath=/home/vagrant/mongodata/shard/rs2/node3/db --journal --fork --logpath=/home/vagrant/mongodata/shard/rs2/node3/db.log --logappend --replSet set2 --port 28013 --shardsvr
+    mongod --dbpath=/home/vagrant/mongodata/shard/rs2/node1/db --journal \
+        --fork --logpath=/home/vagrant/mongodata/shard/rs2/node1/db.log \
+        --logappend --replSet set2 --port 28011 --shardsvr
+    mongod --dbpath=/home/vagrant/mongodata/shard/rs2/node2/db --journal \
+        --fork --logpath=/home/vagrant/mongodata/shard/rs2/node2/db.log \
+        --logappend --replSet set2 --port 28012 --shardsvr
+    mongod --dbpath=/home/vagrant/mongodata/shard/rs2/node3/db --journal \
+        --fork --logpath=/home/vagrant/mongodata/shard/rs2/node3/db.log \
+        --logappend --replSet set2 --port 28013 --shardsvr
 
-    mongod --dbpath=/home/vagrant/mongodata/shard/config_server_1 --journal --fork --logpath=/home/vagrant/mongodata/shard/config_server_1/mongod.log --logappend --port 28101 --configsvr
-    mongod --dbpath=/home/vagrant/mongodata/shard/config_server_2 --journal --fork --logpath=/home/vagrant/mongodata/shard/config_server_2/mongod.log --logappend --port 28102 --configsvr
-    mongod --dbpath=/home/vagrant/mongodata/shard/config_server_3 --journal --fork --logpath=/home/vagrant/mongodata/shard/config_server_3/mongod.log --logappend --port 28103 --configsvr
+    mongod --dbpath=/home/vagrant/mongodata/shard/config_server_1 --journal \
+        --fork --logpath=/home/vagrant/mongodata/shard/config_server_1/mongod.log \
+        --logappend --port 28101 --configsvr
+    mongod --dbpath=/home/vagrant/mongodata/shard/config_server_2 --journal \
+        --fork --logpath=/home/vagrant/mongodata/shard/config_server_2/mongod.log \
+        --logappend --port 28102 --configsvr
+    mongod --dbpath=/home/vagrant/mongodata/shard/config_server_3 --journal \
+        --fork --logpath=/home/vagrant/mongodata/shard/config_server_3/mongod.log \
+        --logappend --port 28103 --configsvr
 
-    mongos --configdb precise32:28101,precise32:28102,precise32:28103 --logpath=/home/vagrant/mongodata/shard/mongos.log --logappend --fork --port 28000
+    mongos --configdb precise32:28101,precise32:28102,precise32:28103 \
+        --logpath=/home/vagrant/mongodata/shard/mongos.log --logappend \
+        --fork --port 28000
 
 **Inicialización de los replica set** ::
 
@@ -98,7 +125,8 @@ Shard
 **Activando sharding en una base de datos y tabla** ::
 
     sh.enableSharding("mydb")
-    db.testtb.ensureIndex({dummy:1}) #Se necesita un índice sobre la shard key si no es _id
+    #Se necesita un índice sobre la shard key si no es _id
+    db.testtb.ensureIndex({dummy:1}) 
     sh.shardCollection("mydb.testtb", {dummy:1})
 
 YAML
