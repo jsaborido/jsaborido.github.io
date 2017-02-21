@@ -1,0 +1,204 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Aggregation Framework</title>
+    
+    <link rel="stylesheet" href="../_static/epub.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" /> 
+  </head>
+  <body>
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="certificacion.html" title="Certificación"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="disenho.html" title="Desarrollo. Diseño"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Notas sobre mongoDB doc 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body">
+            
+  <div class="section" id="aggregation-framework">
+<h1>Aggregation Framework</h1>
+<p>Existen 3 formas:</p>
+<ul class="simple">
+<li>Usando Count, group, ...</li>
+<li>Usando MapReduce</li>
+<li>Usando &#8220;aggregation&#8221;. La forma por la que vamos a empezar, que es similar a lo posible en SQL<ul>
+<li><tt class="docutils literal"><span class="pre">&gt;</span> <span class="pre">db.coll.aggregation([</span> <span class="pre">...</span> <span class="pre">])</span></tt></li>
+</ul>
+</li>
+</ul>
+<p>Los drivers tienen esta funcionalidad, pero lo que se hace es producir un JSON que se envía al motor.</p>
+<p><strong>Hay que tener cuidado con memoria, CPU, primarios de replica set y sobre todo mucho cuidado con el sharding</strong></p>
+<p>La forma de trabajar es como el &#8220;pipe&#8221; de los sistemas linux. Pasaremos la salida de un comando a otro y así sucesivamente...</p>
+<p>Ejemplo: &#8220;nDocs =stream=&gt; fase de match =stream=&gt; group =stream=&gt; project =stream=&gt; documento final&#8221;</p>
+<img alt="../_images/aggregationFramework.png" src="../_images/aggregationFramework.png" />
+<p>Para poder realizar operaciones en paralelo hay que usar &#8220;Map Reduce&#8221;, el resto son secuenciales.</p>
+<div class="section" id="operadores">
+<h2>Operadores</h2>
+<ul class="simple">
+<li><strong>$match</strong>. igual a queries (find({}))</li>
+<li><strong>$project</strong>. como las proyecciones del find pero le podemos añadir mas elementos (sumas, divisiones...)</li>
+<li><strong>$group</strong>. Parecido a db.coll.group() pero no es una función igual</li>
+<li><strong>$unwind</strong>. Explotar el array -&gt; Dado un array de 3 elementos, generamos 3 elementos individuales.</li>
+<li><strong>$sort</strong>. Parecido a trabajar con el cursor, pero trabajamos con el stream.</li>
+<li><strong>$limit</strong>.</li>
+<li><strong>$skip</strong>.</li>
+<li><strong>$out</strong>. Escritura en fichero</li>
+</ul>
+<p><strong>Limitaciones:</strong></p>
+<ul class="simple">
+<li><strong>Pipeline operator memory limits: 100MB - No se puede cambiar</strong>.</li>
+<li>Lo que podemos hacer es habilitar el uso en disco: <tt class="docutils literal"><span class="pre">allowDiskUse:</span> <span class="pre">true</span></tt></li>
+</ul>
+<div class="section" id="match">
+<h3>$match.</h3>
+<ul class="simple">
+<li>Filtra documentos como un find.</li>
+<li>No nos valen operaciones geoespaciales</li>
+<li>No es válido tampoco el $where</li>
+</ul>
+<p><strong>El resultado de la operación no es un cursor (no es un array). Es un documento que contiene los resultados.</strong></p>
+<div class="highlight-python"><div class="highlight"><pre>&gt; db.zips.aggregate([ {$match: {state : &quot;AL&quot; }}])
+
+//Ejemplo encadenando. ``$city`` es el valor del campo
+&gt; db.zips.aggregate([ {$match: {state : &quot;AL&quot; }},
+        {$project: {_id:0, city: {$toUpper: &quot;$city&quot; }}}])
+</pre></div>
+</div>
+</div>
+<div class="section" id="group">
+<h3>$group</h3>
+<p>Plantilla para los siguientes documentos (por la agrupación)</p>
+<p><strong>Cuidado, ya que se procesa toda la información en memoria</strong></p>
+<p>Ejemplo: calcular la población total por estado:</p>
+<div class="highlight-python"><div class="highlight"><pre>&gt; db.zips.aggregate({$group: {_id: &quot;$state&quot;, pop_total: {$sum: &quot;$pop&quot;}}},
+        {$sort : {pop_total : -1}})
+&gt; db.zips.aggregate({$group: {_id: &quot;$state&quot;, pop_total: {$sum: &quot;$pop&quot;}}},
+        {$sort : {pop_total : -1}}, {$limit: 2})
+{ &quot;_id&quot; : &quot;CA&quot;, &quot;pop_total&quot; : 29760021 }
+{ &quot;_id&quot; : &quot;NY&quot;, &quot;pop_total&quot; : 17990455 }
+</pre></div>
+</div>
+<p>Ejemplo: media de población de los estados.</p>
+<div class="highlight-python"><div class="highlight"><pre>&gt; db.zips.aggregate({$group: {_id: &quot;$state&quot;, pop_total: {$sum: &quot;$pop&quot;}}},
+        {$group: {_id: &quot;total&quot;, avg: {$avg: &quot;$pop_total&quot;}}} )
+{ &quot;_id&quot; : &quot;total&quot;, &quot;avg&quot; : 4876664.176470588 }
+</pre></div>
+</div>
+<p>Proyecciones encadenadas:</p>
+<div class="highlight-python"><div class="highlight"><pre>&gt; db.zips.aggregate([ {$group: {_id: {state: &quot;$state&quot;, city: &quot;$city&quot;},
+        pop_total: {$sum: &quot;$pop&quot; }}},
+        {$group: {_id: &quot;$_id.state&quot;, pop_media : {$avg : &quot;$pop_total&quot;}}},
+        {$sort : {pop_media : -1}}])
+</pre></div>
+</div>
+</div>
+<div class="section" id="project">
+<h3>$project</h3>
+<p>Proyecta los campos realizando operaciones si es necesario</p>
+</div>
+<div class="section" id="unwind">
+<h3>$unwind</h3>
+<p>Hace una explosión de los elementos de un array a elementos simples.</p>
+<p><strong>Si el campo no es un array da un error</strong></p>
+</div>
+<div class="section" id="sort-limit-skip">
+<h3>$sort, $limit, $skip</h3>
+<p>Funcionan igual que en las queries normales.</p>
+<p><strong>Cuidado con el tema de memoria de nuevo</strong>.</p>
+</div>
+<div class="section" id="out">
+<h3>$out</h3>
+<p>Sería siempre la última fase y crearía una nueva colección en la BD.</p>
+<div class="highlight-python"><div class="highlight"><pre>{$out: &quot;media_x_states&quot;}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="sharding">
+<h2>Sharding</h2>
+<p>En el framework de agregación, si hacemos un match, el uso va a ser el mismo que sin sharding (se hace un match local, se juntan y se devuelven). Con la proyección pasa lo mismo.</p>
+<p>El problema son en las agrupaciones que realizan cálculos o se necesitan todos los documentos (group, sort). Que tienen que traer todos los datos al primary shard para realizar todos las operaciones.</p>
+<p>Podemos mejorar el rendimiento con el orden de operaciones en los shards, de forma que limitemos los resultados:</p>
+<blockquote>
+<div>-&gt; match, project, group, sort, project...</div></blockquote>
+<p>Si esto se nos queda corto (manejar una gran cantidad de operaciones para agregaciones),
+habría que plantearse otras soluciones alternativa a Mongo.</p>
+<p>La alternativa mas usada es Hadoop (existe connector mongo-hadoop). Y en cantidades mayores: mahout, Hive/Pig, spark/storm, ...</p>
+<p>Mongo -&gt; Hadoop -&gt; Mahout, Hive...</p>
+<p>Podemos ver un explain en agregación con <tt class="docutils literal"><span class="pre">{explain:</span> <span class="pre">true}</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre>&gt; db.tweets.aggregate([ {$match: {&quot;user.friends_count&quot;: {$gt: 0}}},
+        {$match: {&quot;user.followers_count&quot;: {$gt: 0}}},
+        {$project: { &quot;user.screen_name&quot;: 1,
+            &quot;user.friends_count&quot;: 1,
+            &quot;user.followers_count&quot;: 1,
+            _id: 0,
+            ratio: {$divide:[&quot;$user.followers_count&quot;, &quot;$user.friends_count&quot;]}}
+        },
+        {$group:{_id: 1, avg: {$avg: &quot;$ratio&quot;}}}
+    ], {explain: true} )
+</pre></div>
+</div>
+</div>
+<div class="section" id="mapreduce">
+<h2>MapReduce</h2>
+<p><a class="reference external" href="http://docs.mongodb.org/manual/tutorial/map-reduce/">http://docs.mongodb.org/manual/tutorial/map-reduce/</a></p>
+<p>Se usaba inicialmente, cuando no había funciones de agregación</p>
+<p>Con map reduce hay que ir haciendo por fases, no hay pipeline:</p>
+<p><strong>Fase mapeo</strong>: filtro, parseo, limpieza, proyección, split de texto... Esto produce unos valores K,V (clave, valor)</p>
+<p><strong>Fase reducción</strong>: operaciones de agregación: sumas, medias, ...</p>
+<div class="highlight-python"><div class="highlight"><pre>map = function() {
+    emit( this.user.name, { &quot;diggs&quot;: this.diggs, &quot;posts&quot; : 1 } ) ;
+}
+
+reduce = function(key, values) {
+    var diggs = 0;
+    var posts = 0;
+    values.forEach(function(doc) {
+        diggs += doc.diggs;
+        posts += doc.posts;
+    } ) ;
+    return { &quot;diggs&quot; : diggs, &quot;posts&quot; : posts } ;
+}
+
+db.stories.mapReduce( map, reduce, { &quot;out&quot; : &quot;digg_users&quot; } ) ;
+</pre></div>
+</div>
+<div class="admonition important">
+<p class="first admonition-title">Important</p>
+<ol class="last arabic simple">
+<li>Can be run on secondary nodes to keep from bogging down primary’s performance.</li>
+<li>Can only at most 16MB of result.</li>
+</ol>
+</div>
+</div>
+</div>
+
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2015, yorsh.
+    </div>
+  </body>
+</html>

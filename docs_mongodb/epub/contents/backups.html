@@ -1,0 +1,143 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Backups y restauración</title>
+    
+    <link rel="stylesheet" href="../_static/epub.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" /> 
+  </head>
+  <body>
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="security.html" title="Seguridad"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="sharding.html" title="Sharding"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Notas sobre mongoDB doc 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body">
+            
+  <div class="section" id="backups-y-restauracion">
+<h1>Backups y restauración</h1>
+<p>DR (Disaster recovery) vs HA (High availability)</p>
+<p>Depende de las necesidades del negocio, ¿podemos perder datos de un día? ¿cuanto tiempo podemos estar offline?...</p>
+<p>Si perdemos un nodo, al conectar un nodo limpio se replican los datos desde el primario, pero esto significa una carga de la red al transpasar datos. Por lo que puede ser interesante cargar de un dump (o por si perdemos todo el replicaSet).</p>
+<div class="section" id="backups-logico-mongodump-mongorestore">
+<h2>Backups lógico: mongodump/mongorestore.</h2>
+<p>2 opciones:</p>
+<ul class="simple">
+<li>Conectándose a mongod</li>
+<li>Leyendo datos del dbpath directamente</li>
+</ul>
+<p>Genera para cada colección 2 ficheros:</p>
+<ul class="simple">
+<li>documentos en formato BSON</li>
+<li>metadatos en formato JSON (estos metadatos son basicamente la definición de los índices)</li>
+</ul>
+<p>Con el comando <tt class="docutils literal"><span class="pre">bsondump</span></tt> podemos ver los datos existentes en los ficheros bson.</p>
+<p>Ejemplos:</p>
+<ul>
+<li><p class="first">Para crear un dump completo de todas las BD del replica set (menos BD &#8220;local&#8221;)</p>
+<div class="highlight-python"><div class="highlight"><pre>$ mongodump --port 27002
+</pre></div>
+</div>
+</li>
+<li><p class="first">Dump de una sola base de datos indicando en que directorio se generará (por defecto se genera en &#8220;dump&#8221;)</p>
+<div class="highlight-python"><div class="highlight"><pre>$ mongodump --port 27002 -d twitter --out backup/misbackups/twitter
+</pre></div>
+</div>
+</li>
+</ul>
+<p>Para restaurar hay que conectarse al primario o sacar el secundario fuera del replicaset para cargar los datos</p>
+<div class="highlight-python"><div class="highlight"><pre>$ mongorestore -d twitter --port 27001 backup/misbackups/twitter/twitter
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Si se restaura sobre una BD existente, crea los documentos nuevos si no existen (por clave primaria) o da un error (que no se muestra en consola)</p>
+</div>
+<p><strong>Este backup puede ser inconsistente</strong>, ya que pueden estar modificándose datos mientras se está haciendo el backup. Es decir, no bloquea la BD. Para tener un backup consistente hay 2 opciones:</p>
+<ul class="simple">
+<li>Bloquear: <tt class="docutils literal"><span class="pre">db.fsyncLock()/db.fsyncUnlock()</span></tt> (Esta es una buena opción para no tener que parar el servidor) o parar el servidor.</li>
+<li><tt class="docutils literal"><span class="pre">mongodump</span></tt> con <tt class="docutils literal"><span class="pre">--oplog</span></tt>. Guardo las bases de datos y las operaciones ejecutadas durante el dump de la base de datos.</li>
+</ul>
+<p>El fsyncLock además de bloquear hace una sincronización de memoria con disco, para que los ficheros de datos tengan los datos actualizados.</p>
+<p>Mongodump es el mecanisco de backup mas lento. El backup físico es mas rápido, por lo que ante servidores standalone, ya que hay que bloquear para hacer backups existentes, es mejor un backup físico.</p>
+<p>Para la opción &#8211;oplog tiene que ser un backup completo.</p>
+<div class="highlight-python"><div class="highlight"><pre>$ mongodump --port 27002 --out backup/misbackups/withOpLog --oplog
+</pre></div>
+</div>
+<p>Esto creará además de los archivos bson y json anteriores, un nuevo fichero oplog.bson</p>
+<p>Para restaurar un dump con oplog:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ mongorestore --port XXX --oplogReplay dumpFolder
+</pre></div>
+</div>
+<p>Se podrían simular backups incrementales haciendo backups del oplog (no existe una manera nativa de backups incrementales)</p>
+<div class="highlight-python"><div class="highlight"><pre>$ mongodump --port 27002 -d local -c oplog.rs --out outfolder
+$ mv oplog.rs.bson oplog.bson
+$ mongorestore --port XXX --oplogReplay ...
+</pre></div>
+</div>
+<p>Para filtros selectivos en el dump tenemos &#8220;<tt class="docutils literal"><span class="pre">--query/filter</span></tt>&#8220;</p>
+<p>Si queremos restaurar en una base de datos con distinto nombre simplemente:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ mongorestore --port XXX -d nuevoNombre pathToDump
+</pre></div>
+</div>
+</div>
+<div class="section" id="backups-fisicos">
+<h2>Backups físicos</h2>
+<p>Esta es una copia de ficheros. Y para que sean consistentes, tenemos varias opciones:</p>
+<ul>
+<li><p class="first">shutdown / fsyncLock() ó...</p>
+</li>
+<li><p class="first">snapshot del sistema de ficheros y luego copia de estos ficheros. Minimiza los tiempos de backup con lo que son consistentes.</p>
+<div class="admonition important">
+<p class="first admonition-title">Important</p>
+<p>Importante tener el journaling activado (para poder hacerlo sin apagar el servidor) y que el journal esté en el mismo sistema de ficheros.</p>
+<p class="last">Si el journal está en otro volumen, primero deberíamos hacer un bloqueo, hacer snapshots de todos los filesystems y quito el bloqueo. Luego se puede hacer la copia de ficheros a partir del snapshots.</p>
+</div>
+</li>
+</ul>
+<p>Con la copia física hay que copiar una BD completa siempre. No es posible copiar una sola colección.</p>
+<div class="section" id="en-un-shard">
+<h3>En un shard</h3>
+<ol class="arabic simple">
+<li>Hacer backup de cada uno de los replica set y de los config server.</li>
+<li>Paramos balanceador</li>
+<li>Paramos un config server (para que no se modifiquen los metadatos de los chunk)</li>
+<li>Backup de cada shard y de un config server</li>
+<li>Reiniciamos config server</li>
+<li>Reiniciamos balanceador</li>
+</ol>
+<p><em>Info: La gente de MongoDB tiene MMS Backup. De esta forma la gente de Mongo es quien hace el backup.</em></p>
+</div>
+</div>
+</div>
+
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2015, yorsh.
+    </div>
+  </body>
+</html>

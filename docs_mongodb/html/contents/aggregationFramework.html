@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Aggregation Framework &mdash; Notas sobre mongoDB doc 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootswatch-3.2.0/united/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'doc 1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
+    <link rel="top" title="Notas sobre mongoDB doc 1.0 documentation" href="../index.html" />
+    <link rel="next" title="Certificación" href="certificacion.html" />
+    <link rel="prev" title="Desarrollo. Diseño" href="disenho.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head>
+  <body>
+
+  <div id="navbar" class="navbar navbar-inverse navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../index.html">
+          Notas sobre mongoDB</a>
+        <span class="navbar-text navbar-version pull-left"><b>doc 1.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../index.html">Sitio <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introducción</a></li>
+<li class="toctree-l1"><a class="reference internal" href="desplieguesTipo.html">Despliegues tipo</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="desplieguesTipo.html#standalone">Standalone</a></li>
+<li class="toctree-l2"><a class="reference internal" href="desplieguesTipo.html#replica-set">Replica Set</a></li>
+<li class="toctree-l2"><a class="reference internal" href="desplieguesTipo.html#sharded-cluster">Sharded cluster</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="comandos.html">Línea de comandos</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="comandos.html#mongod">mongod</a></li>
+<li class="toctree-l2"><a class="reference internal" href="comandos.html#mongorestore">mongorestore</a></li>
+<li class="toctree-l2"><a class="reference internal" href="comandos.html#mongoimport">mongoimport</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="documents.html">Documentos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="shell.html">CRUD - MongoDB Shell</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="shell.html#inserts">Inserts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="shell.html#queries">Queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="shell.html#updates">Updates</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="replicaSet.html">Replica Set</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="replicaSet.html#write-concerns">Write concerns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="replicaSet.html#read-preference-modes">Read Preference modes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="replicaSet.html#datacenters">Datacenters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="replicaSet.html#configuracion">Configuración.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="replicaSet.html#configuracion-rapida">Configuración rápida.</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="sharding.html">Sharding</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="sharding.html#shard-key">shard key</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sharding.html#mongos">mongos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sharding.html#config-server">config server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sharding.html#configuracion">Configuración.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sharding.html#configuracion-rapida">Configuración rápida.</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="backups.html">Backups y restauración</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="backups.html#backups-logico-mongodump-mongorestore">Backups lógico: mongodump/mongorestore.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="backups.html#backups-fisicos">Backups físicos</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="security.html">Seguridad</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monitor.html">Monitorización y rendimiento</a></li>
+<li class="toctree-l1"><a class="reference internal" href="optimizing.html">Optimización</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#explain">Explain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#tipos-de-indexaciones">Tipos de indexaciones</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#indice-simple">Índice Simple.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#indice-compuesto">Índice Compuesto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#indice-multikey">Índice Multikey</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#indices-ttl">Índices TTL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#indices-text">Índices TEXT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#indices-geoespaciales">Índices geoespaciales</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#indices-hash">Índices Hash</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="developmentIntro.html">Desarrollo. Introducción.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="driver.html">Desarrollo. Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="disenho.html">Desarrollo. Diseño</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Aggregation Framework</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#operadores">Operadores</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sharding">Sharding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#mapreduce">MapReduce</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="certificacion.html">Certificación</a></li>
+<li class="toctree-l1"><a class="reference internal" href="recursos.html">Anexo. Otros recursos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ejercicios.html">Anexo. Ejercicios / Ejemplos</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ejercicios.html#framework-de-agregacion">Framework de agregación</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ejemplosDesplieguesLocal.html">Anexo. Ejemplos de despliegues en la misma máquina</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ejemplosDesplieguesLocal.html#linea-de-comandos">Linea de comandos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ejemplosDesplieguesLocal.html#yaml">YAML</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ejemplosDesplieguesCluster.html">Anexo. Ejemplos de despliegues en cluster</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Página <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Aggregation Framework</a><ul>
+<li><a class="reference internal" href="#operadores">Operadores</a><ul>
+<li><a class="reference internal" href="#match">$match.</a></li>
+<li><a class="reference internal" href="#group">$group</a><ul>
+<li><a class="reference internal" href="#accumulators">Accumulators</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#project">$project</a></li>
+<li><a class="reference internal" href="#unwind">$unwind</a></li>
+<li><a class="reference internal" href="#sort-limit-skip">$sort, $limit, $skip</a></li>
+<li><a class="reference internal" href="#out">$out</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#sharding">Sharding</a></li>
+<li><a class="reference internal" href="#mapreduce">MapReduce</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="disenho.html" title="Previous Chapter: Desarrollo. Diseño"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Desarrollo. Dise...</span>
+    </a>
+  </li>
+  <li>
+    <a href="certificacion.html" title="Next Chapter: Certificación"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Certificación &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      
+  <div class="section" id="aggregation-framework">
+<h1>Aggregation Framework<a class="headerlink" href="#aggregation-framework" title="Permalink to this headline">¶</a></h1>
+<p>Existen 3 formas:</p>
+<ul>
+<li><p class="first">Usando Count, Distinct y Group (Single Purporse Aggregation Operations)</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">group does not support data in sharded collections.
+In addition, the results of the group operation must be no larger than 16 megabytes.</p>
+</div>
+</li>
+<li><p class="first">Usando MapReduce</p>
+</li>
+<li><p class="first">Usando &#8220;aggregation&#8221; (Aggregation Pipeline Framework). La forma por la que vamos a empezar, que es similar a lo posible en SQL</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">&gt;</span> <span class="pre">db.coll.aggregation([</span> <span class="pre">...</span> <span class="pre">])</span></tt></li>
+</ul>
+</li>
+</ul>
+<p>Los drivers tienen esta funcionalidad, pero lo que se hace es producir un JSON que se envía al motor.</p>
+<p><strong>Hay que tener cuidado con memoria, CPU, primarios de replica set y sobre todo mucho cuidado con el sharding</strong></p>
+<p>La forma de trabajar es como el &#8220;pipe&#8221; de los sistemas linux. Pasaremos la salida de un comando a otro y así sucesivamente...</p>
+<p>Ejemplo: &#8220;nDocs =stream=&gt; fase de match =stream=&gt; group =stream=&gt; project =stream=&gt; documento final&#8221;</p>
+<img alt="../_images/aggregationFramework.png" src="../_images/aggregationFramework.png" />
+<p>Para poder realizar operaciones en paralelo hay que usar &#8220;Map Reduce&#8221;, el resto son secuenciales.</p>
+<div class="section" id="operadores">
+<h2>Operadores<a class="headerlink" href="#operadores" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><strong>$match</strong>. igual a queries (find({}))</li>
+<li><strong>$project</strong>. como las proyecciones del find pero le podemos añadir mas elementos (sumas, divisiones...)</li>
+<li><strong>$group</strong>. Parecido a db.coll.group() pero no es una función igual</li>
+<li><strong>$unwind</strong>. Explotar el array -&gt; Dado un array de 3 elementos, generamos 3 elementos individuales.</li>
+<li><strong>$sort</strong>. Parecido a trabajar con el cursor, pero trabajamos con el stream.</li>
+<li><strong>$limit</strong>.</li>
+<li><strong>$skip</strong>.</li>
+<li><strong>$out</strong>. Escritura en fichero</li>
+</ul>
+<p><strong>Limitaciones:</strong></p>
+<ul class="simple">
+<li><strong>Pipeline operator memory limits: 100MB - No se puede cambiar</strong>.</li>
+<li>Lo que podemos hacer es habilitar el uso en disco: <tt class="docutils literal"><span class="pre">allowDiskUse:</span> <span class="pre">true</span></tt></li>
+</ul>
+<div class="section" id="match">
+<h3>$match.<a class="headerlink" href="#match" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Filtra documentos como un find.</li>
+<li>No nos valen operaciones geoespaciales</li>
+<li>No es válido tampoco el $where</li>
+</ul>
+<p><strong>El resultado de la operación no es un cursor (no es un array). Es un documento que contiene los resultados.</strong></p>
+<div class="highlight-python"><div class="highlight"><pre>&gt; db.zips.aggregate([ {$match: {state : &quot;AL&quot; }}])
+
+//Ejemplo encadenando. ``$city`` es el valor del campo
+&gt; db.zips.aggregate([ {$match: {state : &quot;AL&quot; }},
+        {$project: {_id:0, city: {$toUpper: &quot;$city&quot; }}}])
+</pre></div>
+</div>
+</div>
+<div class="section" id="group">
+<h3>$group<a class="headerlink" href="#group" title="Permalink to this headline">¶</a></h3>
+<p>Plantilla para los siguientes documentos (por la agrupación)</p>
+<p><strong>Cuidado, ya que se procesa toda la información en memoria</strong></p>
+<p>Ejemplo: calcular la población total por estado:</p>
+<div class="highlight-python"><div class="highlight"><pre>&gt; db.zips.aggregate({$group: {_id: &quot;$state&quot;, pop_total: {$sum: &quot;$pop&quot;}}},
+        {$sort : {pop_total : -1}})
+&gt; db.zips.aggregate({$group: {_id: &quot;$state&quot;, pop_total: {$sum: &quot;$pop&quot;}}},
+        {$sort : {pop_total : -1}}, {$limit: 2})
+{ &quot;_id&quot; : &quot;CA&quot;, &quot;pop_total&quot; : 29760021 }
+{ &quot;_id&quot; : &quot;NY&quot;, &quot;pop_total&quot; : 17990455 }
+</pre></div>
+</div>
+<p>Ejemplo: media de población de los estados.</p>
+<div class="highlight-python"><div class="highlight"><pre>&gt; db.zips.aggregate({$group: {_id: &quot;$state&quot;, pop_total: {$sum: &quot;$pop&quot;}}},
+        {$group: {_id: &quot;total&quot;, avg: {$avg: &quot;$pop_total&quot;}}} )
+{ &quot;_id&quot; : &quot;total&quot;, &quot;avg&quot; : 4876664.176470588 }
+</pre></div>
+</div>
+<p>Proyecciones encadenadas:</p>
+<div class="highlight-python"><div class="highlight"><pre>&gt; db.zips.aggregate([ {$group: {_id: {state: &quot;$state&quot;, city: &quot;$city&quot;},
+        pop_total: {$sum: &quot;$pop&quot; }}},
+        {$group: {_id: &quot;$_id.state&quot;, pop_media : {$avg : &quot;$pop_total&quot;}}},
+        {$sort : {pop_media : -1}}])
+</pre></div>
+</div>
+<div class="section" id="accumulators">
+<h4>Accumulators<a class="headerlink" href="#accumulators" title="Permalink to this headline">¶</a></h4>
+<p>Accumulators, available only for the $group stage, compute values by combining documents that share the same group key.
+Accumulators take as input a single expression, evaluating the expression once for each input document,
+and maintain their state for the group of documents.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="5%" />
+<col width="95%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">$addToSet</span></tt></td>
+<td>Returns an array of unique expression values for each group. Order of the array elements is undefined.</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">$avg</span></tt></td>
+<td>Returns an average for each group. Ignores non-numeric values.</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">$first</span></tt></td>
+<td>Returns a value from the first document for each group. Order is only defined if the documents are in a defined order.``$last``     Returns a value from the last document for each group. Order is only defined if the documents are in a defined order.</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">$max</span></tt></td>
+<td>Returns the highest expression value for each group.</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">$min</span></tt></td>
+<td>Returns the lowest expression value for each group.</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">$push</span></tt></td>
+<td>Returns an array of expression values for each group.</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">$sum</span></tt></td>
+<td>Returns a sum for each group. Ignores non-numeric values.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="project">
+<h3>$project<a class="headerlink" href="#project" title="Permalink to this headline">¶</a></h3>
+<p>Proyecta los campos realizando operaciones si es necesario</p>
+</div>
+<div class="section" id="unwind">
+<h3>$unwind<a class="headerlink" href="#unwind" title="Permalink to this headline">¶</a></h3>
+<p>Hace una explosión de los elementos de un array a elementos simples.</p>
+<p><strong>Si el campo no es un array da un error</strong></p>
+</div>
+<div class="section" id="sort-limit-skip">
+<h3>$sort, $limit, $skip<a class="headerlink" href="#sort-limit-skip" title="Permalink to this headline">¶</a></h3>
+<p>Funcionan igual que en las queries normales.</p>
+<p><strong>Cuidado con el tema de memoria de nuevo</strong>.</p>
+</div>
+<div class="section" id="out">
+<h3>$out<a class="headerlink" href="#out" title="Permalink to this headline">¶</a></h3>
+<p>Sería siempre la última fase y crearía una nueva colección en la BD.</p>
+<div class="highlight-python"><div class="highlight"><pre>{$out: &quot;media_x_states&quot;}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="sharding">
+<h2>Sharding<a class="headerlink" href="#sharding" title="Permalink to this headline">¶</a></h2>
+<p>En el framework de agregación, si hacemos un match, el uso va a ser el mismo que sin sharding (se hace un match local, se juntan y se devuelven). Con la proyección pasa lo mismo.</p>
+<p>El problema son en las agrupaciones que realizan cálculos o se necesitan todos los documentos (group, sort). Que tienen que traer todos los datos al primary shard para realizar todos las operaciones.</p>
+<p>Podemos mejorar el rendimiento con el orden de operaciones en los shards, de forma que limitemos los resultados:</p>
+<blockquote>
+<div>-&gt; match, project, group, sort, project...</div></blockquote>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><a class="reference external" href="http://docs.mongodb.org/manual/core/aggregation-pipeline-optimization/">http://docs.mongodb.org/manual/core/aggregation-pipeline-optimization/</a></p>
+</div>
+<p>Si esto se nos queda corto (manejar una gran cantidad de operaciones para agregaciones),
+habría que plantearse otras soluciones alternativa a Mongo.</p>
+<p>La alternativa mas usada es Hadoop (existe connector mongo-hadoop). Y en cantidades mayores: mahout, Hive/Pig, spark/storm, ...</p>
+<p>Mongo -&gt; Hadoop -&gt; Mahout, Hive...</p>
+<p>Podemos ver un explain en agregación con <tt class="docutils literal"><span class="pre">{explain:</span> <span class="pre">true}</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre>&gt; db.tweets.aggregate([ {$match: {&quot;user.friends_count&quot;: {$gt: 0}}},
+        {$match: {&quot;user.followers_count&quot;: {$gt: 0}}},
+        {$project: { &quot;user.screen_name&quot;: 1,
+            &quot;user.friends_count&quot;: 1,
+            &quot;user.followers_count&quot;: 1,
+            _id: 0,
+            ratio: {$divide:[&quot;$user.followers_count&quot;, &quot;$user.friends_count&quot;]}}
+        },
+        {$group:{_id: 1, avg: {$avg: &quot;$ratio&quot;}}}
+    ], {explain: true} )
+</pre></div>
+</div>
+</div>
+<div class="section" id="mapreduce">
+<h2>MapReduce<a class="headerlink" href="#mapreduce" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="http://docs.mongodb.org/manual/tutorial/map-reduce/">http://docs.mongodb.org/manual/tutorial/map-reduce/</a></p>
+<p>Se usaba inicialmente, cuando no había funciones de agregación</p>
+<p>Con map reduce hay que ir haciendo por fases, no hay pipeline:</p>
+<p><strong>Fase mapeo</strong>: filtro, parseo, limpieza, proyección, split de texto... Esto produce unos valores K,V (clave, valor)</p>
+<p><strong>Fase reducción</strong>: operaciones de agregación: sumas, medias, ...</p>
+<div class="highlight-python"><div class="highlight"><pre>map = function() {
+    emit( this.user.name, { &quot;diggs&quot;: this.diggs, &quot;posts&quot; : 1 } ) ;
+}
+
+reduce = function(key, values) {
+    var diggs = 0;
+    var posts = 0;
+    values.forEach(function(doc) {
+        diggs += doc.diggs;
+        posts += doc.posts;
+    } ) ;
+    return { &quot;diggs&quot; : diggs, &quot;posts&quot; : posts } ;
+}
+
+db.stories.mapReduce( map, reduce, { &quot;out&quot; : &quot;digg_users&quot; } ) ;
+</pre></div>
+</div>
+<div class="admonition important">
+<p class="first admonition-title">Important</p>
+<ol class="last arabic simple">
+<li>Can be run on secondary nodes to keep from bogging down primary’s performance.</li>
+<li>Can only at most 16MB of result.</li>
+</ol>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2015, yorsh.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

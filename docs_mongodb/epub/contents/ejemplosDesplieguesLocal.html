@@ -1,0 +1,301 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Anexo. Ejemplos de despliegues en la misma máquina</title>
+    
+    <link rel="stylesheet" href="../_static/epub.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" /> 
+  </head>
+  <body>
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="ejemplosDesplieguesCluster.html" title="Anexo. Ejemplos de despliegues en cluster"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="ejercicios.html" title="Anexo. Ejercicios / Ejemplos"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Notas sobre mongoDB doc 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body">
+            
+  <div class="section" id="anexo-ejemplos-de-despliegues-en-la-misma-maquina">
+<h1>Anexo. Ejemplos de despliegues en la misma máquina</h1>
+<p>Ejemplos con máquinas vagrant. Usan el directorio <tt class="docutils literal"><span class="pre">/home/vagrant/mongodata</span></tt> para almacenar los ficheros de datos.</p>
+<p>Los ejemplos de linea de comandos pueden ser pasados a ficheros de configuración con el antiguo formato.</p>
+<p>Para lanzar los demonios usando los ficheros de configuración (YAML o antiguo formato) usar los comandos <tt class="docutils literal"><span class="pre">-f</span></tt> ó <tt class="docutils literal"><span class="pre">--config</span></tt>.</p>
+<p>Estos despliegues crearán todos los demonios en la misma máquina usando distintos puertos</p>
+<div class="section" id="linea-de-comandos">
+<h2>Linea de comandos</h2>
+<div class="section" id="standalone">
+<h3>Standalone</h3>
+<div class="highlight-python"><div class="highlight"><pre>mkdir -p /home/vagrant/mongodata/standalone/db
+
+mongod --dbpath=/home/vagrant/mongodata/standalone/db --journal \
+    --fork --logpath=/home/vagrant/mongodata/standalone/db.log --logappend
+
+mongo
+</pre></div>
+</div>
+</div>
+<div class="section" id="replica-set">
+<h3>Replica Set</h3>
+<div class="highlight-python"><div class="highlight"><pre>mkdir -p /home/vagrant/mongodata/replicaSet/{node1,node2,node3}/db
+
+mongod --dbpath=/home/vagrant/mongodata/replicaSet/node1/db --journal \
+    --fork --logpath=/home/vagrant/mongodata/replicaSet/node1/db.log \
+    --logappend --replSet set0 --port 28001
+mongod --dbpath=/home/vagrant/mongodata/replicaSet/node2/db --journal \
+    --fork --logpath=/home/vagrant/mongodata/replicaSet/node2/db.log \
+    --logappend --replSet set0 --port 28002
+mongod --dbpath=/home/vagrant/mongodata/replicaSet/node3/db --journal \
+    --fork --logpath=/home/vagrant/mongodata/replicaSet/node3/db.log \
+    --logappend --replSet set0 --port 28003
+
+mongo --port 28001
+</pre></div>
+</div>
+<p><strong>Inicialización del replica set</strong></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">config</span> <span class="o">=</span> <span class="p">{</span> <span class="s">&quot;_id&quot;</span><span class="p">:</span> <span class="s">&quot;set0&quot;</span><span class="p">,</span> <span class="s">&quot;members&quot;</span> <span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s">&quot;_id&quot;</span> <span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&quot;host&quot;</span> <span class="p">:</span> <span class="s">&quot;precise32:28001&quot;</span> <span class="p">},</span>
+    <span class="p">{</span><span class="s">&quot;_id&quot;</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&quot;host&quot;</span> <span class="p">:</span> <span class="s">&quot;precise32:28002&quot;</span> <span class="p">},</span>
+    <span class="p">{</span><span class="s">&quot;_id&quot;</span> <span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s">&quot;host&quot;</span> <span class="p">:</span> <span class="s">&quot;precise32:28003&quot;</span> <span class="p">}</span> <span class="p">]</span>
+<span class="p">}</span>
+<span class="n">rs</span><span class="o">.</span><span class="n">initiate</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="shard">
+<h3>Shard</h3>
+<div class="highlight-python"><div class="highlight"><pre>mkdir -p /home/vagrant/mongodata/shard/rs{1,2}/node{1,2,3}/db
+mkdir -p /home/vagrant/mongodata/shard/config_server_{1,2,3}
+
+mongod --dbpath=/home/vagrant/mongodata/shard/rs1/node1/db --journal \
+    --fork --logpath=/home/vagrant/mongodata/shard/rs1/node1/db.log \
+    --logappend --replSet set1 --port 28001 --shardsvr
+mongod --dbpath=/home/vagrant/mongodata/shard/rs1/node2/db --journal \
+    --fork --logpath=/home/vagrant/mongodata/shard/rs1/node2/db.log \
+    --logappend --replSet set1 --port 28002 --shardsvr
+mongod --dbpath=/home/vagrant/mongodata/shard/rs1/node3/db --journal \
+    --fork --logpath=/home/vagrant/mongodata/shard/rs1/node3/db.log \
+    --logappend --replSet set1 --port 28003 --shardsvr
+
+mongod --dbpath=/home/vagrant/mongodata/shard/rs2/node1/db --journal \
+    --fork --logpath=/home/vagrant/mongodata/shard/rs2/node1/db.log \
+    --logappend --replSet set2 --port 28011 --shardsvr
+mongod --dbpath=/home/vagrant/mongodata/shard/rs2/node2/db --journal \
+    --fork --logpath=/home/vagrant/mongodata/shard/rs2/node2/db.log \
+    --logappend --replSet set2 --port 28012 --shardsvr
+mongod --dbpath=/home/vagrant/mongodata/shard/rs2/node3/db --journal \
+    --fork --logpath=/home/vagrant/mongodata/shard/rs2/node3/db.log \
+    --logappend --replSet set2 --port 28013 --shardsvr
+
+mongod --dbpath=/home/vagrant/mongodata/shard/config_server_1 --journal \
+    --fork --logpath=/home/vagrant/mongodata/shard/config_server_1/mongod.log \
+    --logappend --port 28101 --configsvr
+mongod --dbpath=/home/vagrant/mongodata/shard/config_server_2 --journal \
+    --fork --logpath=/home/vagrant/mongodata/shard/config_server_2/mongod.log \
+    --logappend --port 28102 --configsvr
+mongod --dbpath=/home/vagrant/mongodata/shard/config_server_3 --journal \
+    --fork --logpath=/home/vagrant/mongodata/shard/config_server_3/mongod.log \
+    --logappend --port 28103 --configsvr
+
+mongos --configdb precise32:28101,precise32:28102,precise32:28103 \
+    --logpath=/home/vagrant/mongodata/shard/mongos.log --logappend \
+    --fork --port 28000
+</pre></div>
+</div>
+<p><strong>Inicialización de los replica set</strong></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># Conectar antes a un nodo del replica set (mongo --port 28001)</span>
+<span class="n">config</span> <span class="o">=</span> <span class="p">{</span> <span class="s">&quot;_id&quot;</span><span class="p">:</span> <span class="s">&quot;set1&quot;</span><span class="p">,</span> <span class="s">&quot;members&quot;</span> <span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s">&quot;_id&quot;</span> <span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&quot;host&quot;</span> <span class="p">:</span> <span class="s">&quot;precise32:28001&quot;</span> <span class="p">},</span>
+    <span class="p">{</span><span class="s">&quot;_id&quot;</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&quot;host&quot;</span> <span class="p">:</span> <span class="s">&quot;precise32:28002&quot;</span> <span class="p">},</span>
+    <span class="p">{</span><span class="s">&quot;_id&quot;</span> <span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s">&quot;host&quot;</span> <span class="p">:</span> <span class="s">&quot;precise32:28003&quot;</span> <span class="p">}</span> <span class="p">]</span>
+<span class="p">}</span>
+<span class="n">rs</span><span class="o">.</span><span class="n">initiate</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+
+<span class="c"># Conectar antes a un nodo del replica set (mongo --port 28011)</span>
+<span class="n">config</span> <span class="o">=</span> <span class="p">{</span> <span class="s">&quot;_id&quot;</span><span class="p">:</span> <span class="s">&quot;set2&quot;</span><span class="p">,</span> <span class="s">&quot;members&quot;</span> <span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s">&quot;_id&quot;</span> <span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&quot;host&quot;</span> <span class="p">:</span> <span class="s">&quot;precise32:28011&quot;</span> <span class="p">},</span>
+    <span class="p">{</span><span class="s">&quot;_id&quot;</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&quot;host&quot;</span> <span class="p">:</span> <span class="s">&quot;precise32:28012&quot;</span> <span class="p">},</span>
+    <span class="p">{</span><span class="s">&quot;_id&quot;</span> <span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s">&quot;host&quot;</span> <span class="p">:</span> <span class="s">&quot;precise32:28013&quot;</span> <span class="p">}</span> <span class="p">]</span>
+<span class="p">}</span>
+<span class="n">rs</span><span class="o">.</span><span class="n">initiate</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Inicialización de los shard</strong></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># Conectar antes a mongos (mongo --port 28000)</span>
+<span class="n">sh</span><span class="o">.</span><span class="n">addShard</span><span class="p">(</span><span class="s">&quot;set1/precise32:28001&quot;</span><span class="p">)</span>
+<span class="n">sh</span><span class="o">.</span><span class="n">addShard</span><span class="p">(</span><span class="s">&quot;set2/precise32:28011&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Activando sharding en una base de datos y tabla</strong></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">sh</span><span class="o">.</span><span class="n">enableSharding</span><span class="p">(</span><span class="s">&quot;mydb&quot;</span><span class="p">)</span>
+<span class="c">#Se necesita un índice sobre la shard key si no es _id</span>
+<span class="n">db</span><span class="o">.</span><span class="n">testtb</span><span class="o">.</span><span class="n">ensureIndex</span><span class="p">({</span><span class="n">dummy</span><span class="p">:</span><span class="mi">1</span><span class="p">})</span>
+<span class="n">sh</span><span class="o">.</span><span class="n">shardCollection</span><span class="p">(</span><span class="s">&quot;mydb.testtb&quot;</span><span class="p">,</span> <span class="p">{</span><span class="n">dummy</span><span class="p">:</span><span class="mi">1</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="yaml">
+<h2>YAML</h2>
+<p>Nuevo formato de configuración. Estos ficheros .yml son los ficheros equivalentes a los ejemplos anteriores.</p>
+<p>Sustituyen el lanzamiento del demonio <tt class="docutils literal"><span class="pre">mongod</span></tt> para pasarle solo el fichero de configuración:</p>
+<div class="highlight-python"><div class="highlight"><pre>mongod -f configfile.yml
+</pre></div>
+</div>
+<div class="section" id="id1">
+<h3>Standalone</h3>
+<div class="highlight-yaml"><div class="highlight"><pre><span class="l-Scalar-Plain">systemLog</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">destination</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">file</span>
+  <span class="l-Scalar-Plain">path</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">/home/vagrant/mongodata/standalone/db.log</span>
+  <span class="l-Scalar-Plain">logAppend</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
+<span class="l-Scalar-Plain">processManagement</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">fork</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
+<span class="l-Scalar-Plain">storage</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">dbPath</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">/home/vagrant/mongodata/standalone/db</span>
+  <span class="l-Scalar-Plain">journal</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">enabled</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id2">
+<h3>Replica Set</h3>
+<div class="highlight-yaml"><div class="highlight"><pre><span class="c1"># node1_conf.yml file</span>
+<span class="l-Scalar-Plain">systemLog</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">destination</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">file</span>
+  <span class="l-Scalar-Plain">path</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">/home/vagrant/mongodata/replicaSet/node1/db.log</span>
+  <span class="l-Scalar-Plain">logAppend</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
+<span class="l-Scalar-Plain">processManagement</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">fork</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
+<span class="l-Scalar-Plain">net</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">port</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">28001</span>
+<span class="l-Scalar-Plain">storage</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">dbPath</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">/home/vagrant/mongodata/replicaSet/node1/db</span>
+  <span class="l-Scalar-Plain">journal</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">enabled</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
+<span class="l-Scalar-Plain">replication</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">replSetName</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">set0</span>
+
+<span class="c1"># node2_conf.yml file</span>
+<span class="l-Scalar-Plain">systemLog</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">destination</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">file</span>
+  <span class="l-Scalar-Plain">path</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">/home/vagrant/mongodata/replicaSet/node2/db.log</span>
+  <span class="l-Scalar-Plain">logAppend</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
+<span class="l-Scalar-Plain">processManagement</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">fork</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
+<span class="l-Scalar-Plain">net</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">port</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">28002</span>
+<span class="l-Scalar-Plain">storage</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">dbPath</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">/home/vagrant/mongodata/replicaSet/node2/db</span>
+  <span class="l-Scalar-Plain">journal</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">enabled</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
+<span class="l-Scalar-Plain">replication</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">replSetName</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">set0</span>
+
+<span class="c1"># node3_conf.yml file</span>
+<span class="l-Scalar-Plain">systemLog</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">destination</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">file</span>
+  <span class="l-Scalar-Plain">path</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">/home/vagrant/mongodata/replicaSet/node3/db.log</span>
+  <span class="l-Scalar-Plain">logAppend</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
+<span class="l-Scalar-Plain">processManagement</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">fork</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
+<span class="l-Scalar-Plain">net</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">port</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">28003</span>
+<span class="l-Scalar-Plain">storage</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">dbPath</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">/home/vagrant/mongodata/replicaSet/node3/db</span>
+  <span class="l-Scalar-Plain">journal</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">enabled</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
+<span class="l-Scalar-Plain">replication</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">replSetName</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">set0</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id3">
+<h3>Shard</h3>
+<div class="highlight-yaml"><div class="highlight"><pre><span class="c1">#rs1_node1_conf.yml</span>
+<span class="l-Scalar-Plain">systemLog</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">destination</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">file</span>
+  <span class="l-Scalar-Plain">path</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">/home/vagrant/mongodata/shard/rs1/node1/db.log</span>
+  <span class="l-Scalar-Plain">logAppend</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
+<span class="l-Scalar-Plain">processManagement.fork</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
+<span class="l-Scalar-Plain">net.port</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">28001</span>
+<span class="l-Scalar-Plain">storage</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">dbPath</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">/home/vagrant/mongodata/shard/rs1/node1/db</span>
+  <span class="l-Scalar-Plain">journal.enabled</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
+<span class="l-Scalar-Plain">replication.replSetName</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">set1</span>
+<span class="l-Scalar-Plain">sharding.clusterRole</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">shardsvr</span>
+
+<span class="c1">#... (Similar en el resto de nodos del mismo replica set 1)</span>
+
+<span class="c1">#rs2_node1_conf.yml</span>
+<span class="l-Scalar-Plain">systemLog</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">destination</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">file</span>
+  <span class="l-Scalar-Plain">path</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">/home/vagrant/mongodata/shard/rs2/node1/db.log</span>
+  <span class="l-Scalar-Plain">logAppend</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
+<span class="l-Scalar-Plain">processManagement.fork</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
+<span class="l-Scalar-Plain">net.port</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">28011</span>
+<span class="l-Scalar-Plain">storage</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">dbPath</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">/home/vagrant/mongodata/shard/rs2/node1/db</span>
+  <span class="l-Scalar-Plain">preallocDataFiles</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">false</span>
+  <span class="l-Scalar-Plain">smallFiles</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
+  <span class="l-Scalar-Plain">journal.enabled</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
+<span class="l-Scalar-Plain">replication.replSetName</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">set2</span>
+<span class="l-Scalar-Plain">sharding.clusterRole</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">shardsvr</span>
+
+<span class="c1">#... (Similar en el resto de nodos del mismo replica set 2)</span>
+
+<span class="c1">#config_server1_conf.yml</span>
+<span class="l-Scalar-Plain">systemLog</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">destination</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">file</span>
+  <span class="l-Scalar-Plain">path</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">/home/vagrant/mongodata/shard/config_server_1/mongod.log</span>
+  <span class="l-Scalar-Plain">logAppend</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
+<span class="l-Scalar-Plain">processManagement.fork</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
+<span class="l-Scalar-Plain">net.port</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">28101</span>
+<span class="l-Scalar-Plain">storage</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">dbPath</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">/home/vagrant/mongodata/shard/config_server_1</span>
+  <span class="l-Scalar-Plain">journal.enabled</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
+<span class="l-Scalar-Plain">sharding.clusterRole</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">configsvr</span>
+
+<span class="c1">#... (Similar en el resto de nodos de config servers)</span>
+
+<span class="c1">#mongos.yml</span>
+<span class="l-Scalar-Plain">systemLog</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">destination</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">file</span>
+  <span class="l-Scalar-Plain">path</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">/home/vagrant/mongodata/shard/mongos.log</span>
+  <span class="l-Scalar-Plain">logAppend</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
+<span class="l-Scalar-Plain">processManagement.fork</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
+<span class="l-Scalar-Plain">net.port</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">28000</span>
+<span class="l-Scalar-Plain">sharding.configDB</span><span class="p-Indicator">:</span> <span class="s">&quot;precise32:28101,precise32:28102,precise32:28103&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2015, yorsh.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,171 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>CRUD - MongoDB Shell</title>
+    
+    <link rel="stylesheet" href="../_static/epub.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" /> 
+  </head>
+  <body>
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="replicaSet.html" title="Replica Set"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="documents.html" title="Documentos"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Notas sobre mongoDB doc 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body">
+            
+  <div class="section" id="crud-mongodb-shell">
+<h1>CRUD - MongoDB Shell</h1>
+<p>Se accede con el comando <tt class="docutils literal"><span class="pre">mongo</span></tt>.</p>
+<p>La base de datos por defecto es <tt class="docutils literal"><span class="pre">test</span></tt>.</p>
+<p>Si se pasa la función sin paréntisis, el shell pinta la definición. Ej.: <tt class="docutils literal"><span class="pre">db.startup_log.findOne</span></tt></p>
+<p>Ejemplos comandos básicos:</p>
+<div class="highlight-python"><div class="highlight"><pre>show dbs | db.adminCommand({&quot;listDatabases&quot;: 1})
+use &lt;dbname&gt;
+show collections | show tables | db.getCollectionNames()
+db.&lt;col&gt;.findOne()
+db.&lt;col&gt;.find()
+db.&lt;col&gt;.insert(&lt;jsonObject&gt;)
+</pre></div>
+</div>
+<p><strong>Document Data Types</strong></p>
+<p>It’s sometimes useful to see the size of an object in BSON. You can do that like so</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">Object</span><span class="o">.</span><span class="n">bsonsize</span><span class="p">(</span> <span class="p">{</span> <span class="s">&quot;user.name&quot;</span> <span class="p">:</span> <span class="s">&quot;Emma Smith&quot;</span> <span class="p">}</span> <span class="p">)</span> <span class="p">;</span>
+<span class="n">Object</span><span class="o">.</span><span class="n">bsonsize</span><span class="p">(</span> <span class="n">db</span><span class="o">.</span><span class="n">tweets</span><span class="o">.</span><span class="n">findOne</span><span class="p">(</span> <span class="p">{</span> <span class="s">&quot;user.name&quot;</span> <span class="p">:</span> <span class="s">&quot;Emma Smith&quot;</span> <span class="p">}</span> <span class="p">)</span> <span class="p">)</span> <span class="p">;</span>
+</pre></div>
+</div>
+<p>You can also query objects by BSON type. Here’s how to find all stories where href is a string.</p>
+<div class="highlight-python"><div class="highlight"><pre>use digg
+db.stories.find( { &quot;href&quot; : { &quot;$type&quot; : 2 } } ) ;
+</pre></div>
+</div>
+<p>Cargar desde un fichero:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">load</span><span class="p">(</span><span class="s">&quot;testIndex.js&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="inserts">
+<h2>Inserts</h2>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">db</span><span class="o">.</span><span class="n">people</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span> <span class="p">{</span> <span class="s">&quot;name&quot;</span> <span class="p">:</span> <span class="s">&quot;Smith&quot;</span><span class="p">,</span> <span class="s">&quot;age&quot;</span><span class="p">:</span> <span class="mi">30</span> <span class="p">}</span> <span class="p">)</span> <span class="p">;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="queries">
+<h2>Queries</h2>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">db</span><span class="o">.</span><span class="n">scores</span><span class="o">.</span><span class="n">find</span><span class="p">(</span> <span class="p">{</span> <span class="s">&quot;score&quot;</span> <span class="p">:</span> <span class="p">{</span> <span class="s">&quot;$gte&quot;</span> <span class="p">:</span> <span class="mi">70</span> <span class="p">}</span> <span class="p">}</span> <span class="p">)</span> <span class="p">;</span>
+</pre></div>
+</div>
+<p><strong>Operators</strong>:</p>
+<ul class="simple">
+<li>$gt / $gte / $lt / $lte</li>
+<li>$ne</li>
+<li>$in / $nin. puede ser usado tanto con números, como cualquier tipo de dato (strings, ...)</li>
+<li>$mod</li>
+<li>$regex/$options,</li>
+<li>$all</li>
+<li>$size. Consulta si el array es del tamaño que pasemos</li>
+<li>$exists. Comprueba si existe un campo</li>
+<li>$type. Comprueba si un campo es de un tipo concreto, hay que usar el número del tipo (BSON).</li>
+<li>$not</li>
+<li>$or / $nor</li>
+<li>$elemMatch,</li>
+<li>$where (try not to use $where !) <strong>Full collection scan</strong>. En breve quedará obsoleto y siempre tendrá valores javascript (aunque estemos desarrollando en otro lenguage)</li>
+</ul>
+<p>In order to query into subdocuments, you must use &#8220;Dot notation&#8221;: <tt class="docutils literal"><span class="pre">db.collection.find(</span> <span class="pre">{</span> <span class="pre">&quot;x.y&quot;</span> <span class="pre">:</span> <span class="pre">10</span> <span class="pre">}</span> <span class="pre">);</span></tt></p>
+<p><strong>Queries and arrays</strong></p>
+<p>Queries that examine arrays will compare each element in the array with the argument to the matching
+predicate. For example, both</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">db</span><span class="o">.</span><span class="n">collection</span><span class="o">.</span><span class="n">find</span><span class="p">(</span> <span class="p">{</span> <span class="s">&quot;x&quot;</span> <span class="p">:</span> <span class="mi">2</span> <span class="p">}</span> <span class="p">)</span> <span class="p">;</span>
+</pre></div>
+</div>
+<p>and</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">db</span><span class="o">.</span><span class="n">collection</span><span class="o">.</span><span class="n">find</span><span class="p">(</span> <span class="p">{</span> <span class="s">&quot;x&quot;</span> <span class="p">:</span> <span class="p">{</span> <span class="s">&quot;$gt&quot;</span> <span class="p">:</span> <span class="mi">4</span> <span class="p">}</span> <span class="p">}</span> <span class="p">)</span> <span class="p">;</span>
+</pre></div>
+</div>
+<p>will match documents where x is the array [ 1, 2, 5 ]. (In the first case, 2 is present in the array; in the
+second case, at least one element of the array is greater than 4.)</p>
+<p><strong>Subset of fields (projections)</strong></p>
+<div class="highlight-python"><div class="highlight"><pre>db.scores.find( {} , { &quot;score&quot; : 1 } ) ; // only includes score and _id
+db.scores.find( {} , { &quot;score&quot; : 0 }) ; // includes everything but score
+</pre></div>
+</div>
+<p><strong>Cursors</strong></p>
+<p>To query MongoDB is to instantiate a cursor. You can also get more control using <tt class="docutils literal"><span class="pre">hasNext()</span></tt>, <tt class="docutils literal"><span class="pre">next()</span></tt> and <tt class="docutils literal"><span class="pre">forEach()</span></tt></p>
+<div class="highlight-python"><div class="highlight"><pre>var cursor = db.scores.find() ;
+while ( cursor.hasNext() ) printjson( cursor.next() ) ;
+db.scores.find().forEach( function(x){ printjson( x ) } ) ;
+db.scores.find().forEach( printjson ) ;
+cursor.forEach // without () prints source
+</pre></div>
+</div>
+<p>With <tt class="docutils literal"><span class="pre">sort()</span></tt>, <tt class="docutils literal"><span class="pre">skip()</span></tt>, and <tt class="docutils literal"><span class="pre">limit()</span></tt> you can control the results of the cursor</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">el cursor tiene un tiempo de vida que suelen ser unos 10 minutos.</p>
+</div>
+</div>
+<div class="section" id="updates">
+<h2>Updates</h2>
+<div class="admonition danger">
+<p class="first admonition-title">Danger</p>
+<p>Without <tt class="docutils literal"><span class="pre">$set</span></tt> operator, full document is replaced</p>
+<pre class="last literal-block">
+db.stuff.update( { &quot;_id&quot; : 123 } , { &quot;hello&quot; : &quot;world&quot; } ) ; // Replace full document
+db.stuff.update( { &quot;_id&quot; : 123 } ,
+        { <strong>&quot;$set&quot;</strong> : { &quot;hello&quot; : &quot;world&quot; } } ) ; // Updates hello attribute
+</pre>
+</div>
+<p><strong>Operators</strong></p>
+<ul class="simple">
+<li>$set</li>
+<li>$unset</li>
+<li>$inc</li>
+<li>$push</li>
+<li>$pushAll</li>
+<li>$pull</li>
+<li>$pullAll</li>
+<li>$pop</li>
+<li>$addToSet</li>
+<li>$rename</li>
+<li>$bit</li>
+<li>$ positional operator</li>
+</ul>
+<p><strong>Upserts and multi-update</strong></p>
+<p><tt class="docutils literal"><span class="pre">upsert</span></tt>: updates or creates if not exists.</p>
+<p>By default, only one document is updated, you must use <tt class="docutils literal"><span class="pre">multi</span></tt> in order to update several documents</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">db</span><span class="o">.</span><span class="n">people</span><span class="o">.</span><span class="n">update</span><span class="p">(</span> <span class="p">{</span> <span class="s">&quot;name&quot;</span> <span class="p">:</span> <span class="s">&quot;Jones&quot;</span> <span class="p">}</span> <span class="p">,</span> <span class="p">{</span> <span class="s">&quot;$set&quot;</span> <span class="p">:</span> <span class="p">{</span> <span class="s">&quot;age&quot;</span> <span class="p">:</span> <span class="mi">50</span> <span class="p">}</span> <span class="p">}</span> <span class="p">,</span> <span class="p">{</span> <span class="s">&quot;upsert&quot;</span> <span class="p">:</span> <span class="n">true</span> <span class="p">}</span> <span class="p">)</span> <span class="p">;</span>
+<span class="n">db</span><span class="o">.</span><span class="n">people</span><span class="o">.</span><span class="n">update</span><span class="p">(</span> <span class="p">{</span> <span class="p">}</span> <span class="p">,</span> <span class="p">{</span> <span class="s">&quot;$set&quot;</span> <span class="p">:</span> <span class="p">{</span> <span class="s">&quot;city&quot;</span> <span class="p">:</span> <span class="s">&quot;NYC&quot;</span> <span class="p">}</span> <span class="p">}</span> <span class="p">,</span> <span class="p">{</span> <span class="s">&quot;multi&quot;</span> <span class="p">:</span> <span class="n">true</span> <span class="p">}</span> <span class="p">)</span> <span class="p">;</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2015, yorsh.
+    </div>
+  </body>
+</html>

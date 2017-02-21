@@ -1,0 +1,56 @@
+\BOOKMARK [0][-]{chapter.1}{Introducci\363n}{}% 1
+\BOOKMARK [0][-]{chapter.2}{Despliegues tipo}{}% 2
+\BOOKMARK [1][-]{section.2.1}{Standalone}{chapter.2}% 3
+\BOOKMARK [1][-]{section.2.2}{Replica Set}{chapter.2}% 4
+\BOOKMARK [1][-]{section.2.3}{Sharded cluster}{chapter.2}% 5
+\BOOKMARK [0][-]{chapter.3}{L\355nea de comandos}{}% 6
+\BOOKMARK [1][-]{section.3.1}{mongod}{chapter.3}% 7
+\BOOKMARK [1][-]{section.3.2}{mongorestore}{chapter.3}% 8
+\BOOKMARK [1][-]{section.3.3}{mongoimport}{chapter.3}% 9
+\BOOKMARK [0][-]{chapter.4}{Documentos}{}% 10
+\BOOKMARK [0][-]{chapter.5}{CRUD - MongoDB Shell}{}% 11
+\BOOKMARK [1][-]{section.5.1}{Inserts}{chapter.5}% 12
+\BOOKMARK [1][-]{section.5.2}{Queries}{chapter.5}% 13
+\BOOKMARK [1][-]{section.5.3}{Updates}{chapter.5}% 14
+\BOOKMARK [0][-]{chapter.6}{Replica Set}{}% 15
+\BOOKMARK [1][-]{section.6.1}{Write concerns}{chapter.6}% 16
+\BOOKMARK [1][-]{section.6.2}{Read Preference modes}{chapter.6}% 17
+\BOOKMARK [1][-]{section.6.3}{Datacenters}{chapter.6}% 18
+\BOOKMARK [1][-]{section.6.4}{Configuraci\363n.}{chapter.6}% 19
+\BOOKMARK [1][-]{section.6.5}{Configuraci\363n r\341pida.}{chapter.6}% 20
+\BOOKMARK [0][-]{chapter.7}{Sharding}{}% 21
+\BOOKMARK [1][-]{section.7.1}{shard key}{chapter.7}% 22
+\BOOKMARK [1][-]{section.7.2}{mongos}{chapter.7}% 23
+\BOOKMARK [1][-]{section.7.3}{config server}{chapter.7}% 24
+\BOOKMARK [1][-]{section.7.4}{Configuraci\363n.}{chapter.7}% 25
+\BOOKMARK [1][-]{section.7.5}{Configuraci\363n r\341pida.}{chapter.7}% 26
+\BOOKMARK [0][-]{chapter.8}{Backups y restauraci\363n}{}% 27
+\BOOKMARK [1][-]{section.8.1}{Backups l\363gico: mongodump/mongorestore.}{chapter.8}% 28
+\BOOKMARK [1][-]{section.8.2}{Backups f\355sicos}{chapter.8}% 29
+\BOOKMARK [0][-]{chapter.9}{Seguridad}{}% 30
+\BOOKMARK [0][-]{chapter.10}{Monitorizaci\363n y rendimiento}{}% 31
+\BOOKMARK [0][-]{chapter.11}{Optimizaci\363n}{}% 32
+\BOOKMARK [1][-]{section.11.1}{Explain}{chapter.11}% 33
+\BOOKMARK [1][-]{section.11.2}{Tipos de indexaciones}{chapter.11}% 34
+\BOOKMARK [1][-]{section.11.3}{\315ndice Simple.}{chapter.11}% 35
+\BOOKMARK [1][-]{section.11.4}{\315ndice Compuesto}{chapter.11}% 36
+\BOOKMARK [1][-]{section.11.5}{\315ndice Multikey}{chapter.11}% 37
+\BOOKMARK [1][-]{section.11.6}{\315ndices TTL}{chapter.11}% 38
+\BOOKMARK [1][-]{section.11.7}{\315ndices TEXT}{chapter.11}% 39
+\BOOKMARK [1][-]{section.11.8}{\315ndices geoespaciales}{chapter.11}% 40
+\BOOKMARK [1][-]{section.11.9}{\315ndices Hash}{chapter.11}% 41
+\BOOKMARK [0][-]{chapter.12}{Desarrollo. Introducci\363n.}{}% 42
+\BOOKMARK [0][-]{chapter.13}{Desarrollo. Driver}{}% 43
+\BOOKMARK [0][-]{chapter.14}{Desarrollo. Dise\361o}{}% 44
+\BOOKMARK [0][-]{chapter.15}{Aggregation Framework}{}% 45
+\BOOKMARK [1][-]{section.15.1}{Operadores}{chapter.15}% 46
+\BOOKMARK [1][-]{section.15.2}{Sharding}{chapter.15}% 47
+\BOOKMARK [1][-]{section.15.3}{MapReduce}{chapter.15}% 48
+\BOOKMARK [0][-]{chapter.16}{Certificaci\363n}{}% 49
+\BOOKMARK [0][-]{chapter.17}{Anexo. Otros recursos}{}% 50
+\BOOKMARK [0][-]{chapter.18}{Anexo. Ejercicios / Ejemplos}{}% 51
+\BOOKMARK [1][-]{section.18.1}{Framework de agregaci\363n}{chapter.18}% 52
+\BOOKMARK [0][-]{chapter.19}{Anexo. Ejemplos de despliegues en la misma m\341quina}{}% 53
+\BOOKMARK [1][-]{section.19.1}{Linea de comandos}{chapter.19}% 54
+\BOOKMARK [1][-]{section.19.2}{YAML}{chapter.19}% 55
+\BOOKMARK [0][-]{chapter.20}{Anexo. Ejemplos de despliegues en cluster}{}% 56

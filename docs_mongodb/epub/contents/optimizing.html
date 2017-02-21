@@ -1,0 +1,454 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Optimización</title>
+    
+    <link rel="stylesheet" href="../_static/epub.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" /> 
+  </head>
+  <body>
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="developmentIntro.html" title="Desarrollo. Introducción."
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="monitor.html" title="Monitorización y rendimiento"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Notas sobre mongoDB doc 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body">
+            
+  <div class="section" id="optimizacion">
+<h1>Optimización</h1>
+<ul class="simple">
+<li>Se pretende optimizar las queries de lectura para alto rendimiento aunque se penalicen las escrituras.</li>
+<li>MongoDB trabaja con estructuras B-Tree para los índices.</li>
+<li>En la parte de sharding, no se pueden modificar los índices. <em>Duda: ¿solo shard key o todos?</em></li>
+<li>Límite de índices por colección: 64</li>
+<li>La ordenación en memoria sin un índice está limitada a 32MB</li>
+<li>En una query solo se puede utilizar 1 índice, salvo en una query con operador $or.<ul>
+<li>En el caso del $or se puede usar un índice por cada una de las clausulas alternativas.</li>
+</ul>
+</li>
+<li>Aunque eliminemos una colección, el índice permacene (está asociado al espacio de nombres: fichero .ns)</li>
+</ul>
+<div class="section" id="explain">
+<h2>Explain</h2>
+<p>Lo ejecutamos para la query:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">db</span><span class="o">.</span><span class="n">users</span><span class="o">.</span><span class="n">find</span><span class="p">()</span><span class="o">.</span><span class="n">explain</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Cuando no existe un índice nos devuelve un <tt class="docutils literal"><span class="pre">BasicCursor</span></tt></p>
+<div class="highlight-python"><div class="highlight"><pre>&gt; db.users.find({age: {$gt: 80}}).explain()
+{ &quot;cursor&quot; : &quot;BasicCursor&quot;,
+  &quot;isMultiKey&quot; : false,
+  &quot;n&quot; : 19101,
+  &quot;nscannedObjects&quot; : 100000,
+  &quot;nscanned&quot; : 100000,
+  &quot;nscannedObjectsAllPlans&quot; : 100000,
+  &quot;nscannedAllPlans&quot; : 100000,
+  &quot;scanAndOrder&quot; : false,
+  &quot;indexOnly&quot; : false,
+  &quot;nYields&quot; : 781,
+  &quot;nChunkSkips&quot; : 0,
+  &quot;millis&quot; : 92,
+  &quot;server&quot; : &quot;mongodbvm:27017&quot;,
+  &quot;filterSet&quot; : false
+}
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<ul class="last simple">
+<li><strong>&#8220;n&#8221; : 19101</strong>. Número de documentos que coinciden con el criterio</li>
+<li><strong>&#8220;nscanned&#8221; : 100000</strong>. Índices y/o documentos leídos</li>
+<li><strong>&#8220;millis&#8221; : 92</strong>.</li>
+<li><strong>&#8220;scanAndOrder&#8221;</strong>. Si está a &#8220;true&#8221; indica que estamos utilizando un índice pero que <strong>NO</strong> nos sirve para ordenar.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="tipos-de-indexaciones">
+<h2>Tipos de indexaciones</h2>
+<ul class="simple">
+<li>Simple (un solo campo)</li>
+<li>Compuesta (varios campos)</li>
+<li>MultiKey (arrays, subdocumentos o arrays de subdocumentos)</li>
+<li>TTL</li>
+<li>Text</li>
+<li>Geo (geoespaciales)</li>
+<li>Hashed Index</li>
+</ul>
+<p>Comandos:</p>
+<div class="highlight-python"><div class="highlight"><pre>//Crear un índice
+&gt; db.users.ensureIndex({age: 1})
+//Con unicidad
+&gt; db.users.ensureIndex({name:1},{unique:1})
+//Elimina los duplicados si existen (dejando el primero)
+&gt; db.users.ensureIndex({name:1},{unique:1, dropDups : 1})
+//Índice disperso (puede o no existir el atributo)
+&gt; db.nums.ensureIndex({z:1},{unique:true, sparse:true})
+//Construye el índice en background
+&gt; db.nums.ensureIndex({z:1},{background:true})
+//Índice TTL
+&gt; db.logs.ensureIndex({creado : 1}, {expireAfterSeconds: 5})
+//Índice de tipo texto
+&gt; db.tweets.ensureIndex({text: &quot;text&quot;})
+//Índice geoespacial (primera versión)
+&gt; db.tweets.ensureIndex({attrib: &quot;2d&quot;})
+//Índice geoespacial (última versión)
+&gt; db.tweets.ensureIndex({attrib: &quot;2dsphere&quot;})
+//Índice por hash
+&gt; db.collection.ensudeIndex( {_id: &quot;hashed&quot;})
+//Para ver los índices existentes
+&gt; db.users.getIndexes()
+//Para borrar un índice
+&gt; db.users.dropIndex(&quot;city_1&quot;)
+//Borra todos los índices de una colección
+&gt; db.tweets.dropIndexes()
+</pre></div>
+</div>
+<p>Cuidado con los índices dispersos y <tt class="docutils literal"><span class="pre">$exists</span></tt>, ya que puede evitar el uso del índice u otros problemas...</p>
+<p>Se podría insertar un z=null que sería un valor a tener en cuenta, pero no se permitiría otra tupla con z=null (por el índice único sobre z)</p>
+<p>Durante la construcción en background podrían existir escrituras en medio, y será mas lento. A partir de la versión 2.6 se puede construir mas de un índice en background al mismo tiempo.</p>
+</div>
+<div class="section" id="indice-simple">
+<h2>Índice Simple.</h2>
+<ul class="simple">
+<li>Indicando campo y orden</li>
+<li>Se crea un índice con punteros fuertes a cada documento</li>
+</ul>
+<div class="highlight-python"><div class="highlight"><pre>&gt; db.users.ensureIndex({age: 1})
+{
+    &quot;createdCollectionAutomatically&quot; : false,
+    &quot;numIndexesBefore&quot; : 1,
+    &quot;numIndexesAfter&quot; : 2,
+    &quot;ok&quot; : 1
+}
+
+&gt; db.users.find({age: {$gt: 80}}).explain()
+{
+    &quot;cursor&quot; : &quot;BtreeCursor age_1&quot;,
+    &quot;isMultiKey&quot; : false,
+    &quot;n&quot; : 19101,
+    &quot;nscannedObjects&quot; : 19101,
+    &quot;nscanned&quot; : 19101,
+    &quot;nscannedObjectsAllPlans&quot; : 19101,
+    &quot;nscannedAllPlans&quot; : 19101,
+    &quot;scanAndOrder&quot; : false,
+    &quot;indexOnly&quot; : false,
+    &quot;nYields&quot; : 149,
+    &quot;nChunkSkips&quot; : 0,
+    &quot;millis&quot; : 81,
+    &quot;indexBounds&quot; : {
+        &quot;age&quot; : [
+            [
+                80,
+                Infinity
+            ]
+        ]
+    },
+    &quot;server&quot; : &quot;mongodbvm:27017&quot;,
+    &quot;filterSet&quot; : false
+}
+
+
+&gt; db.users.ensureIndex({city: 1})
+
+&gt; db.users.find({city: /^B/i}).explain()
+{
+    &quot;cursor&quot; : &quot;BtreeCursor city_1&quot;,
+    &quot;isMultiKey&quot; : false,
+    &quot;n&quot; : 22210,
+    &quot;nscannedObjects&quot; : 22210,
+    &quot;nscanned&quot; : 100000,
+    &quot;nscannedObjectsAllPlans&quot; : 22210,
+    &quot;nscannedAllPlans&quot; : 100000,
+    &quot;scanAndOrder&quot; : false,
+    &quot;indexOnly&quot; : false,
+    &quot;nYields&quot; : 781,
+    &quot;nChunkSkips&quot; : 0,
+    &quot;millis&quot; : 230,
+    &quot;indexBounds&quot; : {
+        &quot;city&quot; : [
+            [
+                &quot;&quot;,
+                {
+
+                }
+            ],
+            [
+                /^B/i,
+                /^B/i
+            ]
+        ]
+    },
+    &quot;server&quot; : &quot;mongodbvm:27017&quot;,
+    &quot;filterSet&quot; : false
+}
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">El índice no funciona porque en este caso se está usando una expresión regular.</p>
+</div>
+<p>Ante varios índices el planificador usa el índice que cree mas conveniente:</p>
+<div class="highlight-python"><div class="highlight"><pre>&gt; db.users.find({city:&quot;Barcelona&quot;,age: {$gt: 80}}).explain()
+{
+    &quot;cursor&quot; : &quot;BtreeCursor city_1&quot;,
+    &quot;isMultiKey&quot; : false,
+    &quot;n&quot; : 2137,
+    &quot;nscannedObjects&quot; : 11192,
+    &quot;nscanned&quot; : 11192,
+    &quot;nscannedObjectsAllPlans&quot; : 11704,
+    &quot;nscannedAllPlans&quot; : 12220,
+    &quot;scanAndOrder&quot; : false,
+    &quot;indexOnly&quot; : false,
+    &quot;nYields&quot; : 95,
+    &quot;nChunkSkips&quot; : 0,
+    &quot;millis&quot; : 48,
+    &quot;indexBounds&quot; : {
+        &quot;city&quot; : [
+            [
+                &quot;Barcelona&quot;,
+                &quot;Barcelona&quot;
+            ]
+        ]
+    },
+    &quot;server&quot; : &quot;mongodbvm:27017&quot;,
+    &quot;filterSet&quot; : false
+}
+</pre></div>
+</div>
+</div>
+<div class="section" id="indice-compuesto">
+<h2>Índice Compuesto</h2>
+<div class="highlight-python"><div class="highlight"><pre>&gt; db.users.ensureIndex({city: 1, age: 1})
+</pre></div>
+</div>
+<p>Si se busca por un campo del índice se puede seguir usando un índice compuesto
+siempre que este sea el primer nivel del índice (el orden importa a la hora de crear los índices compuestos).</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Si se recupera solo la información que está en el índice, es una query muy rápida y se denomina <strong>&#8220;Query Covered&#8221;</strong>. Para esto los campos de la búsqueda y de la proyección deben estar en el índice:</p>
+<div class="last highlight-python"><div class="highlight"><pre>&gt; db.users.find({city:&quot;Barcelona&quot;}, {age:1, _id:0}).explain()
+</pre></div>
+</div>
+</div>
+<p>Podemos añadir mas niveles al índice</p>
+<div class="highlight-python"><div class="highlight"><pre>&gt; db.users.ensureIndex({city: 1, age: 1, name:1}, {name:&quot;byCityAgeAndName&quot;}) //Con nombre
+
+&gt; db.users.find({city: &quot;Barcelona&quot;, name : /9$/}).explain()
+{
+    &quot;cursor&quot; : &quot;BtreeCursor city_1_age_1_name_1&quot;,
+    &quot;isMultiKey&quot; : false,
+    &quot;n&quot; : 1098,
+    &quot;nscannedObjects&quot; : 1098,
+    &quot;nscanned&quot; : 11192,
+    &quot;nscannedObjectsAllPlans&quot; : 3150,
+    &quot;nscannedAllPlans&quot; : 13246,
+    &quot;scanAndOrder&quot; : false,
+    &quot;indexOnly&quot; : false,
+    &quot;nYields&quot; : 103,
+    &quot;nChunkSkips&quot; : 0,
+    &quot;millis&quot; : 77,
+    &quot;indexBounds&quot; : {
+        &quot;city&quot; : [
+            [
+                &quot;Barcelona&quot;,
+                &quot;Barcelona&quot;
+            ]
+        ],
+        &quot;age&quot; : [
+            [
+                {
+                    &quot;$minElement&quot; : 1
+                },
+                {
+                    &quot;$maxElement&quot; : 1
+                }
+            ]
+        ],
+        &quot;name&quot; : [
+            [
+                &quot;&quot;,
+                {
+
+                }
+            ],
+            [
+                /9$/,
+                /9$/
+            ]
+        ]
+    },
+    &quot;server&quot; : &quot;mongodbvm:27017&quot;,
+    &quot;filterSet&quot; : false
+}
+</pre></div>
+</div>
+</div>
+<div class="section" id="indice-multikey">
+<h2>Índice Multikey</h2>
+<p>Cuando se hace sobre un atributo que es un array, un subdocumento o arrays de subdocumentos.</p>
+<p>Se pueden hacer índices multikey combinandolas con &#8220;simple&#8221;, pero es mejor que el primer nivel sea el simple</p>
+<p>Sobre atributos de un subdocumento (no lo toma como un multiKey, pero se categoriza aquí):</p>
+<div class="highlight-python"><div class="highlight"><pre>&gt; db.tweets.ensureIndex({&quot;user.followers_count&quot; : 1, &quot;user.friends_count&quot; : 1})
+
+&gt; db.tweets.find({&quot;user.followers_count&quot; : {$gt : 1000}}).explain()
+{
+    &quot;cursor&quot; : &quot;BtreeCursor user.followers_count_1_user.frinds_count_1&quot;,
+    &quot;isMultiKey&quot; : false,  &lt;----- multikey
+    &quot;n&quot; : 5862,
+    ...
+</pre></div>
+</div>
+</div>
+<div class="section" id="indices-ttl">
+<h2>Índices TTL</h2>
+<p>Estos son los índices con tiempo de vida, como por ejemplo logs rotativos, o almacenamiento de sesiones</p>
+<p>Existen 3 restricciones para este tipo de índices:</p>
+<ul class="simple">
+<li>El campo a indexar tiene que ser un ISODate (obligatorio).</li>
+<li>Tiene que estar en un campo limpio, sin que esté usado en un prefijo de un índice (sin que se use en otro índice).</li>
+<li>No puede ser una clave compuesta.</li>
+</ul>
+<p>Ej.:</p>
+<div class="highlight-python"><div class="highlight"><pre>&gt; use logger
+//No se puede garantizar que sea justo a los 5s
+&gt; db.logs.ensureIndex({creado : 1}, {expireAfterSeconds: 5})
+&gt; db.logs.insert({creado: new Date(),
+        msg: &quot;Prueba 001&quot;, detalles: &quot;Prueba 001&quot;, nivel_log: &quot;FINE&quot;})
+&gt; db.logs.find() // después de 5s desaparece el documento
+</pre></div>
+</div>
+<p>Otra alternativa, expire en 0 y añadiendo la fecha de expiración en el insert:</p>
+<div class="highlight-python"><div class="highlight"><pre>&gt; db.subastas.ensureIndex({fecha_final:1},{expireAfterSeconds: 0})
+&gt; db.subastas.insert({id:90, product: {id: 4, precio: 56.8}, pujas:[],
+        fecha_final: new Date(&quot;20:15:00&quot;)})
+</pre></div>
+</div>
+</div>
+<div class="section" id="indices-text">
+<h2>Índices TEXT</h2>
+<p>Indice sobre textos complejos.</p>
+<p>Como son lentos, es normal montarlos en background. Cuando trabajemos sobre índices TEXT siempre trabajaremos con accesos a disco.</p>
+<p>A la hora de definir un índice, en vez de un &#8220;1&#8221;, estableceremos un &#8220;text&#8221;.</p>
+<div class="highlight-python"><div class="highlight"><pre>&gt; db.tweets.ensureIndex({text: &quot;text&quot;})
+</pre></div>
+</div>
+<p>Para hacer búsquedas sobre texto será el operador $text (tanto en CRUD como en el framework de agregación).</p>
+<div class="highlight-python"><div class="highlight"><pre>&gt; db.tweets.find({$text: {$search: &quot;preciso&quot;}}).explain()
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Siempre es un OR, no existe un Y.</p>
+</div>
+<p><strong>Restricción</strong>: Solo puede existir un único índice de tipo &#8220;texto&#8221;.</p>
+<p>Se puede escoger un idioma o &#8220;none&#8221; (por defecto es el del sistema):</p>
+<div class="highlight-python"><div class="highlight"><pre>&gt; db.tweets.ensureIndex({text: &quot;text&quot;},{default_language: &quot;fr&quot;})
+&gt; db.tweets.ensureIndex({text: &quot;text&quot;},{default_language: &quot;none&quot;})
+
+// Busca con OR
+&gt; db.tweets.find({$text: {$search: &quot;depende de la velocidad&quot;}})
+
+// Busqueda por frase
+&gt; db.tweets.find({$text: {$search: &quot;\&quot;depende de la velocidad\&quot;&quot;}})
+
+// Busqueda por frase AND otro término (Entre frases y palabras AND, entre palabras OR)
+&gt; db.tweets.find({$text: {$search: &quot;\&quot;depende de la velocidad\&quot; cosaDistinta&quot;}})
+
+//Especificando idioma
+&gt; db.tweets.find({$text: {$search: &quot;\&quot;depende de la velocidad\&quot; cosa distinta&quot;,
+        $language: &quot;es&quot;}})
+</pre></div>
+</div>
+</div>
+<div class="section" id="indices-geoespaciales">
+<h2>Índices geoespaciales</h2>
+<p><strong>Tipo &#8220;2d&#8221;</strong>.</p>
+<ul class="simple">
+<li>Plano</li>
+<li>Los primeros en aparecer en Mongo.</li>
+<li>Las coordenadas son sobre 100,100 (si queremos mas valores hay que especificar una opción)</li>
+<li>La estructura a mantener es un array simple donde añadiremos la longitud y la latitudes ([long, latitud])</li>
+<li>Se utiliza como entorno legacy</li>
+</ul>
+<p><strong>Tipo &#8220;2dsphere&#8221;</strong>.</p>
+<ul class="simple">
+<li>El segundo que se añadió y el que se debería utilizar en la mayoría de los casos</li>
+<li>Sigue la especificación de GeoJSON</li>
+<li><a class="reference external" href="http://docs.mongodb.org/manual/tutorial/build-a-2dsphere-index/">http://docs.mongodb.org/manual/tutorial/build-a-2dsphere-index/</a></li>
+<li>La localización es un subdocumento donde se define el tipo geométrico que vamos a tener (&#8220;Point&#8221;, &#8220;Line&#8221;, &#8220;Point[]&#8221;, &#8220;Polygon&#8221;, *  &#8220;Circle&#8221;)<ul>
+<li><tt class="docutils literal"><span class="pre">{loc:</span> <span class="pre">{type</span> <span class="pre">:</span> <span class="pre">&quot;Point&quot;,</span> <span class="pre">coordinates:</span> <span class="pre">[long,</span> <span class="pre">lat]}}</span></tt></li>
+</ul>
+</li>
+</ul>
+<div class="admonition important">
+<p class="first admonition-title">Important</p>
+<p class="last">Con &#8220;2dsphere&#8221; las unidades son en metros, mientras que con &#8220;2d&#8221; son en radianes.</p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre>&gt; db.&lt;collection&gt;.ensureIndex({&lt;location field&gt;:&quot;2d&quot;, &lt;additional field&gt;: &lt;value&gt;}, ...)
+
+&gt; db.&lt;collection&gt;.find( { &lt;location field&gt; :
+        { $geoWithin: {$box|$polygon|$center : &lt;coordinates&gt;}}})
+</pre></div>
+</div>
+<p>Se puede usar $near (en los 2dsphere solo??) como alternativa a $geoWithin (cerca vs dentro de una figura)</p>
+<p>Con $near sale un listado de documentos ordenados por cercanía</p>
+<div class="highlight-python"><div class="highlight"><pre>{
+  $near: {
+     $geometry: {
+        type: &quot;Point&quot; ,
+        coordinates: [ &lt;longitude&gt; , &lt;latitude&gt; ]
+     },
+     $maxDistance: &lt;distance in meters&gt;,
+     $minDistance: &lt;distance in meters&gt;
+  }
+}
+
+&gt; db.tweets.find({coordinates : {$near: {$geometry :
+        {type : &quot;Point&quot;, coordinates : [107.119031, -6.301964] }}}}).count()
+&gt; db.tweets.find({coordinates : {$near: {$geometry :
+        {type : &quot;Point&quot;, coordinates : [107.119031, -6.301964] },
+        $maxDistance : 20000}}}).count() //20km de distincia máxima
+</pre></div>
+</div>
+</div>
+<div class="section" id="indices-hash">
+<h2>Índices Hash</h2>
+<p>Desde la versión 2.4 de MongoDB</p>
+<p>Podemos utilizar el campo que queramos y marcarlo dentro del index como &#8220;hashed&#8221;.</p>
+<p>En vez de trabajar con un documento de texto grande, se trabajaría con un hash para realizar la indexación. Es una buena opción para elegir como clave de shard key en determinadas colecciones.</p>
+<div class="highlight-python"><div class="highlight"><pre>&gt; db.collection.ensudeIndex( {_id: &quot;hashed&quot;})
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2015, yorsh.
+    </div>
+  </body>
+</html>

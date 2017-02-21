@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Desarrollo. Introducción. &mdash; Notas sobre mongoDB doc 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootswatch-3.2.0/united/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'doc 1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
+    <link rel="top" title="Notas sobre mongoDB doc 1.0 documentation" href="../index.html" />
+    <link rel="next" title="Desarrollo. Driver" href="driver.html" />
+    <link rel="prev" title="Optimización" href="optimizing.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head>
+  <body>
+
+  <div id="navbar" class="navbar navbar-inverse navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../index.html">
+          Notas sobre mongoDB</a>
+        <span class="navbar-text navbar-version pull-left"><b>doc 1.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../index.html">Sitio <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introducción</a></li>
+<li class="toctree-l1"><a class="reference internal" href="desplieguesTipo.html">Despliegues tipo</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="desplieguesTipo.html#standalone">Standalone</a></li>
+<li class="toctree-l2"><a class="reference internal" href="desplieguesTipo.html#replica-set">Replica Set</a></li>
+<li class="toctree-l2"><a class="reference internal" href="desplieguesTipo.html#sharded-cluster">Sharded cluster</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="comandos.html">Línea de comandos</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="comandos.html#mongod">mongod</a></li>
+<li class="toctree-l2"><a class="reference internal" href="comandos.html#mongorestore">mongorestore</a></li>
+<li class="toctree-l2"><a class="reference internal" href="comandos.html#mongoimport">mongoimport</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="documents.html">Documentos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="shell.html">CRUD - MongoDB Shell</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="shell.html#inserts">Inserts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="shell.html#queries">Queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="shell.html#updates">Updates</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="replicaSet.html">Replica Set</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="replicaSet.html#write-concerns">Write concerns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="replicaSet.html#read-preference-modes">Read Preference modes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="replicaSet.html#datacenters">Datacenters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="replicaSet.html#configuracion">Configuración.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="replicaSet.html#configuracion-rapida">Configuración rápida.</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="sharding.html">Sharding</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="sharding.html#shard-key">shard key</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sharding.html#mongos">mongos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sharding.html#config-server">config server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sharding.html#configuracion">Configuración.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sharding.html#configuracion-rapida">Configuración rápida.</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="backups.html">Backups y restauración</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="backups.html#backups-logico-mongodump-mongorestore">Backups lógico: mongodump/mongorestore.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="backups.html#backups-fisicos">Backups físicos</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="security.html">Seguridad</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monitor.html">Monitorización y rendimiento</a></li>
+<li class="toctree-l1"><a class="reference internal" href="optimizing.html">Optimización</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#explain">Explain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#tipos-de-indexaciones">Tipos de indexaciones</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#indice-simple">Índice Simple.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#indice-compuesto">Índice Compuesto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#indice-multikey">Índice Multikey</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#indices-ttl">Índices TTL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#indices-text">Índices TEXT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#indices-geoespaciales">Índices geoespaciales</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#indices-hash">Índices Hash</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Desarrollo. Introducción.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="driver.html">Desarrollo. Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="disenho.html">Desarrollo. Diseño</a></li>
+<li class="toctree-l1"><a class="reference internal" href="aggregationFramework.html">Aggregation Framework</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="aggregationFramework.html#operadores">Operadores</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aggregationFramework.html#sharding">Sharding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aggregationFramework.html#mapreduce">MapReduce</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="certificacion.html">Certificación</a></li>
+<li class="toctree-l1"><a class="reference internal" href="recursos.html">Anexo. Otros recursos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ejercicios.html">Anexo. Ejercicios / Ejemplos</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ejercicios.html#framework-de-agregacion">Framework de agregación</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ejemplosDesplieguesLocal.html">Anexo. Ejemplos de despliegues en la misma máquina</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ejemplosDesplieguesLocal.html#linea-de-comandos">Linea de comandos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ejemplosDesplieguesLocal.html#yaml">YAML</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ejemplosDesplieguesCluster.html">Anexo. Ejemplos de despliegues en cluster</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Página <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Desarrollo. Introducción.</a></li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="optimizing.html" title="Previous Chapter: Optimización"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Optimización</span>
+    </a>
+  </li>
+  <li>
+    <a href="driver.html" title="Next Chapter: Desarrollo. Driver"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Desarrollo. Driv... &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      
+  <div class="section" id="desarrollo-introduccion">
+<h1>Desarrollo. Introducción.<a class="headerlink" href="#desarrollo-introduccion" title="Permalink to this headline">¶</a></h1>
+<p>Tanto el diseño como a la hora de trabajar, mongodb es muy dependiente de la aplicación.</p>
+<p>Si no se pone &#8220;_id&#8221; en el insert se genera ObjectId que está compuesto de: timestamp+idMachine+pid+sequencia =&gt; byte</p>
+<p>JSON admite de tipos de datos:</p>
+<ul class="simple">
+<li>double</li>
+<li>string</li>
+<li>array</li>
+<li>sub-docs</li>
+<li>boolean</li>
+<li>null</li>
+</ul>
+<p>Para tener otros tipos de datos usamos BSON, que es mucho mas rico.</p>
+<p>Todo lo que hagamos desde la consola, aunque sea JSON se serealiza en BSON (<a class="reference external" href="http://bsonspec.org">http://bsonspec.org</a>)</p>
+<p>Como &#8220;_id&#8221; también se puede usar un documento:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span><span class="n">_id</span><span class="p">:</span> <span class="p">{</span><span class="n">state</span><span class="p">:</span> <span class="s">&quot; &quot;</span><span class="p">,</span> <span class="n">city</span><span class="p">:</span> <span class="s">&quot; &quot;</span><span class="p">}}</span>
+</pre></div>
+</div>
+<p>Hay que tener en cuenta que en estos casos influyen campos, orden y valor como clave primaria ya que lo que se tienen en cuenta como unicidad es el hash.</p>
+<p>Esto está permitido, siendo 2 documentos distintos:</p>
+<div class="highlight-python"><div class="highlight"><pre>&gt; db.lines.insert({_id: {number: 01, label:&quot;002&quot;} , origen:&quot;or2&quot;, destino:&quot;destino2&quot;})
+&gt; db.lines.insert({_id: {label:&quot;002&quot;, number:01} , origen:&quot;or2&quot;, destino:&quot;destino2&quot;})
+</pre></div>
+</div>
+<p>Se pueden insertar arrays directamente que es mas eficiente que insertar uno por uno</p>
+<div class="highlight-python"><div class="highlight"><pre>&gt; var array = [
+... {number:1, label:&quot;001&quot;},
+... {number:2, label:&quot;002&quot;}
+... ]
+&gt; db.lines.insert(array)
+BulkWriteResult({
+&quot;writeErrors&quot; : [ ],
+&quot;writeConcernErrors&quot; : [ ],
+&quot;nInserted&quot; : 2,
+&quot;nUpserted&quot; : 0,
+&quot;nMatched&quot; : 0,
+&quot;nModified&quot; : 0,
+&quot;nRemoved&quot; : 0,
+&quot;upserted&quot; : [ ]
+})
+</pre></div>
+</div>
+<p>En una lista, si hay un error en las operaciones, como la transaccionalidad es a nivel de documento, pueden quedar una parte de ellos insertada y la otra no.</p>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2015, yorsh.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

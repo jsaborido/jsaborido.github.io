@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Despliegues tipo</title>
+    
+    <link rel="stylesheet" href="../_static/epub.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" /> 
+  </head>
+  <body>
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="comandos.html" title="Línea de comandos"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="intro.html" title="Introducción"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Notas sobre mongoDB doc 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body">
+            
+  <div class="section" id="despliegues-tipo">
+<h1>Despliegues tipo</h1>
+<div class="section" id="standalone">
+<h2>Standalone</h2>
+<p class="graphviz">
+<img src="../_images/graphviz-56fce8410a8ce23b6d99c6365600fd200eb47f9c.png" alt="digraph Standalone {
+    rankdir=LR
+    node[shape=box]
+    &quot;Cliente&quot; -&gt; &quot;Primario&quot;;
+}" />
+</p>
+</div>
+<div class="section" id="replica-set">
+<h2>Replica Set</h2>
+<ul class="simple">
+<li>Máximo 1 primario</li>
+<li>Máximo 11 secundarios</li>
+<li>Escrituras solo en primario</li>
+<li>Se pueden hacer lecturas conectándose a un secundario</li>
+</ul>
+<img alt="../_images/replica-set-read-write-operations-primary.png" src="../_images/replica-set-read-write-operations-primary.png" />
+</div>
+<div class="section" id="sharded-cluster">
+<h2>Sharded cluster</h2>
+<p>A través del config server se sabe a que replicaSet (shard) se puede escribir/leer
+Config servers posibles:</p>
+<ul class="simple">
+<li>1 - Usado para pruebas</li>
+<li>3 - Usado para producción. Provee tolerancia a fallos</li>
+</ul>
+<img alt="../_images/sharded-cluster.png" src="../_images/sharded-cluster.png" />
+</div>
+</div>
+
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2015, yorsh.
+    </div>
+  </body>
+</html>

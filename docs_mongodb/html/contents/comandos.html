@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Línea de comandos &mdash; Notas sobre mongoDB doc 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootswatch-3.2.0/united/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'doc 1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
+    <link rel="top" title="Notas sobre mongoDB doc 1.0 documentation" href="../index.html" />
+    <link rel="next" title="Documentos" href="documents.html" />
+    <link rel="prev" title="Despliegues tipo" href="desplieguesTipo.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head>
+  <body>
+
+  <div id="navbar" class="navbar navbar-inverse navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../index.html">
+          Notas sobre mongoDB</a>
+        <span class="navbar-text navbar-version pull-left"><b>doc 1.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../index.html">Sitio <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introducción</a></li>
+<li class="toctree-l1"><a class="reference internal" href="desplieguesTipo.html">Despliegues tipo</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="desplieguesTipo.html#standalone">Standalone</a></li>
+<li class="toctree-l2"><a class="reference internal" href="desplieguesTipo.html#replica-set">Replica Set</a></li>
+<li class="toctree-l2"><a class="reference internal" href="desplieguesTipo.html#sharded-cluster">Sharded cluster</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Línea de comandos</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#mongod">mongod</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#mongorestore">mongorestore</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#mongoimport">mongoimport</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="documents.html">Documentos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="shell.html">CRUD - MongoDB Shell</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="shell.html#inserts">Inserts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="shell.html#queries">Queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="shell.html#updates">Updates</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="replicaSet.html">Replica Set</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="replicaSet.html#write-concerns">Write concerns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="replicaSet.html#read-preference-modes">Read Preference modes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="replicaSet.html#datacenters">Datacenters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="replicaSet.html#configuracion">Configuración.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="replicaSet.html#configuracion-rapida">Configuración rápida.</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="sharding.html">Sharding</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="sharding.html#shard-key">shard key</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sharding.html#mongos">mongos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sharding.html#config-server">config server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sharding.html#configuracion">Configuración.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sharding.html#configuracion-rapida">Configuración rápida.</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="backups.html">Backups y restauración</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="backups.html#backups-logico-mongodump-mongorestore">Backups lógico: mongodump/mongorestore.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="backups.html#backups-fisicos">Backups físicos</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="security.html">Seguridad</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monitor.html">Monitorización y rendimiento</a></li>
+<li class="toctree-l1"><a class="reference internal" href="optimizing.html">Optimización</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#explain">Explain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#tipos-de-indexaciones">Tipos de indexaciones</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#indice-simple">Índice Simple.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#indice-compuesto">Índice Compuesto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#indice-multikey">Índice Multikey</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#indices-ttl">Índices TTL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#indices-text">Índices TEXT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#indices-geoespaciales">Índices geoespaciales</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#indices-hash">Índices Hash</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="developmentIntro.html">Desarrollo. Introducción.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="driver.html">Desarrollo. Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="disenho.html">Desarrollo. Diseño</a></li>
+<li class="toctree-l1"><a class="reference internal" href="aggregationFramework.html">Aggregation Framework</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="aggregationFramework.html#operadores">Operadores</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aggregationFramework.html#sharding">Sharding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aggregationFramework.html#mapreduce">MapReduce</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="certificacion.html">Certificación</a></li>
+<li class="toctree-l1"><a class="reference internal" href="recursos.html">Anexo. Otros recursos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ejercicios.html">Anexo. Ejercicios / Ejemplos</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ejercicios.html#framework-de-agregacion">Framework de agregación</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ejemplosDesplieguesLocal.html">Anexo. Ejemplos de despliegues en la misma máquina</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ejemplosDesplieguesLocal.html#linea-de-comandos">Linea de comandos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ejemplosDesplieguesLocal.html#yaml">YAML</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ejemplosDesplieguesCluster.html">Anexo. Ejemplos de despliegues en cluster</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Página <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Línea de comandos</a><ul>
+<li><a class="reference internal" href="#mongod">mongod</a></li>
+<li><a class="reference internal" href="#mongorestore">mongorestore</a></li>
+<li><a class="reference internal" href="#mongoimport">mongoimport</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="desplieguesTipo.html" title="Previous Chapter: Despliegues tipo"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Despliegues tipo</span>
+    </a>
+  </li>
+  <li>
+    <a href="documents.html" title="Next Chapter: Documentos"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Documentos &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      
+  <div class="section" id="linea-de-comandos">
+<h1>Línea de comandos<a class="headerlink" href="#linea-de-comandos" title="Permalink to this headline">¶</a></h1>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">mongod:</th><td class="field-body">primary daemon process for the MongoDB system</td>
+</tr>
+<tr class="field-even field"><th class="field-name">mongos:</th><td class="field-body">“MongoDB Shard,” routing service for MongoDB shard configurations</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">mongo:</th><td class="field-body">interactive JavaScript shell interface to MongoDB</td>
+</tr>
+<tr class="field-even field"><th class="field-name">mongodump:</th><td class="field-body">utility for creating a binary export</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">mongorestore:</th><td class="field-body">writes data from a binary database dump created by mongodump to a MongoDB instance</td>
+</tr>
+<tr class="field-even field"><th class="field-name">bsondump:</th><td class="field-body">The bsondump converts BSON files into human-readable formats, including JSON</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">mongooplog:</th><td class="field-body">simple tool that polls operations from the replication oplog of a remote server, and applies them to the local server</td>
+</tr>
+<tr class="field-even field"><th class="field-name">mongoimport:</th><td class="field-body">import content from a JSON, CSV, or TSV export created by mongoexport</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">mongoexport:</th><td class="field-body">produces a JSON or CSV export of data stored in a MongoDB instance</td>
+</tr>
+<tr class="field-even field"><th class="field-name">mongostat:</th><td class="field-body">quick overview of the status of a currently running mongod or mongos instance</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">mongotop:</th><td class="field-body">method to track the amount of time a MongoDB instance spends reading and writing data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">mongosniff:</th><td class="field-body">low-level operation tracing/sniffing view into database activity in real time</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">mongoperf:</th><td class="field-body">check disk I/O performance independently of MongoDB</td>
+</tr>
+<tr class="field-even field"><th class="field-name">mongofiles:</th><td class="field-body">makes it possible to manipulate files stored in your MongoDB instance in GridFS objects from the command line</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="mongod">
+<h2>mongod<a class="headerlink" href="#mongod" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre>[--dbpath]                          default= /data/db, c:\data\db
+[--port]                            default=27017
+[--journal | --nojournal]           active by default on 64 bits
+[--smallfiles]
+[--nssize &lt;MB&gt;]                     max 2GB
+[--noprealloc]
+[--logpath]
+[--logappend]
+[--fork]                            Not supported on windows
+[--config|-f &lt;ASCII configFile&gt;]
+[--replSet &lt;rsName&gt;]
+[--oplogSize &lt;MG&gt;]                  default=5% free space
+[--shardsvr]
+[--configsvr]
+[--auth]
+[--keyFile &lt;path to file&gt;]
+[--syncdelay 45]                    seconds between disk syncs
+[-vvvvv]                            Verbose level
+</pre></div>
+</div>
+<p><strong>Data File Allocation</strong>.</p>
+<p>Each database will have at least two data files, one ending in .ns and the rest in integers starting with 0.</p>
+<p>The .ns file stores metadata about namespaces (collections and indexes). The number of namespaces is
+proportional to the size of the .ns file. Each database can have up to 24,000 namespaces by default, although
+the size of these files, and thus the number of namespaces, can be increased with the <tt class="docutils literal"><span class="pre">--nssize</span></tt> option (up
+to 2GB).</p>
+<p>By default, datafiles start at 64MB and double in size with each additional datafile, up to 2GB. Additionally,
+on some platforms, mongod allocates one more numbered data file than it needs, to improve throughput.
+Thus, it’s possible for allocated size to be much larger than data size. If this presents a problem, you can
+use some combination of server options:</p>
+<div class="highlight-python"><div class="highlight"><pre>--smallfiles    // quarters the sizes of data files
+--noprealloc    // inhibits preallocation of extra files
+</pre></div>
+</div>
+<p><strong>The Lock File</strong></p>
+<p><tt class="docutils literal"><span class="pre">mongod.lock</span></tt> contains PID. When the server shuts down cleanly, it truncates the lock file to length 0.</p>
+<p><strong>Journal Subdirectory</strong></p>
+<p>Activated by default on x86_64 machines. Directory <tt class="docutils literal"><span class="pre">journal</span></tt>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Todos los servidores comparten el mismo journal.</p>
+</div>
+<p><strong>Log Files</strong></p>
+<p>Default: standard output.</p>
+<p><tt class="docutils literal"><span class="pre">--logpath</span> <span class="pre">/var/mongodb/mongodb.log</span> <span class="pre">--logappend</span></tt> allows to write the log into a file.</p>
+<p>The database includes a command to rotate log files:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">db</span><span class="o">.</span><span class="n">adminCommand</span><span class="p">(</span> <span class="p">{</span> <span class="s">&quot;logRotate&quot;</span> <span class="p">:</span> <span class="mi">1</span> <span class="p">}</span> <span class="p">)</span> <span class="p">;</span>
+</pre></div>
+</div>
+<p><strong>Config files</strong></p>
+<p>All of these options can be specified in a config file. Any option that takes an argument is specified as option
+= argument. Options that don’t take arguments are specified as option = true:</p>
+<div class="highlight-python"><div class="highlight"><pre>fork = true
+# vvv = true
+logpath = /var/mongodb/mongodb.log
+</pre></div>
+</div>
+<p>Since mongodb 2.6 version, a new YALM format is introduced. Example:</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span class="l-Scalar-Plain">systemLog</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">destination</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">file</span>
+  <span class="l-Scalar-Plain">path</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">/home/vagrant/mongodata/singledb/db.log</span>
+  <span class="l-Scalar-Plain">logAppend</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
+<span class="l-Scalar-Plain">processManagement</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">fork</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
+<span class="l-Scalar-Plain">net</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">port</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">27017</span>
+  <span class="l-Scalar-Plain">http.enabled</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
+<span class="l-Scalar-Plain">storage</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">dbPath</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">/home/vagrant/mongodata/singledb/db</span>
+  <span class="l-Scalar-Plain">preallocDataFiles</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">false</span>
+  <span class="l-Scalar-Plain">smallFiles</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
+  <span class="l-Scalar-Plain">journal</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">enabled</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
+
+<span class="c1"># Otras secciones no probadas (obtenidas wiki online)</span>
+<span class="l-Scalar-Plain">setParameter</span><span class="p-Indicator">:</span>
+<span class="l-Scalar-Plain">security</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">...</span>
+<span class="l-Scalar-Plain">operationProfiling</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">...</span>
+<span class="l-Scalar-Plain">replication</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">...</span>
+<span class="l-Scalar-Plain">sharding</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">...</span>
+<span class="l-Scalar-Plain">auditLog</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">...</span>
+<span class="l-Scalar-Plain">snmp</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">...</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="mongorestore">
+<h2>mongorestore<a class="headerlink" href="#mongorestore" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre>mongorestore (.exe) -d digg sampledata/dump/digg
+mongorestore (.exe) -d training -c scores sampledata/dump/training/scores.bson
+</pre></div>
+</div>
+</div>
+<div class="section" id="mongoimport">
+<h2>mongoimport<a class="headerlink" href="#mongoimport" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre>mongoimport (.exe) -d twitter -c tweets sampledata/twitter.json
+</pre></div>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2015, yorsh.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

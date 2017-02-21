@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package xmlns="http://www.idpf.org/2007/opf" version="2.0"
+      unique-identifier="unknown">
+  <metadata xmlns:opf="http://www.idpf.org/2007/opf"
+        xmlns:dc="http://purl.org/dc/elements/1.1/">
+    <dc:language>en</dc:language>
+    <dc:title>Notas sobre mongoDB</dc:title>
+    <dc:creator opf:role="aut">yorsh</dc:creator>
+    <dc:publisher>yorsh</dc:publisher>
+    <dc:rights>2015, yorsh</dc:rights>
+    <dc:identifier id="unknown" opf:scheme="unknown">unknown</dc:identifier>
+    <dc:date>2015-01-20</dc:date>
+  </metadata>
+  <manifest>
+    <item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml" />
+    <item id="epub-0"
+          href="genindex.html"
+          media-type="application/xhtml+xml" />
+    <item id="epub-1"
+          href="index.html"
+          media-type="application/xhtml+xml" />
+    <item id="epub-2"
+          href="_static/file.png"
+          media-type="image/png" />
+    <item id="epub-3"
+          href="_static/plus.png"
+          media-type="image/png" />
+    <item id="epub-4"
+          href="_static/up.png"
+          media-type="image/png" />
+    <item id="epub-5"
+          href="_static/epub.css"
+          media-type="text/css" />
+    <item id="epub-6"
+          href="_static/comment.png"
+          media-type="image/png" />
+    <item id="epub-7"
+          href="_static/minus.png"
+          media-type="image/png" />
+    <item id="epub-8"
+          href="_static/pygments.css"
+          media-type="text/css" />
+    <item id="epub-9"
+          href="_static/down-pressed.png"
+          media-type="image/png" />
+    <item id="epub-10"
+          href="_static/basic.css"
+          media-type="text/css" />
+    <item id="epub-11"
+          href="_static/comment-bright.png"
+          media-type="image/png" />
+    <item id="epub-12"
+          href="_static/ajax-loader.gif"
+          media-type="image/gif" />
+    <item id="epub-13"
+          href="_static/comment-close.png"
+          media-type="image/png" />
+    <item id="epub-14"
+          href="_static/down.png"
+          media-type="image/png" />
+    <item id="epub-15"
+          href="_static/up-pressed.png"
+          media-type="image/png" />
+    <item id="epub-16"
+          href="contents/ejercicios.html"
+          media-type="application/xhtml+xml" />
+    <item id="epub-17"
+          href="contents/ejemplosDesplieguesLocal.html"
+          media-type="application/xhtml+xml" />
+    <item id="epub-18"
+          href="contents/aggregationFramework.html"
+          media-type="application/xhtml+xml" />
+    <item id="epub-19"
+          href="contents/ejemplosDesplieguesCluster.html"
+          media-type="application/xhtml+xml" />
+    <item id="epub-20"
+          href="contents/certificacion.html"
+          media-type="application/xhtml+xml" />
+    <item id="epub-21"
+          href="contents/sharding.html"
+          media-type="application/xhtml+xml" />
+    <item id="epub-22"
+          href="contents/shell.html"
+          media-type="application/xhtml+xml" />
+    <item id="epub-23"
+          href="contents/optimizing.html"
+          media-type="application/xhtml+xml" />
+    <item id="epub-24"
+          href="contents/backups.html"
+          media-type="application/xhtml+xml" />
+    <item id="epub-25"
+          href="contents/driver.html"
+          media-type="application/xhtml+xml" />
+    <item id="epub-26"
+          href="contents/comandos.html"
+          media-type="application/xhtml+xml" />
+    <item id="epub-27"
+          href="contents/intro.html"
+          media-type="application/xhtml+xml" />
+    <item id="epub-28"
+          href="contents/desplieguesTipo.html"
+          media-type="application/xhtml+xml" />
+    <item id="epub-29"
+          href="contents/documents.html"
+          media-type="application/xhtml+xml" />
+    <item id="epub-30"
+          href="contents/developmentIntro.html"
+          media-type="application/xhtml+xml" />
+    <item id="epub-31"
+          href="contents/monitor.html"
+          media-type="application/xhtml+xml" />
+    <item id="epub-32"
+          href="contents/replicaSet.html"
+          media-type="application/xhtml+xml" />
+    <item id="epub-33"
+          href="contents/recursos.html"
+          media-type="application/xhtml+xml" />
+    <item id="epub-34"
+          href="contents/security.html"
+          media-type="application/xhtml+xml" />
+    <item id="epub-35"
+          href="contents/disenho.html"
+          media-type="application/xhtml+xml" />
+    <item id="epub-36"
+          href="_images/sharded-cluster.png"
+          media-type="image/png" />
+    <item id="epub-37"
+          href="_images/graphviz-56fce8410a8ce23b6d99c6365600fd200eb47f9c.png"
+          media-type="image/png" />
+    <item id="epub-38"
+          href="_images/replica-set-read-write-operations-primary.png"
+          media-type="image/png" />
+    <item id="epub-39"
+          href="_images/graphviz-7e3673d918e91bd6856d148078d48699ab39ecdb.png"
+          media-type="image/png" />
+    <item id="epub-40"
+          href="_images/aggregationFramework.png"
+          media-type="image/png" />
+  </manifest>
+  <spine toc="ncx">
+    <itemref idref="epub-1" />
+    <itemref idref="epub-27" />
+    <itemref idref="epub-28" />
+    <itemref idref="epub-26" />
+    <itemref idref="epub-29" />
+    <itemref idref="epub-22" />
+    <itemref idref="epub-32" />
+    <itemref idref="epub-21" />
+    <itemref idref="epub-24" />
+    <itemref idref="epub-34" />
+    <itemref idref="epub-31" />
+    <itemref idref="epub-23" />
+    <itemref idref="epub-30" />
+    <itemref idref="epub-25" />
+    <itemref idref="epub-35" />
+    <itemref idref="epub-18" />
+    <itemref idref="epub-20" />
+    <itemref idref="epub-33" />
+    <itemref idref="epub-16" />
+    <itemref idref="epub-17" />
+    <itemref idref="epub-19" />
+    <itemref idref="epub-0" />
+  </spine>
+  <guide>
+    <reference type="toc" title="Table of Contents" href="index.html" />
+  </guide>
+</package>

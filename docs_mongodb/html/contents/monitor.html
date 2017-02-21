@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Monitorización y rendimiento &mdash; Notas sobre mongoDB doc 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootswatch-3.2.0/united/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'doc 1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
+    <link rel="top" title="Notas sobre mongoDB doc 1.0 documentation" href="../index.html" />
+    <link rel="next" title="Optimización" href="optimizing.html" />
+    <link rel="prev" title="Seguridad" href="security.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head>
+  <body>
+
+  <div id="navbar" class="navbar navbar-inverse navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../index.html">
+          Notas sobre mongoDB</a>
+        <span class="navbar-text navbar-version pull-left"><b>doc 1.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../index.html">Sitio <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introducción</a></li>
+<li class="toctree-l1"><a class="reference internal" href="desplieguesTipo.html">Despliegues tipo</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="desplieguesTipo.html#standalone">Standalone</a></li>
+<li class="toctree-l2"><a class="reference internal" href="desplieguesTipo.html#replica-set">Replica Set</a></li>
+<li class="toctree-l2"><a class="reference internal" href="desplieguesTipo.html#sharded-cluster">Sharded cluster</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="comandos.html">Línea de comandos</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="comandos.html#mongod">mongod</a></li>
+<li class="toctree-l2"><a class="reference internal" href="comandos.html#mongorestore">mongorestore</a></li>
+<li class="toctree-l2"><a class="reference internal" href="comandos.html#mongoimport">mongoimport</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="documents.html">Documentos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="shell.html">CRUD - MongoDB Shell</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="shell.html#inserts">Inserts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="shell.html#queries">Queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="shell.html#updates">Updates</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="replicaSet.html">Replica Set</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="replicaSet.html#write-concerns">Write concerns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="replicaSet.html#read-preference-modes">Read Preference modes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="replicaSet.html#datacenters">Datacenters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="replicaSet.html#configuracion">Configuración.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="replicaSet.html#configuracion-rapida">Configuración rápida.</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="sharding.html">Sharding</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="sharding.html#shard-key">shard key</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sharding.html#mongos">mongos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sharding.html#config-server">config server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sharding.html#configuracion">Configuración.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sharding.html#configuracion-rapida">Configuración rápida.</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="backups.html">Backups y restauración</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="backups.html#backups-logico-mongodump-mongorestore">Backups lógico: mongodump/mongorestore.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="backups.html#backups-fisicos">Backups físicos</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="security.html">Seguridad</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Monitorización y rendimiento</a></li>
+<li class="toctree-l1"><a class="reference internal" href="optimizing.html">Optimización</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#explain">Explain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#tipos-de-indexaciones">Tipos de indexaciones</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#indice-simple">Índice Simple.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#indice-compuesto">Índice Compuesto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#indice-multikey">Índice Multikey</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#indices-ttl">Índices TTL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#indices-text">Índices TEXT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#indices-geoespaciales">Índices geoespaciales</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#indices-hash">Índices Hash</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="developmentIntro.html">Desarrollo. Introducción.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="driver.html">Desarrollo. Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="disenho.html">Desarrollo. Diseño</a></li>
+<li class="toctree-l1"><a class="reference internal" href="aggregationFramework.html">Aggregation Framework</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="aggregationFramework.html#operadores">Operadores</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aggregationFramework.html#sharding">Sharding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aggregationFramework.html#mapreduce">MapReduce</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="certificacion.html">Certificación</a></li>
+<li class="toctree-l1"><a class="reference internal" href="recursos.html">Anexo. Otros recursos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ejercicios.html">Anexo. Ejercicios / Ejemplos</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ejercicios.html#framework-de-agregacion">Framework de agregación</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ejemplosDesplieguesLocal.html">Anexo. Ejemplos de despliegues en la misma máquina</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ejemplosDesplieguesLocal.html#linea-de-comandos">Linea de comandos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ejemplosDesplieguesLocal.html#yaml">YAML</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ejemplosDesplieguesCluster.html">Anexo. Ejemplos de despliegues en cluster</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Página <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Monitorización y rendimiento</a></li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="security.html" title="Previous Chapter: Seguridad"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Seguridad</span>
+    </a>
+  </li>
+  <li>
+    <a href="optimizing.html" title="Next Chapter: Optimización"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Optimización &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      
+  <div class="section" id="monitorizacion-y-rendimiento">
+<h1>Monitorización y rendimiento<a class="headerlink" href="#monitorizacion-y-rendimiento" title="Permalink to this headline">¶</a></h1>
+<p><strong>mongostat</strong></p>
+<ul class="simple">
+<li>opcounters</li>
+<li>resident memory size</li>
+<li>page faults (cuando no lo encuentra en memoria y pasa a buscarlo a disco) Tener pocos es normal, tener muchos no es bueno, puede indicar que el working set no coje en memoria.</li>
+<li>Porcentaje de bloqueos y número de operaciones esperando en colas de escritura/lectura (ar/qr)</li>
+<li>(Mirar en la documentación de mongo online para ver una descripción de todos los campos)</li>
+</ul>
+<p><strong>mongotop</strong></p>
+<p><strong>db.currentOp(true)</strong>. Me enseña las operaciones actuales.</p>
+<p><strong>db.killOp(op_id)</strong>. Para matar una operación que no está bloqueando o tardando demasiado.</p>
+<p><strong>db.serverStatus()</strong>. Estado general del servidor, información del flush (veces, tiempo que tarda de media, tiempo del último), número de conexiones, información del journal</p>
+<p><strong>db.stats()</strong></p>
+<p><strong>db.&lt;collection&gt;.stats()</strong></p>
+<p><strong>Database profiling</strong></p>
+<p><tt class="docutils literal"><span class="pre">db.setProfilingLevel()</span></tt>. Permite establecer estadísticas de las queries que está ejecutando. Por defecto tiene level 0 (no está activado). level 1 -&gt; queries lentas. level 2 -&gt; todas las queries</p>
+<p>Por defecto una query se considera lenta si tarda mas de 100ms.</p>
+<p><tt class="docutils literal"><span class="pre">db.setProfilingLevel(2,</span> <span class="pre">-1)</span></tt>. Con -1 para que muestre todas las queries, 0 puede dejar queries sin mostrar por los redondeos.</p>
+<p>Esto crea una colleción llamada <tt class="docutils literal"><span class="pre">system.profile</span></tt> en la base de datos local (no se soporta sobre un sharding)</p>
+<p>Tendrá una sobrecarga de acceso a disco, por lo que no es normal activarlo siempre, o como mucho las queries lentas. Dejando activado todo solo en temas de log</p>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2015, yorsh.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>CRUD - MongoDB Shell &mdash; Notas sobre mongoDB doc 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootswatch-3.2.0/united/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'doc 1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
+    <link rel="top" title="Notas sobre mongoDB doc 1.0 documentation" href="../index.html" />
+    <link rel="next" title="Replica Set" href="replicaSet.html" />
+    <link rel="prev" title="Documentos" href="documents.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head>
+  <body>
+
+  <div id="navbar" class="navbar navbar-inverse navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../index.html">
+          Notas sobre mongoDB</a>
+        <span class="navbar-text navbar-version pull-left"><b>doc 1.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../index.html">Sitio <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introducción</a></li>
+<li class="toctree-l1"><a class="reference internal" href="desplieguesTipo.html">Despliegues tipo</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="desplieguesTipo.html#standalone">Standalone</a></li>
+<li class="toctree-l2"><a class="reference internal" href="desplieguesTipo.html#replica-set">Replica Set</a></li>
+<li class="toctree-l2"><a class="reference internal" href="desplieguesTipo.html#sharded-cluster">Sharded cluster</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="comandos.html">Línea de comandos</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="comandos.html#mongod">mongod</a></li>
+<li class="toctree-l2"><a class="reference internal" href="comandos.html#mongorestore">mongorestore</a></li>
+<li class="toctree-l2"><a class="reference internal" href="comandos.html#mongoimport">mongoimport</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="documents.html">Documentos</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">CRUD - MongoDB Shell</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#inserts">Inserts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#queries">Queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#updates">Updates</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="replicaSet.html">Replica Set</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="replicaSet.html#write-concerns">Write concerns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="replicaSet.html#read-preference-modes">Read Preference modes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="replicaSet.html#datacenters">Datacenters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="replicaSet.html#configuracion">Configuración.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="replicaSet.html#configuracion-rapida">Configuración rápida.</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="sharding.html">Sharding</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="sharding.html#shard-key">shard key</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sharding.html#mongos">mongos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sharding.html#config-server">config server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sharding.html#configuracion">Configuración.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sharding.html#configuracion-rapida">Configuración rápida.</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="backups.html">Backups y restauración</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="backups.html#backups-logico-mongodump-mongorestore">Backups lógico: mongodump/mongorestore.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="backups.html#backups-fisicos">Backups físicos</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="security.html">Seguridad</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monitor.html">Monitorización y rendimiento</a></li>
+<li class="toctree-l1"><a class="reference internal" href="optimizing.html">Optimización</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#explain">Explain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#tipos-de-indexaciones">Tipos de indexaciones</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#indice-simple">Índice Simple.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#indice-compuesto">Índice Compuesto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#indice-multikey">Índice Multikey</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#indices-ttl">Índices TTL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#indices-text">Índices TEXT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#indices-geoespaciales">Índices geoespaciales</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#indices-hash">Índices Hash</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="developmentIntro.html">Desarrollo. Introducción.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="driver.html">Desarrollo. Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="disenho.html">Desarrollo. Diseño</a></li>
+<li class="toctree-l1"><a class="reference internal" href="aggregationFramework.html">Aggregation Framework</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="aggregationFramework.html#operadores">Operadores</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aggregationFramework.html#sharding">Sharding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aggregationFramework.html#mapreduce">MapReduce</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="certificacion.html">Certificación</a></li>
+<li class="toctree-l1"><a class="reference internal" href="recursos.html">Anexo. Otros recursos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ejercicios.html">Anexo. Ejercicios / Ejemplos</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ejercicios.html#framework-de-agregacion">Framework de agregación</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ejemplosDesplieguesLocal.html">Anexo. Ejemplos de despliegues en la misma máquina</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ejemplosDesplieguesLocal.html#linea-de-comandos">Linea de comandos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ejemplosDesplieguesLocal.html#yaml">YAML</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ejemplosDesplieguesCluster.html">Anexo. Ejemplos de despliegues en cluster</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Página <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">CRUD - MongoDB Shell</a><ul>
+<li><a class="reference internal" href="#inserts">Inserts</a></li>
+<li><a class="reference internal" href="#queries">Queries</a></li>
+<li><a class="reference internal" href="#updates">Updates</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="documents.html" title="Previous Chapter: Documentos"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Documentos</span>
+    </a>
+  </li>
+  <li>
+    <a href="replicaSet.html" title="Next Chapter: Replica Set"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Replica Set &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      
+  <div class="section" id="crud-mongodb-shell">
+<h1>CRUD - MongoDB Shell<a class="headerlink" href="#crud-mongodb-shell" title="Permalink to this headline">¶</a></h1>
+<p>Se accede con el comando <tt class="docutils literal"><span class="pre">mongo</span></tt>.</p>
+<p>La base de datos por defecto es <tt class="docutils literal"><span class="pre">test</span></tt>.</p>
+<p>Si se pasa la función sin paréntisis, el shell pinta la definición. Ej.: <tt class="docutils literal"><span class="pre">db.startup_log.findOne</span></tt></p>
+<p>Ejemplos comandos básicos:</p>
+<div class="highlight-python"><div class="highlight"><pre>show dbs | db.adminCommand({&quot;listDatabases&quot;: 1})
+use &lt;dbname&gt;
+show collections | show tables | db.getCollectionNames()
+db.&lt;col&gt;.findOne()
+db.&lt;col&gt;.find()
+db.&lt;col&gt;.insert(&lt;jsonObject&gt;)
+</pre></div>
+</div>
+<p><strong>Document Data Types</strong></p>
+<p>It’s sometimes useful to see the size of an object in BSON. You can do that like so</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">Object</span><span class="o">.</span><span class="n">bsonsize</span><span class="p">(</span> <span class="p">{</span> <span class="s">&quot;user.name&quot;</span> <span class="p">:</span> <span class="s">&quot;Emma Smith&quot;</span> <span class="p">}</span> <span class="p">)</span> <span class="p">;</span>
+<span class="n">Object</span><span class="o">.</span><span class="n">bsonsize</span><span class="p">(</span> <span class="n">db</span><span class="o">.</span><span class="n">tweets</span><span class="o">.</span><span class="n">findOne</span><span class="p">(</span> <span class="p">{</span> <span class="s">&quot;user.name&quot;</span> <span class="p">:</span> <span class="s">&quot;Emma Smith&quot;</span> <span class="p">}</span> <span class="p">)</span> <span class="p">)</span> <span class="p">;</span>
+</pre></div>
+</div>
+<p>You can also query objects by BSON type. Here’s how to find all stories where href is a string.</p>
+<div class="highlight-python"><div class="highlight"><pre>use digg
+db.stories.find( { &quot;href&quot; : { &quot;$type&quot; : 2 } } ) ;
+</pre></div>
+</div>
+<p>Cargar desde un fichero:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">load</span><span class="p">(</span><span class="s">&quot;testIndex.js&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="inserts">
+<h2>Inserts<a class="headerlink" href="#inserts" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">db</span><span class="o">.</span><span class="n">people</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span> <span class="p">{</span> <span class="s">&quot;name&quot;</span> <span class="p">:</span> <span class="s">&quot;Smith&quot;</span><span class="p">,</span> <span class="s">&quot;age&quot;</span><span class="p">:</span> <span class="mi">30</span> <span class="p">}</span> <span class="p">)</span> <span class="p">;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="queries">
+<h2>Queries<a class="headerlink" href="#queries" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">db</span><span class="o">.</span><span class="n">scores</span><span class="o">.</span><span class="n">find</span><span class="p">(</span> <span class="p">{</span> <span class="s">&quot;score&quot;</span> <span class="p">:</span> <span class="p">{</span> <span class="s">&quot;$gte&quot;</span> <span class="p">:</span> <span class="mi">70</span> <span class="p">}</span> <span class="p">}</span> <span class="p">)</span> <span class="p">;</span>
+</pre></div>
+</div>
+<p><strong>Operators</strong>:</p>
+<ul class="simple">
+<li>$gt / $gte / $lt / $lte</li>
+<li>$ne</li>
+<li>$in / $nin. puede ser usado tanto con números, como cualquier tipo de dato (strings, ...)</li>
+<li>$mod</li>
+<li>$regex/$options,</li>
+<li>$all</li>
+<li>$size. Consulta si el array es del tamaño que pasemos</li>
+<li>$exists. Comprueba si existe un campo</li>
+<li>$type. Comprueba si un campo es de un tipo concreto, hay que usar el número del tipo (BSON).</li>
+<li>$not</li>
+<li>$or / $nor</li>
+<li>$elemMatch,</li>
+<li>$where (try not to use $where !) <strong>Full collection scan</strong>. En breve quedará obsoleto y siempre tendrá valores javascript (aunque estemos desarrollando en otro lenguage)</li>
+</ul>
+<p>In order to query into subdocuments, you must use &#8220;Dot notation&#8221;: <tt class="docutils literal"><span class="pre">db.collection.find(</span> <span class="pre">{</span> <span class="pre">&quot;x.y&quot;</span> <span class="pre">:</span> <span class="pre">10</span> <span class="pre">}</span> <span class="pre">);</span></tt></p>
+<p><strong>Queries and arrays</strong></p>
+<p>Queries that examine arrays will compare each element in the array with the argument to the matching
+predicate. For example, both</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">db</span><span class="o">.</span><span class="n">collection</span><span class="o">.</span><span class="n">find</span><span class="p">(</span> <span class="p">{</span> <span class="s">&quot;x&quot;</span> <span class="p">:</span> <span class="mi">2</span> <span class="p">}</span> <span class="p">)</span> <span class="p">;</span>
+</pre></div>
+</div>
+<p>and</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">db</span><span class="o">.</span><span class="n">collection</span><span class="o">.</span><span class="n">find</span><span class="p">(</span> <span class="p">{</span> <span class="s">&quot;x&quot;</span> <span class="p">:</span> <span class="p">{</span> <span class="s">&quot;$gt&quot;</span> <span class="p">:</span> <span class="mi">4</span> <span class="p">}</span> <span class="p">}</span> <span class="p">)</span> <span class="p">;</span>
+</pre></div>
+</div>
+<p>will match documents where x is the array [ 1, 2, 5 ]. (In the first case, 2 is present in the array; in the
+second case, at least one element of the array is greater than 4.)</p>
+<p><strong>Subset of fields (projections)</strong></p>
+<div class="highlight-python"><div class="highlight"><pre>db.scores.find( {} , { &quot;score&quot; : 1 } ) ; // only includes score and _id
+db.scores.find( {} , { &quot;score&quot; : 0 }) ; // includes everything but score
+</pre></div>
+</div>
+<p><strong>Cursors</strong></p>
+<p>To query MongoDB is to instantiate a cursor. You can also get more control using <tt class="docutils literal"><span class="pre">hasNext()</span></tt>, <tt class="docutils literal"><span class="pre">next()</span></tt> and <tt class="docutils literal"><span class="pre">forEach()</span></tt></p>
+<div class="highlight-python"><div class="highlight"><pre>var cursor = db.scores.find() ;
+while ( cursor.hasNext() ) printjson( cursor.next() ) ;
+db.scores.find().forEach( function(x){ printjson( x ) } ) ;
+db.scores.find().forEach( printjson ) ;
+cursor.forEach // without () prints source
+</pre></div>
+</div>
+<p>With <tt class="docutils literal"><span class="pre">sort()</span></tt>, <tt class="docutils literal"><span class="pre">skip()</span></tt>, and <tt class="docutils literal"><span class="pre">limit()</span></tt> you can control the results of the cursor</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">el cursor tiene un tiempo de vida que suelen ser unos 10 minutos.</p>
+</div>
+</div>
+<div class="section" id="updates">
+<h2>Updates<a class="headerlink" href="#updates" title="Permalink to this headline">¶</a></h2>
+<div class="admonition danger">
+<p class="first admonition-title">Danger</p>
+<p>Without <tt class="docutils literal"><span class="pre">$set</span></tt> operator, full document is replaced</p>
+<pre class="last literal-block">
+db.stuff.update( { &quot;_id&quot; : 123 } , { &quot;hello&quot; : &quot;world&quot; } ) ; // Replace full document
+db.stuff.update( { &quot;_id&quot; : 123 } ,
+        { <strong>&quot;$set&quot;</strong> : { &quot;hello&quot; : &quot;world&quot; } } ) ; // Updates hello attribute
+</pre>
+</div>
+<p><strong>Operators</strong></p>
+<ul class="simple">
+<li>$set</li>
+<li>$unset</li>
+<li>$inc</li>
+<li>$push</li>
+<li>$pushAll</li>
+<li>$pull</li>
+<li>$pullAll</li>
+<li>$pop</li>
+<li>$addToSet</li>
+<li>$rename</li>
+<li>$bit</li>
+<li>$ positional operator</li>
+</ul>
+<p><strong>Upserts and multi-update</strong></p>
+<p><tt class="docutils literal"><span class="pre">upsert</span></tt>: updates or creates if not exists.</p>
+<p>By default, only one document is updated, you must use <tt class="docutils literal"><span class="pre">multi</span></tt> in order to update several documents</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">db</span><span class="o">.</span><span class="n">people</span><span class="o">.</span><span class="n">update</span><span class="p">(</span> <span class="p">{</span> <span class="s">&quot;name&quot;</span> <span class="p">:</span> <span class="s">&quot;Jones&quot;</span> <span class="p">}</span> <span class="p">,</span> <span class="p">{</span> <span class="s">&quot;$set&quot;</span> <span class="p">:</span> <span class="p">{</span> <span class="s">&quot;age&quot;</span> <span class="p">:</span> <span class="mi">50</span> <span class="p">}</span> <span class="p">}</span> <span class="p">,</span> <span class="p">{</span> <span class="s">&quot;upsert&quot;</span> <span class="p">:</span> <span class="n">true</span> <span class="p">}</span> <span class="p">)</span> <span class="p">;</span>
+<span class="n">db</span><span class="o">.</span><span class="n">people</span><span class="o">.</span><span class="n">update</span><span class="p">(</span> <span class="p">{</span> <span class="p">}</span> <span class="p">,</span> <span class="p">{</span> <span class="s">&quot;$set&quot;</span> <span class="p">:</span> <span class="p">{</span> <span class="s">&quot;city&quot;</span> <span class="p">:</span> <span class="s">&quot;NYC&quot;</span> <span class="p">}</span> <span class="p">}</span> <span class="p">,</span> <span class="p">{</span> <span class="s">&quot;multi&quot;</span> <span class="p">:</span> <span class="n">true</span> <span class="p">}</span> <span class="p">)</span> <span class="p">;</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2015, yorsh.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

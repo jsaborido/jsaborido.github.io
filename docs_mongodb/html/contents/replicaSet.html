@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Replica Set &mdash; Notas sobre mongoDB doc 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootswatch-3.2.0/united/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'doc 1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
+    <link rel="top" title="Notas sobre mongoDB doc 1.0 documentation" href="../index.html" />
+    <link rel="next" title="Sharding" href="sharding.html" />
+    <link rel="prev" title="CRUD - MongoDB Shell" href="shell.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head>
+  <body>
+
+  <div id="navbar" class="navbar navbar-inverse navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../index.html">
+          Notas sobre mongoDB</a>
+        <span class="navbar-text navbar-version pull-left"><b>doc 1.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../index.html">Sitio <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introducción</a></li>
+<li class="toctree-l1"><a class="reference internal" href="desplieguesTipo.html">Despliegues tipo</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="desplieguesTipo.html#standalone">Standalone</a></li>
+<li class="toctree-l2"><a class="reference internal" href="desplieguesTipo.html#replica-set">Replica Set</a></li>
+<li class="toctree-l2"><a class="reference internal" href="desplieguesTipo.html#sharded-cluster">Sharded cluster</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="comandos.html">Línea de comandos</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="comandos.html#mongod">mongod</a></li>
+<li class="toctree-l2"><a class="reference internal" href="comandos.html#mongorestore">mongorestore</a></li>
+<li class="toctree-l2"><a class="reference internal" href="comandos.html#mongoimport">mongoimport</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="documents.html">Documentos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="shell.html">CRUD - MongoDB Shell</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="shell.html#inserts">Inserts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="shell.html#queries">Queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="shell.html#updates">Updates</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Replica Set</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#write-concerns">Write concerns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#read-preference-modes">Read Preference modes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#datacenters">Datacenters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#configuracion">Configuración.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#configuracion-rapida">Configuración rápida.</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="sharding.html">Sharding</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="sharding.html#shard-key">shard key</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sharding.html#mongos">mongos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sharding.html#config-server">config server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sharding.html#configuracion">Configuración.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sharding.html#configuracion-rapida">Configuración rápida.</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="backups.html">Backups y restauración</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="backups.html#backups-logico-mongodump-mongorestore">Backups lógico: mongodump/mongorestore.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="backups.html#backups-fisicos">Backups físicos</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="security.html">Seguridad</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monitor.html">Monitorización y rendimiento</a></li>
+<li class="toctree-l1"><a class="reference internal" href="optimizing.html">Optimización</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#explain">Explain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#tipos-de-indexaciones">Tipos de indexaciones</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#indice-simple">Índice Simple.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#indice-compuesto">Índice Compuesto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#indice-multikey">Índice Multikey</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#indices-ttl">Índices TTL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#indices-text">Índices TEXT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#indices-geoespaciales">Índices geoespaciales</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#indices-hash">Índices Hash</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="developmentIntro.html">Desarrollo. Introducción.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="driver.html">Desarrollo. Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="disenho.html">Desarrollo. Diseño</a></li>
+<li class="toctree-l1"><a class="reference internal" href="aggregationFramework.html">Aggregation Framework</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="aggregationFramework.html#operadores">Operadores</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aggregationFramework.html#sharding">Sharding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aggregationFramework.html#mapreduce">MapReduce</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="certificacion.html">Certificación</a></li>
+<li class="toctree-l1"><a class="reference internal" href="recursos.html">Anexo. Otros recursos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ejercicios.html">Anexo. Ejercicios / Ejemplos</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ejercicios.html#framework-de-agregacion">Framework de agregación</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ejemplosDesplieguesLocal.html">Anexo. Ejemplos de despliegues en la misma máquina</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ejemplosDesplieguesLocal.html#linea-de-comandos">Linea de comandos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ejemplosDesplieguesLocal.html#yaml">YAML</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ejemplosDesplieguesCluster.html">Anexo. Ejemplos de despliegues en cluster</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Página <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Replica Set</a><ul>
+<li><a class="reference internal" href="#write-concerns">Write concerns</a></li>
+<li><a class="reference internal" href="#read-preference-modes">Read Preference modes</a></li>
+<li><a class="reference internal" href="#datacenters">Datacenters</a></li>
+<li><a class="reference internal" href="#configuracion">Configuración.</a></li>
+<li><a class="reference internal" href="#configuracion-rapida">Configuración rápida.</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="shell.html" title="Previous Chapter: CRUD - MongoDB Shell"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; CRUD - MongoDB S...</span>
+    </a>
+  </li>
+  <li>
+    <a href="sharding.html" title="Next Chapter: Sharding"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Sharding &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      
+  <div class="section" id="replica-set">
+<h1>Replica Set<a class="headerlink" href="#replica-set" title="Permalink to this headline">¶</a></h1>
+<p><strong>Sistema de votos para la elección de primarios</strong>:</p>
+<ul class="simple">
+<li>Para que un nodo pase a primario tiene que obtener la mayoría de votos (mayor que la mitad)</li>
+<li>Mínimo 3 nodos para poder tener recuperación automática. Sino no se puede decidir un nuevo primario.</li>
+<li><strong>Árbitro</strong>: es un nodo secundario sin almacenamiento y solo usado para las votaciones.</li>
+<li>Un secundario puede tener <strong>derecho de veto</strong>. Cuando un secundatio tiene una fecha de actualización mayor.</li>
+<li>Máximo número de nodos que pueden votar: 7<ul>
+<li>Un nodo que no puede votar, si puede poner 1 veto.</li>
+</ul>
+</li>
+<li>Los secundarios tienen prioridad, por defecto = 1.</li>
+</ul>
+<p><strong>Oplog.rs</strong></p>
+<p>En los nodos del replica set, existirá la colección <tt class="docutils literal"><span class="pre">oplog.rs</span></tt> dentro de la base de datos <tt class="docutils literal"><span class="pre">local</span></tt>.
+Esta colección se crea con las escrituras en el primario y se envía a los secundarios.</p>
+<p>Es una colección de tamaño máximo donde se almacenan las operaciones de una forma idempotente.</p>
+<p><strong>Lecturas en secundarios</strong></p>
+<p>Hacer lecturas en los secundarios puede ser una buena idea si estamos haciendo operaciones pesadas y no nos importa que los datos no sean justo los últimos.</p>
+<p>Al conectarse a un secundario con el comando &#8220;mongo&#8221;, no nos permite lecturas por defecto, para habilitarlas debemos ejecutar:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">rs</span><span class="o">.</span><span class="n">slaveOk</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><strong>Mantenimientos y upgrades</strong>.</p>
+<p>Para mantenimientos de los servidores y actualizaciones del software, primero se deberían hacer en los secundarios.</p>
+<div class="section" id="write-concerns">
+<h2>Write concerns<a class="headerlink" href="#write-concerns" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><strong>w:0</strong>. Mando y espero solo el ack de la red</li>
+<li><strong>w:1</strong>. <em>Valor por defecto</em> en standalone y primarios de replica set. Cuando la escritura ha sido hecha en la memoria del servidor, aunque no en disco ni replicada.</li>
+<li><strong>w:n (siendo n&gt;1)</strong>. Cuando se ha confirmado en n nodos (primario y n-1 secundarios).</li>
+<li><strong>w:&#8221;majority&#8221;</strong>. Cuando se ha confirmado en la mayoría de los miembros del replica set.</li>
+<li><strong>w:&lt;tag set&gt;</strong>. Cuando se ha confirmado en los nodos configurados con el tag dado.</li>
+<li><strong>j:true</strong>. Espera a la escritura en el journal para devolver la confirmación.</li>
+<li><strong>wtimeout:&lt;ms&gt;</strong>. Timeout en milisegundos que se espera para confirmación de secundarios. Solo tiene sentido con w&gt;1.</li>
+</ul>
+</div>
+<div class="section" id="read-preference-modes">
+<h2>Read Preference modes<a class="headerlink" href="#read-preference-modes" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><strong>primary</strong>. Valor por defecto. Siempre se lee en el primario</li>
+<li><strong>primaryPrefered</strong>. Siempre en el primario a no ser que no esté disponible, en este caso se permiten secundarios.</li>
+<li><strong>secondary</strong>. Solo se lee de secundarios.</li>
+<li><strong>secondaryPrefered</strong>. Se lee de secundarios a no ser que ninguno esté disponible.</li>
+<li><strong>nearest</strong>. Lee del mas cercano (nodo con menos latencia en la red) sea primario o secundario.</li>
+</ul>
+</div>
+<div class="section" id="datacenters">
+<h2>Datacenters<a class="headerlink" href="#datacenters" title="Permalink to this headline">¶</a></h2>
+<p>Como ya se ha dicho, para auto-recuperación de un replica set necesitamos al menos 3 nodos (si hay solo 2 y se cae el primario, el secundario no tiene votos suficientes para pasar a primario). Repartiendo los nodos en datacenters:</p>
+<p class="graphviz">
+<img src="../_images/graphviz-7e3673d918e91bd6856d148078d48699ab39ecdb.png" alt="graph ejemplos {
+
+    subgraph clusterSingleDataCenter {
+        label=&quot;1 Datacenter&quot;;
+
+        subgraph clusterA {
+            label=&quot;Datacenter&quot;;
+            &quot;1DC Node 1&quot; -- &quot;1DC Node 2&quot;
+            &quot;1DC Node 1&quot; -- &quot;1DC Node 3&quot;
+            &quot;1DC Node 2&quot; -- &quot;1DC Node 3&quot;
+        }
+    }
+
+    subgraph clusterDosDataCenter {
+        label=&quot;2 Datacenter&quot;;
+
+        subgraph clusterA {
+            label=&quot;Datacenter 1&quot;;
+            &quot;2DC Node 1&quot;
+            &quot;2DC Node 2&quot;
+        }
+
+        subgraph clusterB {
+            label=&quot;Datacenter 2&quot;;
+            &quot;2DC Node 3&quot;
+        }
+
+        &quot;2DC Node 1&quot; -- &quot;2DC Node 2&quot;
+        &quot;2DC Node 1&quot; -- &quot;2DC Node 3&quot;
+        &quot;2DC Node 2&quot; -- &quot;2DC Node 3&quot;
+    }
+
+    subgraph clusterTresDataCenter {
+        label=&quot;3 Datacenter&quot;;
+
+        subgraph clusterA {
+            label=&quot;Datacenter 1&quot;;
+            &quot;3DC Node 1&quot;
+        }
+
+        subgraph clusterB {
+            label=&quot;Datacenter 2&quot;;
+            &quot;3DC Node 2&quot;
+        }
+
+        subgraph clusterC {
+            label=&quot;Datacenter 3&quot;;
+            &quot;3DC Node 3&quot;
+        }
+
+        &quot;3DC Node 1&quot; -- &quot;3DC Node 2&quot;
+        &quot;3DC Node 1&quot; -- &quot;3DC Node 3&quot;
+        &quot;3DC Node 2&quot; -- &quot;3DC Node 3&quot;
+    }
+}" />
+</p>
+<p>Podemos ver que la única configuración para poder recuperarse automáticamente ante la caída/destrucción de un data center (DR = Disaster Recovery) es usar como mínimo 3 datacenters.</p>
+<p>Si usamos 1 y se pierde, perdemos todo.</p>
+<p>Si usamos 2, podríamos recuperarnos en el caso de que el datacenter que se pierda sea el que contiene 1 nodo, en otro caso, no.</p>
+</div>
+<div class="section" id="configuracion">
+<h2>Configuración.<a class="headerlink" href="#configuracion" title="Permalink to this headline">¶</a></h2>
+<p><strong>Configurando un replica set añadiendo secundarios</strong>:</p>
+<ul class="simple">
+<li>Se levantan los servidores con el nombre del replica set<ul>
+<li><tt class="docutils literal"><span class="pre">$</span> <span class="pre">mongod</span> <span class="pre">...</span> <span class="pre">--replSet</span> <span class="pre">set0</span></tt>. Si se configura desde linea de comandos. &#8220;set0&#8221; es el nombre del replica set</li>
+<li><tt class="docutils literal"><span class="pre">replSet=set0</span></tt>. Si se configura en fichero de configuración con formato antiguo</li>
+<li><tt class="docutils literal"><span class="pre">replication.replSetName:</span> <span class="pre">set0</span></tt>. Si se configura en el fichero de configuración con formato YAML</li>
+</ul>
+</li>
+<li>Nos conectamos al nodo que será el primario<ul>
+<li>Con <tt class="docutils literal"><span class="pre">rs.status()</span></tt> podemos comprobar que no está inicializado el replica set</li>
+<li>Con <tt class="docutils literal"><span class="pre">rs.conf()</span></tt> también veremos datos de la configuración del replica set</li>
+</ul>
+</li>
+<li>Con <tt class="docutils literal"><span class="pre">rs.initiate()</span></tt> iniciamos el replica set que solo tendrá este nodo actualmente
+y el shell nos debería cambiar a <tt class="docutils literal"><span class="pre">set0:PRIMARY&gt;</span></tt>.</li>
+<li>Para añadir otros nodos <tt class="docutils literal"><span class="pre">rs.add(&quot;&lt;hostname&gt;:&lt;port&gt;&quot;)</span></tt>. Ejemplo: <tt class="docutils literal"><span class="pre">rs.add(&quot;precise32:28002&quot;)</span></tt>.<ul>
+<li>También es posible pasar un documento en vez de un string con la configuración del nodo.</li>
+<li>Los secundarios deben ser añadidos desde el primario</li>
+</ul>
+</li>
+</ul>
+<p><strong>Configurando un replica set pasando la configuración de todos los nodos:</strong></p>
+<p>Para ello, en vez de inicializar con una configuración vacía, pasamos al comando &#8220;initiate&#8221; la configuración:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">config</span> <span class="o">=</span> <span class="p">{</span> <span class="s">&quot;_id&quot;</span><span class="p">:</span> <span class="s">&quot;set0&quot;</span><span class="p">,</span> <span class="s">&quot;members&quot;</span> <span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s">&quot;_id&quot;</span> <span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&quot;host&quot;</span> <span class="p">:</span> <span class="s">&quot;localhost:27017&quot;</span> <span class="p">},</span>
+    <span class="p">{</span><span class="s">&quot;_id&quot;</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&quot;host&quot;</span> <span class="p">:</span> <span class="s">&quot;localhost:27018&quot;</span> <span class="p">},</span>
+    <span class="p">{</span><span class="s">&quot;_id&quot;</span> <span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s">&quot;host&quot;</span> <span class="p">:</span> <span class="s">&quot;localhost:27019&quot;</span> <span class="p">}</span> <span class="p">]</span>
+<span class="p">}</span>
+
+<span class="n">rs</span><span class="o">.</span><span class="n">initiate</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Valores posibles de configuración:</p>
+<div class="highlight-python"><div class="highlight"><pre>{
+  _id: &lt;string&gt;,
+  version: &lt;int&gt;,
+  members: [
+    {
+      _id: &lt;int&gt;,
+      host: &lt;string&gt;,
+      arbiterOnly: &lt;boolean&gt;,
+      buildIndexes: &lt;boolean&gt;,
+      hidden: &lt;boolean&gt;,
+      priority: &lt;number&gt;,
+      tags: &lt;document&gt;,
+      slaveDelay: &lt;int&gt;,
+      votes: &lt;number&gt;
+    },
+    ...
+  ],
+  settings: {
+    getLastErrorDefaults : &lt;document&gt;,
+    chainingAllowed : &lt;boolean&gt;,
+    getLastErrorModes : &lt;document&gt;,
+    heartbeatTimeoutSecs: &lt;int&gt;
+  }
+}
+</pre></div>
+</div>
+<p><strong>Reconfigurar un replica set</strong>:</p>
+<div class="highlight-python"><div class="highlight"><pre>rs.reconfig(&lt;config&gt;)
+</pre></div>
+</div>
+</div>
+<div class="section" id="configuracion-rapida">
+<h2>Configuración rápida.<a class="headerlink" href="#configuracion-rapida" title="Permalink to this headline">¶</a></h2>
+<p>Existe una forma de crear un replica set de forma rápida para pruebas y desarrollo, para ello necesitamos el directorio <tt class="docutils literal"><span class="pre">/data/db</span></tt></p>
+<div class="highlight-python"><div class="highlight"><pre># mkdir -p /data/db
+# chown -R student:student /data
+$ mongo --nodb
+&gt; var rsTest = new ReplSetTest({name: &quot;replicaTest&quot;, nodes: 3})
+&gt; rsTest.startSet() &amp;&amp; rsTest.initiate()
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Una vez salgamos de la consola el réplica set se finaliza</p>
+</div>
+<p>Conectarse desde consola:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ mongo --nodb
+&gt; conn = new Mongo(&quot;localhost:31000&quot;) // Conectamos al primario
+&gt; db = conn.getDB(&quot;test&quot;)
+// Para conectarse al secundario
+replicaTest:PRIMARY&gt; conn = new Mongo(&quot;localhost:31001&quot;)
+replicaTest:PRIMARY&gt; db = conn.getDB(&quot;test&quot;)
+
+// Volvemos al primario para insertar datos
+&gt; replicaTest:PRIMARY&gt; use test // Esta puede no ser necesaria
+</pre></div>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2015, yorsh.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

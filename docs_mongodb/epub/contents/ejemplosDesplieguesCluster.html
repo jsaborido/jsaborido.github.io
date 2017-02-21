@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Anexo. Ejemplos de despliegues en cluster</title>
+    
+    <link rel="stylesheet" href="../_static/epub.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" /> 
+  </head>
+  <body>
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="ejemplosDesplieguesLocal.html" title="Anexo. Ejemplos de despliegues en la misma máquina"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Notas sobre mongoDB doc 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body">
+            
+  <div class="section" id="anexo-ejemplos-de-despliegues-en-cluster">
+<h1>Anexo. Ejemplos de despliegues en cluster</h1>
+<p>Ejemplo de despligue de un shard cluster con 2 shards y 3 nodos en cada replica set usando distintas máquinas.</p>
+<p><strong>Información de la red</strong>:</p>
+<ul class="simple">
+<li>3 máquinas:<ul>
+<li>nodo1:              ip: &#8220;192.168.50.101&#8221;</li>
+<li>nodo2:              ip: &#8220;192.168.50.102&#8221;</li>
+<li>nodo3:              ip: &#8220;192.168.50.103&#8221;</li>
+</ul>
+</li>
+<li>En cada máquina:<ul>
+<li>shard_server set1   port: 27001</li>
+<li>shard_server set2   port: 27002</li>
+<li>configserver        port: 28000</li>
+<li>mongos              port: 27017 (default port)</li>
+</ul>
+</li>
+</ul>
+<p><strong>Montaje de los replica set</strong>:</p>
+<p>Nos conectamos a un nodo de cada uno de los replica set e inicializamos los replica set.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># Replica set 1 (mongo --host 192.168.50.101:27001)</span>
+<span class="n">config</span> <span class="o">=</span> <span class="p">{</span> <span class="s">&quot;_id&quot;</span><span class="p">:</span> <span class="s">&quot;set1&quot;</span><span class="p">,</span> <span class="s">&quot;members&quot;</span> <span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s">&quot;_id&quot;</span> <span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&quot;host&quot;</span> <span class="p">:</span> <span class="s">&quot;192.168.50.101:27001&quot;</span> <span class="p">},</span>
+    <span class="p">{</span><span class="s">&quot;_id&quot;</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&quot;host&quot;</span> <span class="p">:</span> <span class="s">&quot;192.168.50.102:27001&quot;</span> <span class="p">},</span>
+    <span class="p">{</span><span class="s">&quot;_id&quot;</span> <span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s">&quot;host&quot;</span> <span class="p">:</span> <span class="s">&quot;192.168.50.103:27001&quot;</span> <span class="p">}</span> <span class="p">]</span>
+<span class="p">}</span>
+<span class="n">rs</span><span class="o">.</span><span class="n">initiate</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+
+<span class="c"># Replica set 2 (mongo --host 192.168.50.101:27002)</span>
+<span class="n">config</span> <span class="o">=</span> <span class="p">{</span> <span class="s">&quot;_id&quot;</span><span class="p">:</span> <span class="s">&quot;set2&quot;</span><span class="p">,</span> <span class="s">&quot;members&quot;</span> <span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s">&quot;_id&quot;</span> <span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&quot;host&quot;</span> <span class="p">:</span> <span class="s">&quot;192.168.50.101:27002&quot;</span> <span class="p">},</span>
+    <span class="p">{</span><span class="s">&quot;_id&quot;</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&quot;host&quot;</span> <span class="p">:</span> <span class="s">&quot;192.168.50.102:27002&quot;</span> <span class="p">},</span>
+    <span class="p">{</span><span class="s">&quot;_id&quot;</span> <span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s">&quot;host&quot;</span> <span class="p">:</span> <span class="s">&quot;192.168.50.103:27002&quot;</span> <span class="p">}</span> <span class="p">]</span>
+<span class="p">}</span>
+<span class="n">rs</span><span class="o">.</span><span class="n">initiate</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Nos conectamos a mongos e inicializamos el shard.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">sh</span><span class="o">.</span><span class="n">addShard</span><span class="p">(</span><span class="s">&quot;set1/192.168.50.101:27001&quot;</span><span class="p">)</span>
+<span class="n">sh</span><span class="o">.</span><span class="n">addShard</span><span class="p">(</span><span class="s">&quot;set2/192.168.50.101:27002&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Plantillas de aprovisionamiento</strong>:</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span class="c1"># mongo db shardsvr config</span>
+<span class="l-Scalar-Plain">systemLog</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">destination</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">file</span>
+  <span class="l-Scalar-Plain">path</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">/home/vagrant/mongodata/{{set_name}}/db.log</span>
+  <span class="l-Scalar-Plain">logAppend</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
+<span class="l-Scalar-Plain">processManagement</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">fork</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
+<span class="l-Scalar-Plain">net</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">port</span><span class="p-Indicator">:</span> <span class="p-Indicator">{{</span><span class="nv">port_number</span><span class="p-Indicator">}}</span>
+<span class="l-Scalar-Plain">storage</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">dbPath</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">/home/vagrant/mongodata/{{set_name}}</span>
+  <span class="l-Scalar-Plain">journal</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">enabled</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
+<span class="l-Scalar-Plain">replication</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">replSetName</span><span class="p-Indicator">:</span> <span class="p-Indicator">{{</span><span class="nv">set_name</span><span class="p-Indicator">}}</span>
+<span class="l-Scalar-Plain">sharding</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">clusterRole</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">shardsvr</span>
+
+<span class="c1"># mongo db configsvr</span>
+<span class="l-Scalar-Plain">systemLog</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">destination</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">file</span>
+  <span class="l-Scalar-Plain">path</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">/home/vagrant/mongodata/configsvr/db.log</span>
+  <span class="l-Scalar-Plain">logAppend</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
+<span class="l-Scalar-Plain">processManagement</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">fork</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
+<span class="l-Scalar-Plain">net</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">port</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">28000</span>
+<span class="l-Scalar-Plain">storage</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">dbPath</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">/home/vagrant/mongodata/configsvr</span>
+  <span class="l-Scalar-Plain">journal</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">enabled</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
+<span class="l-Scalar-Plain">sharding</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">clusterRole</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">configsvr</span>
+
+<span class="c1"># mongos</span>
+<span class="l-Scalar-Plain">systemLog</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">destination</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">file</span>
+  <span class="l-Scalar-Plain">path</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">/home/vagrant/mongodata/mongos/db.log</span>
+  <span class="l-Scalar-Plain">logAppend</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
+<span class="l-Scalar-Plain">processManagement</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">fork</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">true</span>
+<span class="l-Scalar-Plain">net</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">port</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">27017</span>
+<span class="l-Scalar-Plain">sharding</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">configDB</span><span class="p-Indicator">:</span> <span class="p-Indicator">{{</span><span class="nv">shard_configDB</span><span class="p-Indicator">}}</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2015, yorsh.
+    </div>
+  </body>
+</html>

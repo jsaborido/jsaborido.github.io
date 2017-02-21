@@ -1,0 +1,518 @@
+<?xml version="1.0"?>
+<ncx version="2005-1" xmlns="http://www.daisy.org/z3986/2005/ncx/">
+  <head>
+    <meta name="dtb:uid" content="unknown"/>
+    <meta name="dtb:depth" content="3"/>
+    <meta name="dtb:totalPageCount" content="0"/>
+    <meta name="dtb:maxPageNumber" content="0"/>
+  </head>
+  <docTitle>
+    <text>Notas sobre mongoDB</text>
+  </docTitle>
+  <navMap>
+    <navPoint id="navPoint1" playOrder="1">
+      <navLabel>
+        <text>Índice</text>
+      </navLabel>
+      <content src="index.html" />
+    </navPoint>
+    <navPoint id="navPoint2" playOrder="2">
+      <navLabel>
+        <text>Introducción</text>
+      </navLabel>
+      <content src="contents/intro.html" />
+    </navPoint>
+    <navPoint id="navPoint3" playOrder="3">
+      <navLabel>
+        <text>Despliegues tipo</text>
+      </navLabel>
+      <content src="contents/desplieguesTipo.html" />
+      <navPoint id="navPoint4" playOrder="3">
+        <navLabel>
+          <text>Despliegues tipo</text>
+        </navLabel>
+        <content src="contents/desplieguesTipo.html" />
+      </navPoint>
+      <navPoint id="navPoint5" playOrder="4">
+        <navLabel>
+          <text>Standalone</text>
+        </navLabel>
+        <content src="contents/desplieguesTipo.html#standalone" />
+      </navPoint>
+      <navPoint id="navPoint6" playOrder="5">
+        <navLabel>
+          <text>Replica Set</text>
+        </navLabel>
+        <content src="contents/desplieguesTipo.html#replica-set" />
+      </navPoint>
+      <navPoint id="navPoint7" playOrder="6">
+        <navLabel>
+          <text>Sharded cluster</text>
+        </navLabel>
+        <content src="contents/desplieguesTipo.html#sharded-cluster" />
+      </navPoint>
+    </navPoint>
+    <navPoint id="navPoint8" playOrder="7">
+      <navLabel>
+        <text>Línea de comandos</text>
+      </navLabel>
+      <content src="contents/comandos.html" />
+      <navPoint id="navPoint9" playOrder="7">
+        <navLabel>
+          <text>Línea de comandos</text>
+        </navLabel>
+        <content src="contents/comandos.html" />
+      </navPoint>
+      <navPoint id="navPoint10" playOrder="8">
+        <navLabel>
+          <text>mongod</text>
+        </navLabel>
+        <content src="contents/comandos.html#mongod" />
+      </navPoint>
+      <navPoint id="navPoint11" playOrder="9">
+        <navLabel>
+          <text>mongorestore</text>
+        </navLabel>
+        <content src="contents/comandos.html#mongorestore" />
+      </navPoint>
+      <navPoint id="navPoint12" playOrder="10">
+        <navLabel>
+          <text>mongoimport</text>
+        </navLabel>
+        <content src="contents/comandos.html#mongoimport" />
+      </navPoint>
+    </navPoint>
+    <navPoint id="navPoint13" playOrder="11">
+      <navLabel>
+        <text>Documentos</text>
+      </navLabel>
+      <content src="contents/documents.html" />
+    </navPoint>
+    <navPoint id="navPoint14" playOrder="12">
+      <navLabel>
+        <text>CRUD - MongoDB Shell</text>
+      </navLabel>
+      <content src="contents/shell.html" />
+      <navPoint id="navPoint15" playOrder="12">
+        <navLabel>
+          <text>CRUD - MongoDB Shell</text>
+        </navLabel>
+        <content src="contents/shell.html" />
+      </navPoint>
+      <navPoint id="navPoint16" playOrder="13">
+        <navLabel>
+          <text>Inserts</text>
+        </navLabel>
+        <content src="contents/shell.html#inserts" />
+      </navPoint>
+      <navPoint id="navPoint17" playOrder="14">
+        <navLabel>
+          <text>Queries</text>
+        </navLabel>
+        <content src="contents/shell.html#queries" />
+      </navPoint>
+      <navPoint id="navPoint18" playOrder="15">
+        <navLabel>
+          <text>Updates</text>
+        </navLabel>
+        <content src="contents/shell.html#updates" />
+      </navPoint>
+    </navPoint>
+    <navPoint id="navPoint19" playOrder="16">
+      <navLabel>
+        <text>Replica Set</text>
+      </navLabel>
+      <content src="contents/replicaSet.html" />
+      <navPoint id="navPoint20" playOrder="16">
+        <navLabel>
+          <text>Replica Set</text>
+        </navLabel>
+        <content src="contents/replicaSet.html" />
+      </navPoint>
+      <navPoint id="navPoint21" playOrder="17">
+        <navLabel>
+          <text>Write concerns</text>
+        </navLabel>
+        <content src="contents/replicaSet.html#write-concerns" />
+      </navPoint>
+      <navPoint id="navPoint22" playOrder="18">
+        <navLabel>
+          <text>Read Preference modes</text>
+        </navLabel>
+        <content src="contents/replicaSet.html#read-preference-modes" />
+      </navPoint>
+      <navPoint id="navPoint23" playOrder="19">
+        <navLabel>
+          <text>Datacenters</text>
+        </navLabel>
+        <content src="contents/replicaSet.html#datacenters" />
+      </navPoint>
+      <navPoint id="navPoint24" playOrder="20">
+        <navLabel>
+          <text>Configuración.</text>
+        </navLabel>
+        <content src="contents/replicaSet.html#configuracion" />
+      </navPoint>
+      <navPoint id="navPoint25" playOrder="21">
+        <navLabel>
+          <text>Configuración rápida.</text>
+        </navLabel>
+        <content src="contents/replicaSet.html#configuracion-rapida" />
+      </navPoint>
+    </navPoint>
+    <navPoint id="navPoint26" playOrder="22">
+      <navLabel>
+        <text>Sharding</text>
+      </navLabel>
+      <content src="contents/sharding.html" />
+      <navPoint id="navPoint27" playOrder="22">
+        <navLabel>
+          <text>Sharding</text>
+        </navLabel>
+        <content src="contents/sharding.html" />
+      </navPoint>
+      <navPoint id="navPoint28" playOrder="23">
+        <navLabel>
+          <text>shard key</text>
+        </navLabel>
+        <content src="contents/sharding.html#shard-key" />
+      </navPoint>
+      <navPoint id="navPoint29" playOrder="24">
+        <navLabel>
+          <text>mongos</text>
+        </navLabel>
+        <content src="contents/sharding.html#mongos" />
+      </navPoint>
+      <navPoint id="navPoint30" playOrder="25">
+        <navLabel>
+          <text>config server</text>
+        </navLabel>
+        <content src="contents/sharding.html#config-server" />
+      </navPoint>
+      <navPoint id="navPoint31" playOrder="26">
+        <navLabel>
+          <text>Configuración.</text>
+        </navLabel>
+        <content src="contents/sharding.html#configuracion" />
+      </navPoint>
+      <navPoint id="navPoint32" playOrder="27">
+        <navLabel>
+          <text>Configuración rápida.</text>
+        </navLabel>
+        <content src="contents/sharding.html#configuracion-rapida" />
+      </navPoint>
+    </navPoint>
+    <navPoint id="navPoint33" playOrder="28">
+      <navLabel>
+        <text>Backups y restauración</text>
+      </navLabel>
+      <content src="contents/backups.html" />
+      <navPoint id="navPoint34" playOrder="28">
+        <navLabel>
+          <text>Backups y restauración</text>
+        </navLabel>
+        <content src="contents/backups.html" />
+      </navPoint>
+      <navPoint id="navPoint35" playOrder="29">
+        <navLabel>
+          <text>Backups lógico: mongodump/mongorestore.</text>
+        </navLabel>
+        <content src="contents/backups.html#backups-logico-mongodump-mongorestore" />
+      </navPoint>
+      <navPoint id="navPoint36" playOrder="30">
+        <navLabel>
+          <text>Backups físicos</text>
+        </navLabel>
+        <content src="contents/backups.html#backups-fisicos" />
+        <navPoint id="navPoint37" playOrder="30">
+          <navLabel>
+            <text>Backups físicos</text>
+          </navLabel>
+          <content src="contents/backups.html#backups-fisicos" />
+        </navPoint>
+        <navPoint id="navPoint38" playOrder="31">
+          <navLabel>
+            <text>En un shard</text>
+          </navLabel>
+          <content src="contents/backups.html#en-un-shard" />
+        </navPoint>
+      </navPoint>
+    </navPoint>
+    <navPoint id="navPoint39" playOrder="32">
+      <navLabel>
+        <text>Seguridad</text>
+      </navLabel>
+      <content src="contents/security.html" />
+    </navPoint>
+    <navPoint id="navPoint40" playOrder="33">
+      <navLabel>
+        <text>Monitorización y rendimiento</text>
+      </navLabel>
+      <content src="contents/monitor.html" />
+    </navPoint>
+    <navPoint id="navPoint41" playOrder="34">
+      <navLabel>
+        <text>Optimización</text>
+      </navLabel>
+      <content src="contents/optimizing.html" />
+      <navPoint id="navPoint42" playOrder="34">
+        <navLabel>
+          <text>Optimización</text>
+        </navLabel>
+        <content src="contents/optimizing.html" />
+      </navPoint>
+      <navPoint id="navPoint43" playOrder="35">
+        <navLabel>
+          <text>Explain</text>
+        </navLabel>
+        <content src="contents/optimizing.html#explain" />
+      </navPoint>
+      <navPoint id="navPoint44" playOrder="36">
+        <navLabel>
+          <text>Tipos de indexaciones</text>
+        </navLabel>
+        <content src="contents/optimizing.html#tipos-de-indexaciones" />
+      </navPoint>
+      <navPoint id="navPoint45" playOrder="37">
+        <navLabel>
+          <text>Índice Simple.</text>
+        </navLabel>
+        <content src="contents/optimizing.html#indice-simple" />
+      </navPoint>
+      <navPoint id="navPoint46" playOrder="38">
+        <navLabel>
+          <text>Índice Compuesto</text>
+        </navLabel>
+        <content src="contents/optimizing.html#indice-compuesto" />
+      </navPoint>
+      <navPoint id="navPoint47" playOrder="39">
+        <navLabel>
+          <text>Índice Multikey</text>
+        </navLabel>
+        <content src="contents/optimizing.html#indice-multikey" />
+      </navPoint>
+      <navPoint id="navPoint48" playOrder="40">
+        <navLabel>
+          <text>Índices TTL</text>
+        </navLabel>
+        <content src="contents/optimizing.html#indices-ttl" />
+      </navPoint>
+      <navPoint id="navPoint49" playOrder="41">
+        <navLabel>
+          <text>Índices TEXT</text>
+        </navLabel>
+        <content src="contents/optimizing.html#indices-text" />
+      </navPoint>
+      <navPoint id="navPoint50" playOrder="42">
+        <navLabel>
+          <text>Índices geoespaciales</text>
+        </navLabel>
+        <content src="contents/optimizing.html#indices-geoespaciales" />
+      </navPoint>
+      <navPoint id="navPoint51" playOrder="43">
+        <navLabel>
+          <text>Índices Hash</text>
+        </navLabel>
+        <content src="contents/optimizing.html#indices-hash" />
+      </navPoint>
+    </navPoint>
+    <navPoint id="navPoint52" playOrder="44">
+      <navLabel>
+        <text>Desarrollo. Introducción.</text>
+      </navLabel>
+      <content src="contents/developmentIntro.html" />
+    </navPoint>
+    <navPoint id="navPoint53" playOrder="45">
+      <navLabel>
+        <text>Desarrollo. Driver</text>
+      </navLabel>
+      <content src="contents/driver.html" />
+    </navPoint>
+    <navPoint id="navPoint54" playOrder="46">
+      <navLabel>
+        <text>Desarrollo. Diseño</text>
+      </navLabel>
+      <content src="contents/disenho.html" />
+    </navPoint>
+    <navPoint id="navPoint55" playOrder="47">
+      <navLabel>
+        <text>Aggregation Framework</text>
+      </navLabel>
+      <content src="contents/aggregationFramework.html" />
+      <navPoint id="navPoint56" playOrder="47">
+        <navLabel>
+          <text>Aggregation Framework</text>
+        </navLabel>
+        <content src="contents/aggregationFramework.html" />
+      </navPoint>
+      <navPoint id="navPoint57" playOrder="48">
+        <navLabel>
+          <text>Operadores</text>
+        </navLabel>
+        <content src="contents/aggregationFramework.html#operadores" />
+        <navPoint id="navPoint58" playOrder="48">
+          <navLabel>
+            <text>Operadores</text>
+          </navLabel>
+          <content src="contents/aggregationFramework.html#operadores" />
+        </navPoint>
+        <navPoint id="navPoint59" playOrder="49">
+          <navLabel>
+            <text>$match.</text>
+          </navLabel>
+          <content src="contents/aggregationFramework.html#match" />
+        </navPoint>
+        <navPoint id="navPoint60" playOrder="50">
+          <navLabel>
+            <text>$group</text>
+          </navLabel>
+          <content src="contents/aggregationFramework.html#group" />
+        </navPoint>
+        <navPoint id="navPoint61" playOrder="51">
+          <navLabel>
+            <text>$project</text>
+          </navLabel>
+          <content src="contents/aggregationFramework.html#project" />
+        </navPoint>
+        <navPoint id="navPoint62" playOrder="52">
+          <navLabel>
+            <text>$unwind</text>
+          </navLabel>
+          <content src="contents/aggregationFramework.html#unwind" />
+        </navPoint>
+        <navPoint id="navPoint63" playOrder="53">
+          <navLabel>
+            <text>$sort, $limit, $skip</text>
+          </navLabel>
+          <content src="contents/aggregationFramework.html#sort-limit-skip" />
+        </navPoint>
+        <navPoint id="navPoint64" playOrder="54">
+          <navLabel>
+            <text>$out</text>
+          </navLabel>
+          <content src="contents/aggregationFramework.html#out" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint65" playOrder="55">
+        <navLabel>
+          <text>Sharding</text>
+        </navLabel>
+        <content src="contents/aggregationFramework.html#sharding" />
+      </navPoint>
+      <navPoint id="navPoint66" playOrder="56">
+        <navLabel>
+          <text>MapReduce</text>
+        </navLabel>
+        <content src="contents/aggregationFramework.html#mapreduce" />
+      </navPoint>
+    </navPoint>
+    <navPoint id="navPoint67" playOrder="57">
+      <navLabel>
+        <text>Certificación</text>
+      </navLabel>
+      <content src="contents/certificacion.html" />
+    </navPoint>
+    <navPoint id="navPoint68" playOrder="58">
+      <navLabel>
+        <text>Anexo. Otros recursos</text>
+      </navLabel>
+      <content src="contents/recursos.html" />
+    </navPoint>
+    <navPoint id="navPoint69" playOrder="59">
+      <navLabel>
+        <text>Anexo. Ejercicios / Ejemplos</text>
+      </navLabel>
+      <content src="contents/ejercicios.html" />
+      <navPoint id="navPoint70" playOrder="59">
+        <navLabel>
+          <text>Anexo. Ejercicios / Ejemplos</text>
+        </navLabel>
+        <content src="contents/ejercicios.html" />
+      </navPoint>
+      <navPoint id="navPoint71" playOrder="60">
+        <navLabel>
+          <text>Framework de agregación</text>
+        </navLabel>
+        <content src="contents/ejercicios.html#framework-de-agregacion" />
+      </navPoint>
+    </navPoint>
+    <navPoint id="navPoint72" playOrder="61">
+      <navLabel>
+        <text>Anexo. Ejemplos de despliegues en la misma máquina</text>
+      </navLabel>
+      <content src="contents/ejemplosDesplieguesLocal.html" />
+      <navPoint id="navPoint73" playOrder="61">
+        <navLabel>
+          <text>Anexo. Ejemplos de despliegues en la misma máquina</text>
+        </navLabel>
+        <content src="contents/ejemplosDesplieguesLocal.html" />
+      </navPoint>
+      <navPoint id="navPoint74" playOrder="62">
+        <navLabel>
+          <text>Linea de comandos</text>
+        </navLabel>
+        <content src="contents/ejemplosDesplieguesLocal.html#linea-de-comandos" />
+        <navPoint id="navPoint75" playOrder="62">
+          <navLabel>
+            <text>Linea de comandos</text>
+          </navLabel>
+          <content src="contents/ejemplosDesplieguesLocal.html#linea-de-comandos" />
+        </navPoint>
+        <navPoint id="navPoint76" playOrder="63">
+          <navLabel>
+            <text>Standalone</text>
+          </navLabel>
+          <content src="contents/ejemplosDesplieguesLocal.html#standalone" />
+        </navPoint>
+        <navPoint id="navPoint77" playOrder="64">
+          <navLabel>
+            <text>Replica Set</text>
+          </navLabel>
+          <content src="contents/ejemplosDesplieguesLocal.html#replica-set" />
+        </navPoint>
+        <navPoint id="navPoint78" playOrder="65">
+          <navLabel>
+            <text>Shard</text>
+          </navLabel>
+          <content src="contents/ejemplosDesplieguesLocal.html#shard" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint79" playOrder="66">
+        <navLabel>
+          <text>YAML</text>
+        </navLabel>
+        <content src="contents/ejemplosDesplieguesLocal.html#yaml" />
+        <navPoint id="navPoint80" playOrder="66">
+          <navLabel>
+            <text>YAML</text>
+          </navLabel>
+          <content src="contents/ejemplosDesplieguesLocal.html#yaml" />
+        </navPoint>
+        <navPoint id="navPoint81" playOrder="67">
+          <navLabel>
+            <text>Standalone</text>
+          </navLabel>
+          <content src="contents/ejemplosDesplieguesLocal.html#id1" />
+        </navPoint>
+        <navPoint id="navPoint82" playOrder="68">
+          <navLabel>
+            <text>Replica Set</text>
+          </navLabel>
+          <content src="contents/ejemplosDesplieguesLocal.html#id2" />
+        </navPoint>
+        <navPoint id="navPoint83" playOrder="69">
+          <navLabel>
+            <text>Shard</text>
+          </navLabel>
+          <content src="contents/ejemplosDesplieguesLocal.html#id3" />
+        </navPoint>
+      </navPoint>
+    </navPoint>
+    <navPoint id="navPoint84" playOrder="70">
+      <navLabel>
+        <text>Anexo. Ejemplos de despliegues en cluster</text>
+      </navLabel>
+      <content src="contents/ejemplosDesplieguesCluster.html" />
+    </navPoint>
+  </navMap>
+</ncx>

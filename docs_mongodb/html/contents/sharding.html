@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Sharding &mdash; Notas sobre mongoDB doc 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootswatch-3.2.0/united/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'doc 1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
+    <link rel="top" title="Notas sobre mongoDB doc 1.0 documentation" href="../index.html" />
+    <link rel="next" title="Backups y restauración" href="backups.html" />
+    <link rel="prev" title="Replica Set" href="replicaSet.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head>
+  <body>
+
+  <div id="navbar" class="navbar navbar-inverse navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../index.html">
+          Notas sobre mongoDB</a>
+        <span class="navbar-text navbar-version pull-left"><b>doc 1.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../index.html">Sitio <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introducción</a></li>
+<li class="toctree-l1"><a class="reference internal" href="desplieguesTipo.html">Despliegues tipo</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="desplieguesTipo.html#standalone">Standalone</a></li>
+<li class="toctree-l2"><a class="reference internal" href="desplieguesTipo.html#replica-set">Replica Set</a></li>
+<li class="toctree-l2"><a class="reference internal" href="desplieguesTipo.html#sharded-cluster">Sharded cluster</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="comandos.html">Línea de comandos</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="comandos.html#mongod">mongod</a></li>
+<li class="toctree-l2"><a class="reference internal" href="comandos.html#mongorestore">mongorestore</a></li>
+<li class="toctree-l2"><a class="reference internal" href="comandos.html#mongoimport">mongoimport</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="documents.html">Documentos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="shell.html">CRUD - MongoDB Shell</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="shell.html#inserts">Inserts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="shell.html#queries">Queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="shell.html#updates">Updates</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="replicaSet.html">Replica Set</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="replicaSet.html#write-concerns">Write concerns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="replicaSet.html#read-preference-modes">Read Preference modes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="replicaSet.html#datacenters">Datacenters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="replicaSet.html#configuracion">Configuración.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="replicaSet.html#configuracion-rapida">Configuración rápida.</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Sharding</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#shard-key">shard key</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#mongos">mongos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#config-server">config server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#configuracion">Configuración.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#configuracion-rapida">Configuración rápida.</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="backups.html">Backups y restauración</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="backups.html#backups-logico-mongodump-mongorestore">Backups lógico: mongodump/mongorestore.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="backups.html#backups-fisicos">Backups físicos</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="security.html">Seguridad</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monitor.html">Monitorización y rendimiento</a></li>
+<li class="toctree-l1"><a class="reference internal" href="optimizing.html">Optimización</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#explain">Explain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#tipos-de-indexaciones">Tipos de indexaciones</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#indice-simple">Índice Simple.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#indice-compuesto">Índice Compuesto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#indice-multikey">Índice Multikey</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#indices-ttl">Índices TTL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#indices-text">Índices TEXT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#indices-geoespaciales">Índices geoespaciales</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#indices-hash">Índices Hash</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="developmentIntro.html">Desarrollo. Introducción.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="driver.html">Desarrollo. Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="disenho.html">Desarrollo. Diseño</a></li>
+<li class="toctree-l1"><a class="reference internal" href="aggregationFramework.html">Aggregation Framework</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="aggregationFramework.html#operadores">Operadores</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aggregationFramework.html#sharding">Sharding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aggregationFramework.html#mapreduce">MapReduce</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="certificacion.html">Certificación</a></li>
+<li class="toctree-l1"><a class="reference internal" href="recursos.html">Anexo. Otros recursos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ejercicios.html">Anexo. Ejercicios / Ejemplos</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ejercicios.html#framework-de-agregacion">Framework de agregación</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ejemplosDesplieguesLocal.html">Anexo. Ejemplos de despliegues en la misma máquina</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ejemplosDesplieguesLocal.html#linea-de-comandos">Linea de comandos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ejemplosDesplieguesLocal.html#yaml">YAML</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ejemplosDesplieguesCluster.html">Anexo. Ejemplos de despliegues en cluster</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Página <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Sharding</a><ul>
+<li><a class="reference internal" href="#shard-key">shard key</a></li>
+<li><a class="reference internal" href="#mongos">mongos</a></li>
+<li><a class="reference internal" href="#config-server">config server</a></li>
+<li><a class="reference internal" href="#configuracion">Configuración.</a></li>
+<li><a class="reference internal" href="#configuracion-rapida">Configuración rápida.</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="replicaSet.html" title="Previous Chapter: Replica Set"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Replica Set</span>
+    </a>
+  </li>
+  <li>
+    <a href="backups.html" title="Next Chapter: Backups y restauración"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Backups y restau... &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      
+  <div class="section" id="sharding">
+<h1>Sharding<a class="headerlink" href="#sharding" title="Permalink to this headline">¶</a></h1>
+<p>Para alto rendimiento deberíamos tener todos los índices cargados en memoria junto con el working set <a class="footnote-reference" href="#workingset" id="id1">[1]</a>.</p>
+<p>La forma tradicional ante llenados de memoria es escabilidad vertical (mas memoria o disco). Mongo con los shards nos permite escalabilidad horizontal.</p>
+<p>Funcionamiento:</p>
+<ul class="simple">
+<li>Para particionar una colección usamos una &#8220;shard key&#8221;</li>
+<li>Para que una colección se particione automáticamente hay que activar sharding a nivel de base de datos y a nivel de colección.</li>
+<li>Las colecciones que no tengan shard se crean en el shard1 siempre (primary shard).<ul>
+<li>Con <tt class="docutils literal"><span class="pre">sh.movePrimary(...)</span></tt> podemos cambiar el shard que será el primario (moverá las colecciones)</li>
+</ul>
+</li>
+<li>Según la shard key, inserta en la partición que corresponda entre &#8220;Min value&#8221; y &#8220;Max value&#8221;</li>
+<li>Una partición es un &#8220;chunk&#8221; no un &#8220;shard&#8221;.</li>
+<li>Cuando una colección es pequeña inicialmente tiene una única partición (chunk) con un tamaño máximo por defecto de 64MB. (-inf .. inf). El chunch es en base a la shard key por lo que solo existe cuando estamos en un shard y la colección está marcada para sharding.</li>
+<li>Al llenarse MongoDB la divide en 2 chunks automáticamente (-inf.. 1000),[1000... inf) si el tamaño era de 2000 documentos todos del mismo tamaño. (realmente divide en 2 chunks de 32MB).</li>
+<li>En la división de chunks se pasa uno de los nuevos chunk al otro shard (parece que no tiene por qué ser siempre, sino que es mongos quien va balanceando los chunks entre shards)</li>
+</ul>
+<div class="section" id="shard-key">
+<h2>shard key<a class="headerlink" href="#shard-key" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Una shardkey puede tener duplicados, se puede definir un nombre por ejemplo para que las escrituras vayan a varios shards<ul>
+<li>Por la misma razón, el objectId no es bueno para la shardkey porque los timestamp del principio obligaría a escribir todos los últimos en el mismo shard. (incrementales y timestamps no son buena idea)</li>
+</ul>
+</li>
+<li>Una shardkey solo puede estar en un chunk, es decir, si es un valor muy usado, puede haber chunks con mas de 64MB (por ejemplo datos de los usuarios, con shardkey &#8220;santiago&#8221;) -&gt; jumbochunk.</li>
+<li>Para poder crear una shard key <strong>debe existir un índice sobre el campo o un índice compuesto que empiece por ese campo</strong>.</li>
+<li>Es inmutable</li>
+<li>Los valores son inmutables</li>
+<li>Limitada a 512 bytes de tamaño <em>¿¿Comprobar??</em>.</li>
+<li>Es usada para distribuir las queries en un shard.<ul>
+<li>Por lo que se debería elegir un campo que sea usado comunmente en las queries</li>
+</ul>
+</li>
+<li>can be unique across shards (puede, que no debe) <em>¿¿Comprobar??</em>.<ul>
+<li>&#8216;_id&#8217; field is only unique on individual shards</li>
+</ul>
+</li>
+</ul>
+<p><strong>Consideraciones sobre la shard key</strong>. Reglas recomendadas a seguir, pero no son obligatorias ni tienen por que ser la solución óptima:</p>
+<ul class="simple">
+<li>Cardinality (alta cardinalidad). Veremos que nos pueden ayudar los índices compuestos.</li>
+<li>Write Distributions</li>
+<li>Query Isolation (que una query vaya sobre un shard siempre que sea posible)</li>
+<li>Reliability</li>
+<li>Index Locality</li>
+</ul>
+<div class="admonition important">
+<p class="first admonition-title">Important</p>
+<p class="last"><em>Cardinalidad y que no exista Hotspotting</em> (por ejemplo fecha actual, que siempre carga el mismo shard)</p>
+</div>
+<p>Estrategias que se suelen usar:</p>
+<ul class="simple">
+<li>basado en localización (IPs pueden estar incluidas aquí)</li>
+<li>incremental + (compuesto)</li>
+<li><strong>Bucketing</strong>. Dependiendo de lo que queramos hacer, hay que potenciar unos elementos u otros.</li>
+<li><strong>Hash</strong>.</li>
+</ul>
+<p>Preguntas a hacer para elegir la clave:</p>
+<ul class="simple">
+<li>Crecimiento shard. Cómo esperamos que crecerá nuestro shard (3 nodos shard, o 100 nodos... mejor 3)</li>
+<li>Latencia que sufriremos (zonas geográficas separadas)</li>
+<li>CPU &amp; RAM (tiempo de proceso real). Cómo va a crecer el trabajo</li>
+<li>Ratio de lecturas/escrituras sobre la colección</li>
+</ul>
+</div>
+<div class="section" id="mongos">
+<h2>mongos<a class="headerlink" href="#mongos" title="Permalink to this headline">¶</a></h2>
+<p>Demonio intermediario al que se conecta el cliente y decide porque shard pasa la query (hace de router).</p>
+<p>Para saber a que shard manda la query usa los <strong>config server</strong> (tienen información de todos los chunks y donde están esos chunk).</p>
+<p>Sabe a donde mandar la query cuando se usa en la query la shardkey sino hay que consultarlos todos.</p>
+<p>En la práctica, se debería poner un mongos en cada máquina cliente.</p>
+</div>
+<div class="section" id="config-server">
+<h2>config server<a class="headerlink" href="#config-server" title="Permalink to this headline">¶</a></h2>
+<p>El config server debería ser una máquina dedicada (aunque tiene muy poca configuración). Podemos tener 1 o 3, no 2, (los 3 tienen los mismos datos), pero si se cae uno se convierten en solo lectura (de metadatos: no se puede cambiar la definición de los chunks, pero si se pueden realizar escrituras en colecciones)</p>
+<p>Para activarlo hay que definir varios shard (puede ser un standalone o un replica set, mejor este último para tener tolerancia a fallos).</p>
+<p>El mongos bloquea los config server durante la migración o split de chunks para que otro mongos no pueda escribir.</p>
+</div>
+<div class="section" id="configuracion">
+<h2>Configuración.<a class="headerlink" href="#configuracion" title="Permalink to this headline">¶</a></h2>
+<p><strong>config server</strong>:</p>
+<ul class="simple">
+<li>Desde linea de comandos: <tt class="docutils literal"><span class="pre">mongod</span> <span class="pre">...</span> <span class="pre">--configsvr</span></tt></li>
+<li>Desde ficheros de configuración<ul>
+<li><tt class="docutils literal"><span class="pre">configsvr</span> <span class="pre">=</span> <span class="pre">true</span></tt> (antiguo formato)</li>
+<li><tt class="docutils literal"><span class="pre">sharding.clusterRole:</span> <span class="pre">configsvr</span></tt> (YAML)</li>
+</ul>
+</li>
+</ul>
+<p>El resto de las configuraciones vistas para mongod son también válidas.</p>
+<p><strong>mongos</strong>:</p>
+<p>Desde linea de comandos: <tt class="docutils literal"><span class="pre">mongos</span> <span class="pre">--configdb</span> <span class="pre">&lt;hostname</span> <span class="pre">and</span> <span class="pre">port</span> <span class="pre">of</span> <span class="pre">config</span> <span class="pre">servers&gt;</span></tt> (por defecto: 27017)</p>
+<div class="highlight-python"><div class="highlight"><pre>mongos ... --configdb mongodbvm:28001 // configuración con 1 config server
+mongos ... --configdb mongodbvm:28001,mongodbvm:28002,mongodbvm:28003 // configuracón con 3 config servers
+</pre></div>
+</div>
+<p><strong>shards</strong>:</p>
+<p>Cada uno de los shard estará compuesto de un servidor mongod standalone o de un replica set (mejor este caso para tolerancia a fallos)</p>
+<p>Cada uno de los <tt class="docutils literal"><span class="pre">mongod</span></tt> deberán tener la opción <tt class="docutils literal"><span class="pre">shardsvr</span></tt> activa para indicar que forman parte de un shard cluster.</p>
+<ul class="simple">
+<li>Desde linea de comandos: <tt class="docutils literal"><span class="pre">mongod</span> <span class="pre">...</span> <span class="pre">--shardsvr</span></tt></li>
+<li>Desde ficheros de configuración<ul>
+<li><tt class="docutils literal"><span class="pre">shardsvr</span> <span class="pre">=</span> <span class="pre">true</span></tt> (antiguo formato)</li>
+<li><tt class="docutils literal"><span class="pre">sharding.clusterRole:</span> <span class="pre">shardsvr</span></tt> (YAML)</li>
+</ul>
+</li>
+</ul>
+<p><strong>Inicialización</strong>:</p>
+<p>Una vez están los demonios ejecutándose, nos conectamos con el comando <tt class="docutils literal"><span class="pre">mongo</span></tt> al demonio <tt class="docutils literal"><span class="pre">mongos</span></tt></p>
+<p>Una vez conectado, para añadir un shard al cluster:</p>
+<div class="highlight-python"><div class="highlight"><pre>sh.addShard(&quot;localhost:27001&quot;) // shard con un mongod standalone.
+sh.addShard(&quot;rep0/localhost:27001&quot;) // shard con un replica set.
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">En el caso de replica sets, sólo es necesario añadir un nodo. El sistema ya obtiene toda la configuración del shard.</p>
+</div>
+<p>Ahora necesitamos habilitar el sharding para la base de datos y para las colecciones que queramos:</p>
+<div class="highlight-python"><div class="highlight"><pre>sh.enableSharding(&quot;dbname&quot;)
+//Field es el campo que será la shard key.
+sh.shardCollection(&quot;dbname.collectionname&quot;,{field:1})
+</pre></div>
+</div>
+</div>
+<div class="section" id="configuracion-rapida">
+<h2>Configuración rápida.<a class="headerlink" href="#configuracion-rapida" title="Permalink to this headline">¶</a></h2>
+<p>Al igual que los replica sets, se puede crear un shard rápido de prueba</p>
+<div class="highlight-python"><div class="highlight"><pre>$ mongo --nodb
+&gt; shard = new ShardingTest({name: &quot;testShard&quot;, shards: 3, chunksize: 26,
+                rs: { dbpath:&quot;/data/shard&quot;}})
+</pre></div>
+</div>
+<p>Info, para mover colecciones entre tags:</p>
+<div class="highlight-python"><div class="highlight"><pre>mongos&gt; db.runCommand({movePrimary: &quot;tweets&quot;, to: &quot;shard0000&quot;})
+
+mongos&gt; db.tweets.ensureIndex({&quot;user.screen_name&quot;: 1})
+//No lo crea automáticamente el shard key, con lo que es bueno hacerlo antes.
+mongos&gt; sh.enableSharding(&quot;twitter&quot;)
+mongos&gt; sh.shardCollection(&quot;twitter.tweets&quot;, {&quot;user.screen_name&quot;:1})
+</pre></div>
+</div>
+<p class="rubric">Footnotes</p>
+<table class="docutils footnote" frame="void" id="workingset" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td><strong>Working set</strong>. Datos que mas utilizamos y que nos interesa que estén en memoria directamente.</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2015, yorsh.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

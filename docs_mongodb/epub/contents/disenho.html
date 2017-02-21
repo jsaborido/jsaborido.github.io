@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Desarrollo. Diseño</title>
+    
+    <link rel="stylesheet" href="../_static/epub.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" /> 
+  </head>
+  <body>
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="aggregationFramework.html" title="Aggregation Framework"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="driver.html" title="Desarrollo. Driver"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Notas sobre mongoDB doc 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body">
+            
+  <div class="section" id="desarrollo-diseno">
+<h1>Desarrollo. Diseño</h1>
+<p>Diseño normalizado (favorecemos escrituras) vs Diseño no normalizado (favorecemos lecturas pero hay duplicados).</p>
+<p>A la hora de diseñar con mongo se suele tirar hacia el lado del diseño no normalizado.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Hay que intentar siempre minimizar la lista de documentos que se devuelven al driver</p>
+</div>
+<hr class="docutils" />
+<p><em>Ejemplo:</em></p>
+<p>Queremos almacenar un conteo de los accesos realizados sobre un recurso. Hay que tenerlos controlados por día, hora y minuto</p>
+<p>Consultas típicas: información de conteos, recursos mas vistos...</p>
+<p>Elegir posibles candidatos a shardkey.</p>
+<ul class="simple">
+<li>sample: ip, http_method, http_code, fecha, ...</li>
+<li>recurso: /index.htm, /productos...</li>
+<li>hit -&gt; contador</li>
+</ul>
+<p>Una opción sería:</p>
+<div class="highlight-python"><div class="highlight"><pre>{_id, ip, http_method, http_code, fecha, fecha_completa, recurso}
+shardKey = recurso, fecha
+
+Con una agregación realizar crear la nueva colección que se usará en las consultas típicas
+{ id={dia, hora, minuto}, hits}
+</pre></div>
+</div>
+<hr class="docutils" />
+<p><em>Ejemplo:</em></p>
+<p>Dados los datos de los empleados: información básica: nif, nombre, ...</p>
+<p>Queremos obtener informes de gastos por empleado, mes y año, de la forma:</p>
+<ul class="simple">
+<li>gasto<ul>
+<li>proyecto<ul>
+<li>tiempo</li>
+<li>concepto</li>
+<li>importe</li>
+</ul>
+</li>
+<li>total</li>
+<li>estado (nuevo, emitido, confirmado, pagado, denegado)</li>
+</ul>
+</li>
+</ul>
+<p>Para confirmado, pagado o denegado hay una serie de empleados (técnicos o lo que sea) que pueden modificar el estado del gasto</p>
+<div class="highlight-json"><div class="highlight"><pre>empleados:
+{
+  id:
+  nombre_empleado:
+  inf_basica:
+  supervisa: [&lt;ids empleados&gt;]
+}
+
+gastos:
+{
+  _id: {proyecto: &quot;proyecto&quot;, anho:..., mes:...}
+  gastos : [
+    {
+      _id:
+      id_empleado:
+      tiempo:
+      concepto:
+      gasto:
+      estado:
+    }
+  ]
+}
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2015, yorsh.
+    </div>
+  </body>
+</html>

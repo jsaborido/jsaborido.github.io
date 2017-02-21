@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Anexo. Ejercicios / Ejemplos &mdash; Notas sobre mongoDB doc 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootswatch-3.2.0/united/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'doc 1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
+    <link rel="top" title="Notas sobre mongoDB doc 1.0 documentation" href="../index.html" />
+    <link rel="next" title="Anexo. Ejemplos de despliegues en la misma máquina" href="ejemplosDesplieguesLocal.html" />
+    <link rel="prev" title="Anexo. Otros recursos" href="recursos.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head>
+  <body>
+
+  <div id="navbar" class="navbar navbar-inverse navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../index.html">
+          Notas sobre mongoDB</a>
+        <span class="navbar-text navbar-version pull-left"><b>doc 1.0</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../index.html">Sitio <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introducción</a></li>
+<li class="toctree-l1"><a class="reference internal" href="desplieguesTipo.html">Despliegues tipo</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="desplieguesTipo.html#standalone">Standalone</a></li>
+<li class="toctree-l2"><a class="reference internal" href="desplieguesTipo.html#replica-set">Replica Set</a></li>
+<li class="toctree-l2"><a class="reference internal" href="desplieguesTipo.html#sharded-cluster">Sharded cluster</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="comandos.html">Línea de comandos</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="comandos.html#mongod">mongod</a></li>
+<li class="toctree-l2"><a class="reference internal" href="comandos.html#mongorestore">mongorestore</a></li>
+<li class="toctree-l2"><a class="reference internal" href="comandos.html#mongoimport">mongoimport</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="documents.html">Documentos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="shell.html">CRUD - MongoDB Shell</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="shell.html#inserts">Inserts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="shell.html#queries">Queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="shell.html#updates">Updates</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="replicaSet.html">Replica Set</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="replicaSet.html#write-concerns">Write concerns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="replicaSet.html#read-preference-modes">Read Preference modes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="replicaSet.html#datacenters">Datacenters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="replicaSet.html#configuracion">Configuración.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="replicaSet.html#configuracion-rapida">Configuración rápida.</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="sharding.html">Sharding</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="sharding.html#shard-key">shard key</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sharding.html#mongos">mongos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sharding.html#config-server">config server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sharding.html#configuracion">Configuración.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sharding.html#configuracion-rapida">Configuración rápida.</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="backups.html">Backups y restauración</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="backups.html#backups-logico-mongodump-mongorestore">Backups lógico: mongodump/mongorestore.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="backups.html#backups-fisicos">Backups físicos</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="security.html">Seguridad</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monitor.html">Monitorización y rendimiento</a></li>
+<li class="toctree-l1"><a class="reference internal" href="optimizing.html">Optimización</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#explain">Explain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#tipos-de-indexaciones">Tipos de indexaciones</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#indice-simple">Índice Simple.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#indice-compuesto">Índice Compuesto</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#indice-multikey">Índice Multikey</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#indices-ttl">Índices TTL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#indices-text">Índices TEXT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#indices-geoespaciales">Índices geoespaciales</a></li>
+<li class="toctree-l2"><a class="reference internal" href="optimizing.html#indices-hash">Índices Hash</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="developmentIntro.html">Desarrollo. Introducción.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="driver.html">Desarrollo. Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="disenho.html">Desarrollo. Diseño</a></li>
+<li class="toctree-l1"><a class="reference internal" href="aggregationFramework.html">Aggregation Framework</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="aggregationFramework.html#operadores">Operadores</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aggregationFramework.html#sharding">Sharding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aggregationFramework.html#mapreduce">MapReduce</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="certificacion.html">Certificación</a></li>
+<li class="toctree-l1"><a class="reference internal" href="recursos.html">Anexo. Otros recursos</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Anexo. Ejercicios / Ejemplos</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#framework-de-agregacion">Framework de agregación</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ejemplosDesplieguesLocal.html">Anexo. Ejemplos de despliegues en la misma máquina</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ejemplosDesplieguesLocal.html#linea-de-comandos">Linea de comandos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ejemplosDesplieguesLocal.html#yaml">YAML</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ejemplosDesplieguesCluster.html">Anexo. Ejemplos de despliegues en cluster</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Página <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Anexo. Ejercicios / Ejemplos</a><ul>
+<li><a class="reference internal" href="#framework-de-agregacion">Framework de agregación</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="recursos.html" title="Previous Chapter: Anexo. Otros recursos"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Anexo. Otros rec...</span>
+    </a>
+  </li>
+  <li>
+    <a href="ejemplosDesplieguesLocal.html" title="Next Chapter: Anexo. Ejemplos de despliegues en la misma máquina"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Anexo. Ejemplos ... &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      
+  <div class="section" id="anexo-ejercicios-ejemplos">
+<h1>Anexo. Ejercicios / Ejemplos<a class="headerlink" href="#anexo-ejercicios-ejemplos" title="Permalink to this headline">¶</a></h1>
+<p><strong>cambiar en la BD de tweeter, los campos user.location = &#8220;&#8221; o null por N/S</strong></p>
+<p>Antes del cambio</p>
+<div class="highlight-python"><div class="highlight"><pre>&gt; db.tweets.find({$or : [{&quot;user.location&quot;:&quot;&quot;}, {&quot;user.location&quot;:null}]}).count()
+10796
+</pre></div>
+</div>
+<p>Update:</p>
+<div class="highlight-python"><div class="highlight"><pre>&gt; db.tweets.update({$or : [{&quot;user.location&quot;:&quot;&quot;}, {&quot;user.location&quot;: null}]},
+        {$set: {&quot;user.location&quot;:&quot;N/S&quot;}}, {multi:true})
+WriteResult({ &quot;nMatched&quot; : 10796, &quot;nUpserted&quot; : 0, &quot;nModified&quot; : 10796 })
+&gt; db.tweets.find({&quot;user.location&quot;:&quot;N/S&quot;}).count()
+10796
+</pre></div>
+</div>
+<p><strong>actualizar el campo &#8220;created_at&#8221; que es String a un tipo Date de BSON</strong></p>
+<div class="highlight-python"><div class="highlight"><pre>&gt; var cur = db.tweets.find({},{created_at:1})
+&gt; cur.forEach(function(it) {db.tweets.update({_id: it._id},
+        {$set:{created_at: new Date(it.created_at)}})})
+</pre></div>
+</div>
+<p><strong>Todos aquellos usuarios que tengan dentro de entidades, menciones de usuarios. Y los 10 usuarios con mas menciones.</strong></p>
+<div class="highlight-python"><div class="highlight"><pre>&gt; db.tweets.count({&quot;entities.user_mentions&quot;: {$not:{$size:0}}})
+27069
+
+&gt; var cursor = db.tweets.find({&quot;entities.user_mentions&quot;:
+        {$not:{$size:0}}},{&quot;entities.user_mentions&quot;:1})
+&gt; cursor.forEach(function(it) {db.tweets.update({_id: it._id},
+        {$set:{&quot;mentions_count&quot;:it.entities.user_mentions.length}})})
+&gt; db.tweets.find({},{&quot;user.screen_name&quot;:1,&quot;mentions_count&quot;:1}).sort(
+        {mentions_count:-1}).limit(10)
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">hay que tener en cuenta que puede haber mas usuarios que los mostrados con el mismo número de menciones que el mínimo que mostramos. En nuestro caso hay 18 usuarios con 10 menciones.</p>
+</div>
+<p><strong>Do a regular expression query for all users with screen names beginning with &#8216;a&#8217;. Verify that this uses an index</strong></p>
+<div class="highlight-python"><div class="highlight"><pre>&gt; db.tweets.ensureIndex({&quot;user.screen_name&quot;: 1})
+&gt; db.tweets.find({&quot;user.screen_name&quot;: /^a/},
+        {&quot;user.screen_name&quot;:1, _id: 0}).explain()
+</pre></div>
+</div>
+<p><strong>Using the twitter collection, build a simple index on a user&#8217;s friends count. Then build a separate compound index on both friends count and followers counts. Run a few queries against these fields using explain(), and notice which indexes the query optimizer uses</strong></p>
+<div class="highlight-python"><div class="highlight"><pre>&gt; db.tweets.ensureIndex({&quot;user.friends_count&quot;:1})
+&gt; db.tweets.ensureIndex({&quot;user.friends_count&quot;:1, &quot;user.followers_count&quot;:1})
+
+&gt; db.tweets.find({}).sort({&quot;user.friends_count&quot;: -1}).explain()
+&gt; db.tweets.find({}).sort({&quot;user.followers_count&quot;: -1}).explain() //ERROR
+&gt; db.tweets.find({}).sort({&quot;user.friends_count&quot;:1,
+        &quot;user.followers_count&quot;: 1}).explain()
+</pre></div>
+</div>
+<div class="section" id="framework-de-agregacion">
+<h2>Framework de agregación<a class="headerlink" href="#framework-de-agregacion" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p class="first">By screen name who tweeted the most?</p>
+<div class="highlight-python"><div class="highlight"><pre>&gt; db.tweets.aggregate( {$group: {_id: &quot;$user.screen_name&quot;, count: {$sum: 1}}},
+        {$sort:{count:-1}},{$limit: 1} )
+{ &quot;_id&quot; : &quot;behcolin&quot;, &quot;count&quot; : 8 }
+</pre></div>
+</div>
+</li>
+<li><p class="first">Who mentions the most other (unique) tweeters in their tweets? ...</p>
+</li>
+<li><p class="first">Ignoring anyone with no friends or no followers:</p>
+<ol class="arabic">
+<li><p class="first">Who has the highest Followers to Friends (follows) Ratio?</p>
+<div class="highlight-python"><div class="highlight"><pre>&gt; db.tweets.aggregate({$match: {&quot;user.friends_count&quot;: {$gt: 0}}},
+        {$match: {&quot;user.followers_count&quot;: {$gt: 0}}},
+        {$project: {&quot;user.screen_name&quot;: 1,
+            &quot;user.friends_count&quot;: 1,
+            &quot;user.followers_count&quot;: 1,
+            _id: 0,
+            ratio: {$divide:[&quot;$user.followers_count&quot;,
+                             &quot;$user.friends_count&quot;]}
+        }},
+        {$sort:{ratio: -1}},
+        {$limit: 1})
+
+{ &quot;user&quot; : { &quot;friends_count&quot; : 8, &quot;screen_name&quot; : &quot;Twitterrific&quot;,
+        &quot;followers_count&quot; : 153772 }, &quot;ratio&quot; : 19221.5 }
+</pre></div>
+</div>
+</li>
+<li><p class="first">Who has the lowest?</p>
+<div class="highlight-python"><div class="highlight"><pre>&gt; db.tweets.aggregate({$match: {&quot;user.friends_count&quot;: {$gt: 0}}},
+        {$match: {&quot;user.followers_count&quot;: {$gt: 0}}},
+        {$project: {
+            &quot;user.screen_name&quot;: 1,
+            &quot;user.friends_count&quot;: 1,
+            &quot;user.followers_count&quot;: 1,
+            _id: 0,
+            ratio: {$divide:[&quot;$user.followers_count&quot;,
+                             &quot;$user.friends_count&quot;]}
+        }},
+        {$sort:{ratio: 1}},
+        {$limit: 1})
+
+{ &quot;user&quot; : { &quot;friends_count&quot; : 121, &quot;screen_name&quot; : &quot;whaider2009&quot;,
+        &quot;followers_count&quot; : 1 }, &quot;ratio&quot; : 0.008264462809917356 }
+</pre></div>
+</div>
+</li>
+<li><p class="first">What&#8217;s the average?</p>
+<div class="highlight-python"><div class="highlight"><pre>&gt; db.tweets.aggregate({$match: {&quot;user.friends_count&quot;: {$gt: 0}}},
+        {$match: {&quot;user.followers_count&quot;: {$gt: 0}}},
+        {$project: {
+            &quot;user.screen_name&quot;: 1,
+            &quot;user.friends_count&quot;: 1,
+            &quot;user.followers_count&quot;: 1,
+            _id: 0,
+            ratio: {$divide:[&quot;$user.followers_count&quot;,
+                             &quot;$user.friends_count&quot;]}
+            }},
+            {$group:{_id: 1, avg: {$avg: &quot;$ratio&quot;}}})
+
+{ &quot;_id&quot; : 1, &quot;avg&quot; : 8.044204413696619 }
+</pre></div>
+</div>
+</li>
+<li><p class="first">Who is closest to the average? ...</p>
+</li>
+</ol>
+</li>
+<li><p class="first">Sacar de forma ordenada decreciente la diferencia entre followers
+y friends (mas followers que friends) &lt;- <strong>Asegurar un índice!!</strong></p>
+<div class="highlight-python"><div class="highlight"><pre>&gt; db.tweets.aggregate({$match: {&quot;user.friends_count&quot;: {$gt: 0}}},
+        {$match: {&quot;user.followers_count&quot;: {$gt: 0}}},
+        {$project: {
+            &quot;user.screen_name&quot;: 1,
+            &quot;user.friends_count&quot;: 1,
+            &quot;user.followers_count&quot;: 1,
+            _id: 0,
+            ratio: {$divide:[&quot;$user.followers_count&quot;, &quot;$user.friends_count&quot;]},
+            diferencia: {$subtract: [
+                &quot;$user.followers_count&quot;,&quot;$user.friends_count&quot;]}
+        }},
+        {$sort:{ratio: -1}},
+        {$limit: 10})
+
+{ &quot;user&quot; : { &quot;friends_count&quot; : 8, &quot;screen_name&quot; : &quot;Twitterrific&quot;,
+        &quot;followers_count&quot; : 153772 }, &quot;ratio&quot; : 19221.5,
+        &quot;diferencia&quot; : 153764 }
+{ &quot;user&quot; : { &quot;friends_count&quot; : 2, &quot;screen_name&quot; : &quot;steve_berra&quot;,
+        &quot;followers_count&quot; : 34248 }, &quot;ratio&quot; : 17124,
+        &quot;diferencia&quot; : 34246 }
+{ &quot;user&quot; : { &quot;friends_count&quot; : 1, &quot;screen_name&quot; : &quot;2dopeboyz&quot;,
+        &quot;followers_count&quot; : 16847 }, &quot;ratio&quot; : 16847,
+        &quot;diferencia&quot; : 16846 }
+{ &quot;user&quot; : { &quot;friends_count&quot; : 9, &quot;screen_name&quot; : &quot;backstreetboys&quot;,
+        &quot;followers_count&quot; : 125048 }, &quot;ratio&quot; : 13894.222222222223,
+        &quot;diferencia&quot; : 125039 }
+{ &quot;user&quot; : { &quot;friends_count&quot; : 3, &quot;screen_name&quot; : &quot;tedouumdado&quot;,
+        &quot;followers_count&quot; : 39467 }, &quot;ratio&quot; : 13155.666666666666,
+        &quot;diferencia&quot; : 39464 }
+{ &quot;user&quot; : { &quot;friends_count&quot; : 1, &quot;screen_name&quot; : &quot;3in1of2&quot;,
+        &quot;followers_count&quot; : 10962 }, &quot;ratio&quot; : 10962,
+        &quot;diferencia&quot; : 10961 }
+{ &quot;user&quot; : { &quot;friends_count&quot; : 1, &quot;screen_name&quot; : &quot;craigslistjobs&quot;,
+        &quot;followers_count&quot; : 8742 }, &quot;ratio&quot; : 8742,
+        &quot;diferencia&quot; : 8741 }
+{ &quot;user&quot; : { &quot;friends_count&quot; : 1, &quot;screen_name&quot; : &quot;LaJornada&quot;,
+        &quot;followers_count&quot; : 8720 }, &quot;ratio&quot; : 8720,
+        &quot;diferencia&quot; : 8719 }
+{ &quot;user&quot; : { &quot;friends_count&quot; : 6, &quot;screen_name&quot; : &quot;trampos&quot;,
+        &quot;followers_count&quot; : 35508 }, &quot;ratio&quot; : 5918,
+        &quot;diferencia&quot; : 35502 }
+{ &quot;user&quot; : { &quot;friends_count&quot; : 1, &quot;screen_name&quot; : &quot;StyleCareers&quot;,
+        &quot;followers_count&quot; : 3661 }, &quot;ratio&quot; : 3661,
+        &quot;diferencia&quot; : 3660 }
+</pre></div>
+</div>
+</li>
+<li><p class="first">Obtener una colección tipo:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span><span class="n">_id</span><span class="p">:</span> <span class="n">hashtag</span><span class="p">,</span> <span class="n">tweets</span><span class="p">:</span> <span class="p">[</span> <span class="p">{</span><span class="nb">id</span><span class="p">:</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="n">screen_name</span><span class="p">:</span> <span class="s">&quot;&quot;</span><span class="p">},</span> <span class="o">...</span><span class="p">]}</span>
+</pre></div>
+</div>
+<p>Es decir, tag y los tweets relacionados con el tweet</p>
+<p>Con push:</p>
+<div class="highlight-python"><div class="highlight"><pre>&gt; db.tweets.aggregate( {$match: {&quot;entities.hashtags&quot;: {$not: {$size: 0} } }},
+        {$project: {
+            _id: 0,
+            id:1,
+            text: 1,
+            &quot;entities.hashtags&quot;: 1,
+            &quot;user.screen_name&quot;:1}},
+        {$unwind:&quot;$entities.hashtags&quot;},
+        {$group:{
+            _id: &quot;$entities.hashtags.text&quot;,
+            tweets: {$push: {
+                        id: &quot;$id&quot;,
+                        text: &quot;$text&quot;,
+                        screen_name: &quot;$user.screen_name&quot;}}
+        }}, ,
+        {$out: &quot;hashtags_tweets&quot;})
+</pre></div>
+</div>
+<p>Con addToSet (si no existe lo crea como array, si existe como array lo añade, <strong>si existe y no es un array da un error</strong>):</p>
+<div class="highlight-python"><div class="highlight"><pre>&gt; db.tweets.aggregate( {$match: {&quot;entities.hashtags&quot;: {$not: {$size: 0} } }},
+        {$project: {
+            _id: 0,
+            id:1,
+            text: 1,
+            &quot;entities.hashtags&quot;: 1,
+            &quot;user.screen_name&quot;:1}},
+        {$unwind:&quot;$entities.hashtags&quot;},
+        {$group:{
+            _id: &quot;$entities.hashtags.text&quot;,
+            tweets: {$addToSet: {
+                        id: &quot;$id&quot;,
+                        text: &quot;$text&quot;,
+                        screen_name: &quot;$user.screen_name&quot;}}
+        }},
+        {$out: &quot;hashtags_tweets&quot;}
+    ).pretty()
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2015, yorsh.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

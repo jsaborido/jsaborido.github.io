@@ -1,0 +1,253 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Replica Set</title>
+    
+    <link rel="stylesheet" href="../_static/epub.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" /> 
+  </head>
+  <body>
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="sharding.html" title="Sharding"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="shell.html" title="CRUD - MongoDB Shell"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Notas sobre mongoDB doc 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body">
+            
+  <div class="section" id="replica-set">
+<h1>Replica Set</h1>
+<p><strong>Sistema de votos para la elección de primarios</strong>:</p>
+<ul class="simple">
+<li>Para que un nodo pase a primario tiene que obtener la mayoría de votos (mayor que la mitad)</li>
+<li>Mínimo 3 nodos para poder tener recuperación automática. Sino no se puede decidir un nuevo primario.</li>
+<li><strong>Árbitro</strong>: es un nodo secundario sin almacenamiento y solo usado para las votaciones.</li>
+<li>Un secundario puede tener <strong>derecho de veto</strong>. Cuando un secundatio tiene una fecha de actualización mayor.</li>
+<li>Máximo número de nodos que pueden votar: 7<ul>
+<li>Un nodo que no puede votar, si puede poner 1 veto.</li>
+</ul>
+</li>
+<li>Los secundarios tienen prioridad, por defecto = 1.</li>
+</ul>
+<p><strong>Oplog.rs</strong></p>
+<p>En los nodos del replica set, existirá la colección <tt class="docutils literal"><span class="pre">oplog.rs</span></tt> dentro de la base de datos <tt class="docutils literal"><span class="pre">local</span></tt>.
+Esta colección se crea con las escrituras en el primario y se envía a los secundarios.</p>
+<p>Es una colección de tamaño máximo donde se almacenan las operaciones de una forma idempotente.</p>
+<p><strong>Lecturas en secundarios</strong></p>
+<p>Hacer lecturas en los secundarios puede ser una buena idea si estamos haciendo operaciones pesadas y no nos importa que los datos no sean justo los últimos.</p>
+<p>Al conectarse a un secundario con el comando &#8220;mongo&#8221;, no nos permite lecturas por defecto, para habilitarlas debemos ejecutar:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">rs</span><span class="o">.</span><span class="n">slaveOk</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><strong>Mantenimientos y upgrades</strong>.</p>
+<p>Para mantenimientos de los servidores y actualizaciones del software, primero se deberían hacer en los secundarios.</p>
+<div class="section" id="write-concerns">
+<h2>Write concerns</h2>
+<ul class="simple">
+<li><strong>w:0</strong>. Mando y espero solo el ack de la red</li>
+<li><strong>w:1</strong>. <em>Valor por defecto</em> en standalone y primarios de replica set. Cuando la escritura ha sido hecha en la memoria del servidor, aunque no en disco ni replicada.</li>
+<li><strong>w:n (siendo n&gt;1)</strong>. Cuando se ha confirmado en n nodos (primario y n-1 secundarios).</li>
+<li><strong>w:&#8221;majority&#8221;</strong>. Cuando se ha confirmado en la mayoría de los miembros del replica set.</li>
+<li><strong>w:&lt;tag set&gt;</strong>. Cuando se ha confirmado en los nodos configurados con el tag dado.</li>
+<li><strong>j:true</strong>. Espera a la escritura en el journal para devolver la confirmación.</li>
+<li><strong>wtimeout:&lt;ms&gt;</strong>. Timeout en milisegundos que se espera para confirmación de secundarios. Solo tiene sentido con w&gt;1.</li>
+</ul>
+</div>
+<div class="section" id="read-preference-modes">
+<h2>Read Preference modes</h2>
+<ul class="simple">
+<li><strong>primary</strong>. Valor por defecto. Siempre se lee en el primario</li>
+<li><strong>primaryPrefered</strong>. Siempre en el primario a no ser que no esté disponible, en este caso se permiten secundarios.</li>
+<li><strong>secondary</strong>. Solo se lee de secundarios.</li>
+<li><strong>secondaryPrefered</strong>. Se lee de secundarios a no ser que ninguno esté disponible.</li>
+<li><strong>nearest</strong>. Lee del mas cercano (nodo con menos latencia en la red) sea primario o secundario.</li>
+</ul>
+</div>
+<div class="section" id="datacenters">
+<h2>Datacenters</h2>
+<p>Como ya se ha dicho, para auto-recuperación de un replica set necesitamos al menos 3 nodos (si hay solo 2 y se cae el primario, el secundario no tiene votos suficientes para pasar a primario). Repartiendo los nodos en datacenters:</p>
+<p class="graphviz">
+<img src="../_images/graphviz-7e3673d918e91bd6856d148078d48699ab39ecdb.png" alt="graph ejemplos {
+
+    subgraph clusterSingleDataCenter {
+        label=&quot;1 Datacenter&quot;;
+
+        subgraph clusterA {
+            label=&quot;Datacenter&quot;;
+            &quot;1DC Node 1&quot; -- &quot;1DC Node 2&quot;
+            &quot;1DC Node 1&quot; -- &quot;1DC Node 3&quot;
+            &quot;1DC Node 2&quot; -- &quot;1DC Node 3&quot;
+        }
+    }
+
+    subgraph clusterDosDataCenter {
+        label=&quot;2 Datacenter&quot;;
+
+        subgraph clusterA {
+            label=&quot;Datacenter 1&quot;;
+            &quot;2DC Node 1&quot;
+            &quot;2DC Node 2&quot;
+        }
+
+        subgraph clusterB {
+            label=&quot;Datacenter 2&quot;;
+            &quot;2DC Node 3&quot;
+        }
+
+        &quot;2DC Node 1&quot; -- &quot;2DC Node 2&quot;
+        &quot;2DC Node 1&quot; -- &quot;2DC Node 3&quot;
+        &quot;2DC Node 2&quot; -- &quot;2DC Node 3&quot;
+    }
+
+    subgraph clusterTresDataCenter {
+        label=&quot;3 Datacenter&quot;;
+
+        subgraph clusterA {
+            label=&quot;Datacenter 1&quot;;
+            &quot;3DC Node 1&quot;
+        }
+
+        subgraph clusterB {
+            label=&quot;Datacenter 2&quot;;
+            &quot;3DC Node 2&quot;
+        }
+
+        subgraph clusterC {
+            label=&quot;Datacenter 3&quot;;
+            &quot;3DC Node 3&quot;
+        }
+
+        &quot;3DC Node 1&quot; -- &quot;3DC Node 2&quot;
+        &quot;3DC Node 1&quot; -- &quot;3DC Node 3&quot;
+        &quot;3DC Node 2&quot; -- &quot;3DC Node 3&quot;
+    }
+}" />
+</p>
+<p>Podemos ver que la única configuración para poder recuperarse automáticamente ante la caída/destrucción de un data center (DR = Disaster Recovery) es usar como mínimo 3 datacenters.</p>
+<p>Si usamos 1 y se pierde, perdemos todo.</p>
+<p>Si usamos 2, podríamos recuperarnos en el caso de que el datacenter que se pierda sea el que contiene 1 nodo, en otro caso, no.</p>
+</div>
+<div class="section" id="configuracion">
+<h2>Configuración.</h2>
+<p><strong>Configurando un replica set añadiendo secundarios</strong>:</p>
+<ul class="simple">
+<li>Se levantan los servidores con el nombre del replica set<ul>
+<li><tt class="docutils literal"><span class="pre">$</span> <span class="pre">mongod</span> <span class="pre">...</span> <span class="pre">--replSet</span> <span class="pre">set0</span></tt>. Si se configura desde linea de comandos. &#8220;set0&#8221; es el nombre del replica set</li>
+<li><tt class="docutils literal"><span class="pre">replSet=set0</span></tt>. Si se configura en fichero de configuración con formato antiguo</li>
+<li><tt class="docutils literal"><span class="pre">replication.replSetName:</span> <span class="pre">set0</span></tt>. Si se configura en el fichero de configuración con formato YAML</li>
+</ul>
+</li>
+<li>Nos conectamos al nodo que será el primario<ul>
+<li>Con <tt class="docutils literal"><span class="pre">rs.status()</span></tt> podemos comprobar que no está inicializado el replica set</li>
+<li>Con <tt class="docutils literal"><span class="pre">rs.conf()</span></tt> también veremos datos de la configuración del replica set</li>
+</ul>
+</li>
+<li>Con <tt class="docutils literal"><span class="pre">rs.initiate()</span></tt> iniciamos el replica set que solo tendrá este nodo actualmente
+y el shell nos debería cambiar a <tt class="docutils literal"><span class="pre">set0:PRIMARY&gt;</span></tt>.</li>
+<li>Para añadir otros nodos <tt class="docutils literal"><span class="pre">rs.add(&quot;&lt;hostname&gt;:&lt;port&gt;&quot;)</span></tt>. Ejemplo: <tt class="docutils literal"><span class="pre">rs.add(&quot;precise32:28002&quot;)</span></tt>.<ul>
+<li>También es posible pasar un documento en vez de un string con la configuración del nodo.</li>
+<li>Los secundarios deben ser añadidos desde el primario</li>
+</ul>
+</li>
+</ul>
+<p><strong>Configurando un replica set pasando la configuración de todos los nodos:</strong></p>
+<p>Para ello, en vez de inicializar con una configuración vacía, pasamos al comando &#8220;initiate&#8221; la configuración:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">config</span> <span class="o">=</span> <span class="p">{</span> <span class="s">&quot;_id&quot;</span><span class="p">:</span> <span class="s">&quot;set0&quot;</span><span class="p">,</span> <span class="s">&quot;members&quot;</span> <span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s">&quot;_id&quot;</span> <span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&quot;host&quot;</span> <span class="p">:</span> <span class="s">&quot;localhost:27017&quot;</span> <span class="p">},</span>
+    <span class="p">{</span><span class="s">&quot;_id&quot;</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&quot;host&quot;</span> <span class="p">:</span> <span class="s">&quot;localhost:27018&quot;</span> <span class="p">},</span>
+    <span class="p">{</span><span class="s">&quot;_id&quot;</span> <span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s">&quot;host&quot;</span> <span class="p">:</span> <span class="s">&quot;localhost:27019&quot;</span> <span class="p">}</span> <span class="p">]</span>
+<span class="p">}</span>
+
+<span class="n">rs</span><span class="o">.</span><span class="n">initiate</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Valores posibles de configuración:</p>
+<div class="highlight-python"><div class="highlight"><pre>{
+  _id: &lt;string&gt;,
+  version: &lt;int&gt;,
+  members: [
+    {
+      _id: &lt;int&gt;,
+      host: &lt;string&gt;,
+      arbiterOnly: &lt;boolean&gt;,
+      buildIndexes: &lt;boolean&gt;,
+      hidden: &lt;boolean&gt;,
+      priority: &lt;number&gt;,
+      tags: &lt;document&gt;,
+      slaveDelay: &lt;int&gt;,
+      votes: &lt;number&gt;
+    },
+    ...
+  ],
+  settings: {
+    getLastErrorDefaults : &lt;document&gt;,
+    chainingAllowed : &lt;boolean&gt;,
+    getLastErrorModes : &lt;document&gt;,
+    heartbeatTimeoutSecs: &lt;int&gt;
+  }
+}
+</pre></div>
+</div>
+<p><strong>Reconfigurar un replica set</strong>:</p>
+<div class="highlight-python"><div class="highlight"><pre>rs.reconfig(&lt;config&gt;)
+</pre></div>
+</div>
+</div>
+<div class="section" id="configuracion-rapida">
+<h2>Configuración rápida.</h2>
+<p>Existe una forma de crear un replica set de forma rápida para pruebas y desarrollo, para ello necesitamos el directorio <tt class="docutils literal"><span class="pre">/data/db</span></tt></p>
+<div class="highlight-python"><div class="highlight"><pre># mkdir -p /data/db
+# chown -R student:student /data
+$ mongo --nodb
+&gt; var rsTest = new ReplSetTest({name: &quot;replicaTest&quot;, nodes: 3})
+&gt; rsTest.startSet() &amp;&amp; rsTest.initiate()
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Una vez salgamos de la consola el réplica set se finaliza</p>
+</div>
+<p>Conectarse desde consola:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ mongo --nodb
+&gt; conn = new Mongo(&quot;localhost:31000&quot;) // Conectamos al primario
+&gt; db = conn.getDB(&quot;test&quot;)
+// Para conectarse al secundario
+replicaTest:PRIMARY&gt; conn = new Mongo(&quot;localhost:31001&quot;)
+replicaTest:PRIMARY&gt; db = conn.getDB(&quot;test&quot;)
+
+// Volvemos al primario para insertar datos
+&gt; replicaTest:PRIMARY&gt; use test // Esta puede no ser necesaria
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+
+    <div class="footer">
+        &copy; Copyright 2015, yorsh.
+    </div>
+  </body>
+</html>
